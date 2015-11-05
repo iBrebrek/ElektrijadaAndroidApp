@@ -21,7 +21,7 @@ INSERT INTO Category(Id, Name, Nick, IsSport) VALUES (23, 'Osnove Elektrotehnike
 INSERT INTO Category(Id, Name, Nick, IsSport) VALUES (24, 'Automatika', 'Aut', 0);
 INSERT INTO Category(Id, Name, Nick, IsSport) VALUES (25, 'Fizika', 'Fiz', 0);
 INSERT INTO Category(Id, Name, Nick, IsSport) VALUES (26, 'Elektronika 2', 'Ele2', 0);
-INSERT INTO Category(Id, Name, Nick, IsSport) VALUES (27, 'Obnovljivi izvori Energije', 'OIE', 0):
+INSERT INTO Category(Id, Name, Nick, IsSport) VALUES (27, 'Obnovljivi izvori Energije', 'OIE', 0);
 INSERT INTO Category(Id, Name, Nick, IsSport) VALUES (28, 'Matematika 2', 'Mat2', 0);
 INSERT INTO Category(Id, Name, Nick, IsSport) VALUES (30, 'Kros', NULL, 1);
 INSERT INTO Category(Id, Name, Nick, IsSport) VALUES (31, 'Veslanje', NULL, 1);
@@ -168,7 +168,7 @@ VALUES (57, 'Tomislav', 'Ivošiæ', NULL, 1, 56, 13, 1, 1, 0);
 INSERT INTO Competitor(Id, Name, Surname, Section, IsPerson, GroupCompetitorId, FacultyId, CompetitionId, OrdinalNum,IsDisqualified)
 VALUES (58, 'Josip', 'Petrušiè', NULL, 1, 56, 13, 1, 2, 0);
 INSERT INTO Competitor(Id, Name, Surname, Section, IsPerson, GroupCompetitorId, FacultyId, CompetitionId, OrdinalNum,IsDisqualified)
-VALUES (59,N'Alfred', 'Brezni', NULL, 1, 56, 13, 1, 3, 0);
+VALUES (59,'Alfred', 'Brezni', NULL, 1, 56, 13, 1, 3, 0);
 
 INSERT INTO User(Id, Name, Surname, LoginType) VALUES (1, 'Sebastian', 'Glad', 'FER');
 
@@ -301,7 +301,7 @@ INSERT INTO DuelScore(Id, Score1, Score2, DuelId, UserId, IsAssumption, Note, Is
 INSERT INTO DuelScore(Id, Score1, Score2, DuelId, UserId, IsAssumption, Note, IsOfficial) VALUES (15, 2.0000, 3.0000, 22, 1, 0, NULL, 1);
 INSERT INTO DuelScore(Id, Score1, Score2, DuelId, UserId, IsAssumption, Note, IsOfficial) VALUES (16, 3.0000, 3.0000, 23, 1, 0, NULL, 1);
 INSERT INTO DuelScore(Id, Score1, Score2, DuelId, UserId, IsAssumption, Note, IsOfficial) VALUES (17, 1.0000, 1.0000, 24, 1, 0, NULL, 1);
-INSERT INTO DuelScore(Id, Score1, Score2, DuelId, UserId, IsAssumption, Note, IsOfficial) VALUES (18, 4.0000, 3.0000 25, 1, 0, NULL, 1);
+INSERT INTO DuelScore(Id, Score1, Score2, DuelId, UserId, IsAssumption, Note, IsOfficial) VALUES (18, 4.0000, 3.0000, 25, 1, 0, NULL, 1);
 INSERT INTO DuelScore(Id, Score1, Score2, DuelId, UserId, IsAssumption, Note, IsOfficial) VALUES (19, 0.0000, 3.0000, 26, 1, 0, NULL, 1);
 INSERT INTO DuelScore(Id, Score1, Score2, DuelId, UserId, IsAssumption, Note, IsOfficial) VALUES (20, 1.0000, 5.0000, 27, 1, 0, NULL, 1);
 INSERT INTO DuelScore(Id, Score1, Score2, DuelId, UserId, IsAssumption, Note, IsOfficial) VALUES (21, 0.0000, 1.0000, 28, 1, 0, NULL, 1);
