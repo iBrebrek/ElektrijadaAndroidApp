@@ -13,7 +13,7 @@ CREATE TABLE Competitor
 	FOREIGN KEY(CompetitionId) REFERENCES Competition(Id),
 	FOREIGN KEY(GroupCompetitorId) REFERENCES Competitor(Id),
 	FOREIGN KEY(FacultyId) REFERENCES Faculty(Id),
-	FOREIGN KEY(CategoryId) REFERENCES Category(Id)
+	
 	);
 
 CREATE TABLE Duel
@@ -29,7 +29,8 @@ CREATE TABLE Duel
 	IsAssumption BOOLEAN NOT NULL,
 	FOREIGN KEY(Competitor1Id) REFERENCES Competitor(Id),
 	FOREIGN KEY(Competitor2Id) REFERENCES Competitor(Id),
-	FOREIGN KEY(StageId) REFERENCES Stage(Id)
+	FOREIGN KEY(StageId) REFERENCES Stage(Id),
+	FOREIGN KEY(CategoryId) REFERENCES Category(Id)
 	);
 
 CREATE TABLE CompetitionScore
