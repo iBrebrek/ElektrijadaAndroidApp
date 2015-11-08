@@ -17,6 +17,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".vijesti.NewsFeedActivity">
+        </activity>
+        <activity
+            android:name=".vijesti.NewsActivity">
+        </activity>
+        <activity
+            android:name=".vijesti.EditNewsActivity">
+        </activity>
+
     </application>
 
 </manifest>

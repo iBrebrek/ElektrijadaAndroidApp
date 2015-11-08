@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layoutForNews"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#656f65">
+
+        <TextView
+            android:id="@+id/textEditNewsMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Vijesti"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btnSaveNews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/save_icon" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/textEditNewsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_style"
+        android:hint="Upisi naslov..."
+        android:maxLines="2"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/textEditNewsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_style"
+        android:hint="Upiši tekst vijesti..."
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>

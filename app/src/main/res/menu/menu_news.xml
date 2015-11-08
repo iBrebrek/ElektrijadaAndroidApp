@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- dodajem u kodu (u NewsActivity) da bi mogo prikazat some one opcije za koje ima autorizaciju -->
+</menu>

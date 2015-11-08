@@ -1,9 +1,13 @@
 package hr.fer.elektrijada;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import hr.fer.elektrijada.vijesti.NewsFeedActivity;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -11,6 +15,20 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initButtonNews();
+    }
+
+    /**
+     * omogucuje odlazak na NewsFeedActivity
+     */
+    private void initButtonNews(){
+        findViewById(R.id.btnOpenNews).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, NewsFeedActivity.class));
+            }
+        });
     }
 
     @Override
