@@ -16,6 +16,19 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        /*TODO: sloziti da ovo proradi, pogledati u DatabaseHandler.java za detalje
+        DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+        News news = new News(1, "naslov Testa", "text Testa", 5);
+        db.createNews(news);
+        news=db.getNews(1);
+        db.deleteNews(news);
+        db.deleteNews(news);
+        db.close();
+        */
+
+
+
         initButtonNews();
     }
 

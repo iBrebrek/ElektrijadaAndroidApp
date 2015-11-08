@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import hr.fer.elektrijada.R;
+import hr.fer.elektrijada.vijesti.db.DatabaseHandler;
 
 /**
  * activity za pisanje nove vijesti ili mijenjanje postojece vijesti
@@ -69,18 +70,17 @@ public class EditNewsActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 fillObjectNews();
-                if (adding){
-                    //TODO: provijeri treba li spremati oboje
-                    news.saveToDatabase();
-                    news.saveToInternalStorage();
-                }else{
-                    //TODO: provijeri treba li mijenjati oboje
-                    news.editInDatabase();
-                    news.editInInternalStorage();
+                DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                if (adding) {
+                    //TODO: provijeri treba li spremati na uredaj i/ili online
+                    //db.createNews(news);
+                } else {
+                    //TODO: provijeri treba li mijenjati na uredaju i/ili online
 
                     //da bi se moglo rec NewsFeedActivity-u da je doslo do promijene
                     intent.putExtra("edited", true);
                 }
+                db.close();
 
                 intent.putExtra("object", news);
                 setResult(RESULT_OK, intent);
@@ -100,8 +100,4 @@ public class EditNewsActivity extends Activity {
         news.setTitle(txtTitle.getText().toString());
         news.setText(txtText.getText().toString());
     }
-
-
-
-
 }

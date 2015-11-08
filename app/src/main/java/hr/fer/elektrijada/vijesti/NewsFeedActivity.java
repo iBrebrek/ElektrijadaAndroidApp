@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.Date;
 
 import hr.fer.elektrijada.R;
+import hr.fer.elektrijada.vijesti.db.DatabaseHandler;
 
 /**
  * Created by Ivica Brebrek
@@ -33,11 +34,16 @@ public class NewsFeedActivity extends Activity {
      * index news-a koji je kliknut
      **/
     private int clickedIndex;
+    /**
+     * za rad s bazom
+     */
+    private DatabaseHandler db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_feed);
+        db = new DatabaseHandler(getApplicationContext());
 
         initScrollView();
         initAddButton();
@@ -83,7 +89,10 @@ public class NewsFeedActivity extends Activity {
      * stavlja sve vijesti u clansku varijablu list
      */
     private void getNews() {
-        list = new ArrayList<>();
+        //list = db.getAllNews(); //dodavanje iz baze TODO: FIX, trenutno javlja da ne postoji tablica u metodi getAllNews
+        if(list == null){
+            list = new ArrayList<>();
+        }
 
         //umjesto ovih add-ova u listu dodati vijesti iz baze
         list.add(

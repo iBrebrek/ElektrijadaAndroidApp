@@ -73,7 +73,11 @@ public class NewsActivity extends ActionBarActivity {
                 startActivityForResult(intent, 3);
                 break;
             case 2: //2 je za brisanje
-                //TODO: obrisi iz baze i/ili iz uredaja, koristi news.deleteFrom...()
+                /*
+                DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                db.deleteNews(news);
+                db.close();
+                */
                 intent.putExtra("removed", true);
                 intent.putExtra("object", news);
                 setResult(RESULT_OK, intent);

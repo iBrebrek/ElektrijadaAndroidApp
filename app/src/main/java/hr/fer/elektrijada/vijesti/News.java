@@ -39,6 +39,27 @@ public class News implements Serializable { //impementiramo Serializable da bi s
      **/
     private Date timeOfCreation;
 
+
+    //TODO: prilagoditi potrebne konstruktore
+    /**
+     * DODAN NOVI KONSTUKTOR ZBOG ID-a
+     * @param id
+     * @param title
+     * @param authorId
+     * @param text
+     * @param timeOfCreation
+     */
+    public News(int authorId, String title, String text, Date timeOfCreation, int id) {
+        this.id = id;
+        this.title = title;
+        this.authorId = authorId;
+        this.text = text;
+        this.timeOfCreation = timeOfCreation;
+    }
+    public News(int id, String title, String text, int authorId) {
+        this(authorId, title, text, Calendar.getInstance().getTime(), id);
+    }
+
     /**
      * konstruktor koji prima sva 3 podatka o vijesti,
      * ovaj konstuktor ce se obicno krostiti za vec postojece vijesti
@@ -142,66 +163,4 @@ public class News implements Serializable { //impementiramo Serializable da bi s
         }
         return passedTime;
     }
-
-    /**
-     * sprema podatke iz ovog objekta na uredaj
-     *
-     * @return true ako je spremanje uspijesno, false ako nije
-     */
-    protected boolean saveToInternalStorage() {
-        //TODO: spremi objekt na uredaj
-        return false;
-    }
-
-    /**
-     * sprema podatke iz ovog obijekta u bazu podataka
-     *
-     * @return true ako je spremanje uspijesno, false ako nije
-     */
-    protected boolean saveToDatabase() {
-        //TODO: spremi objekt news u bazu podataka
-        return false;
-    }
-
-    /**
-     * mijenja postojecu vijesti na uredaju s ovim objektom
-     *
-     * @return true ako je promijenio podatke, false ako nije (i false ako ne postoji vijest s tim id-em)
-     */
-    protected boolean editInInternalStorage() {
-        //TODO: promijeni podatke postojece vijesti na uredaju
-        return false;
-    }
-
-    /**
-     * mijenja postojecu vijesti u bazi s ovim objektom
-     *
-     * @return true ako je promijenio podatke, false ako nije (false ako ne postoji vijest s tim id-em)
-     */
-    protected boolean editInDatabase() {
-        //TODO: promijeni podatke postojece vijesti u bazi podataka
-        return false;
-    }
-
-    /**
-     * brise ovaj objekt iz uredaja
-     *
-     * @return true ako je izbrisao, inace false
-     */
-    protected boolean deleteFromInternlStorage() {
-        //TODO: izbrisi ovaj objekt (s tim id-em) iz uredaja
-        return false;
-    }
-
-    /**
-     * brise ovaj objekt iz baze podataka
-     *
-     * @return true ako je izbrisao, inace false
-     */
-    protected boolean deleteFromDatabase() {
-        //TODO: izbrisi ovaj objekt (s tim id-em) iz baze podataka
-        return false;
-    }
-
-
 }
