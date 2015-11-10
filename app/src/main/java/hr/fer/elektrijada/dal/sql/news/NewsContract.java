@@ -26,7 +26,10 @@ public final class NewsContract {
     static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + NewsEntry.TABLE_NAME;
 
+<<<<<<< HEAD
     //Boris: umjesto metode mogle su se definirati i int konstante... Kasnije mi je tek palo na pamet
+=======
+>>>>>>> origin/vijesti
     public static  int getColumnPos(String columnName){
         switch(columnName){
             case NewsEntry._ID:
