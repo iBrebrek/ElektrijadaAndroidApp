@@ -1,4 +1,4 @@
-package hr.fer.elektrijada.vijesti;
+package hr.fer.elektrijada.activities.news;
 
 import android.app.Activity;
 import android.content.Intent;

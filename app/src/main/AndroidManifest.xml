@@ -18,13 +18,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".vijesti.NewsFeedActivity">
+            android:name=".activities.news.NewsFeedActivity">
         </activity>
         <activity
-            android:name=".vijesti.NewsActivity">
+            android:name=".activities.news.NewsActivity">
         </activity>
         <activity
-            android:name=".vijesti.EditNewsActivity">
+            android:name=".activities.news.EditNewsActivity">
         </activity>
 
     </application>

@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import hr.fer.elektrijada.vijesti.NewsFeedActivity;
+import hr.fer.elektrijada.activities.news.NewsFeedActivity;
 
 public class MainActivity extends ActionBarActivity {
 

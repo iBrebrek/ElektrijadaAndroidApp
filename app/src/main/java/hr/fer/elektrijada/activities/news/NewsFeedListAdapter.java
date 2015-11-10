@@ -1,4 +1,4 @@
-package hr.fer.elektrijada.vijesti;
+package hr.fer.elektrijada.activities.news;
 
 import android.content.Context;
 import android.view.LayoutInflater;
