@@ -1,4 +1,4 @@
-package hr.fer.elektrijada.dal.mock;
+package hr.fer.elektrijada.dal.mock.news;
 
 import java.util.ArrayList;
 import java.util.Calendar;

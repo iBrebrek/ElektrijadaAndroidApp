@@ -9,15 +9,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 import hr.fer.elektrijada.R;
-import hr.fer.elektrijada.dal.mock.MockNewsRepository;
-import hr.fer.elektrijada.dal.sql.news.NewsDbHelper;
-import hr.fer.elektrijada.dal.sql.news.SqlNewsRepository;
+import hr.fer.elektrijada.dal.mock.news.MockNewsRepository;
 import hr.fer.elektrijada.model.news.NewsEntry;
 import hr.fer.elektrijada.model.news.NewsRepository;
 
