@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import hr.fer.elektrijada.R;
+import hr.fer.elektrijada.model.news.NewsEntry;
 
 /**
  * Created by Ivica Brebrek
@@ -17,7 +18,7 @@ public class NewsActivity extends ActionBarActivity {
     /**
      * objekt koji je prikazan
      **/
-    private News news;
+    private NewsEntry news;
     /**
      * zastavica da znamo je li bilo promijene
      **/
@@ -39,7 +40,7 @@ public class NewsActivity extends ActionBarActivity {
         TextView txtDate = (TextView) findViewById(R.id.textNewsDate);
         TextView txtText = (TextView) findViewById(R.id.textNewsText);
 
-        news = (News) intent.getSerializableExtra("object");
+        news = (NewsEntry) intent.getSerializableExtra("object");
         txtTitle.setText(news.getTitle());
         txtAuthor.setText("Autor: " + news.getAuthorId()); //TODO: getAuthorName umjesto getAuthorId
         txtDate.setText("Objavljeno: " + news.getTimeToString());
@@ -74,7 +75,7 @@ public class NewsActivity extends ActionBarActivity {
                 break;
             case 2: //2 je za brisanje
                 /*
-                DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                NewsDbHelper db = new NewsDbHelper(getApplicationContext());
                 db.deleteNews(news);
                 db.close();
                 */
@@ -95,7 +96,7 @@ public class NewsActivity extends ActionBarActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == 3) {
                 isChanged = true;
-                news = (News) data.getSerializableExtra("object");
+                news = (NewsEntry) data.getSerializableExtra("object");
                 initShownNews(data);
             }
         }

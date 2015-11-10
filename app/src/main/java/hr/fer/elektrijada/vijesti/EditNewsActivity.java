@@ -7,7 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import hr.fer.elektrijada.R;
-import hr.fer.elektrijada.vijesti.db.DatabaseHandler;
+import hr.fer.elektrijada.dal.sql.news.NewsDbHelper;
+import hr.fer.elektrijada.model.news.NewsEntry;
 
 /**
  * activity za pisanje nove vijesti ili mijenjanje postojece vijesti
@@ -26,7 +27,7 @@ public class EditNewsActivity extends Activity {
     /**
      * objekt koji se obraduje
      **/
-    private News news;
+    private NewsEntry news;
     /**
      * zastavica da znamo el dodajemo novog ili editiramo
      **/
@@ -54,7 +55,7 @@ public class EditNewsActivity extends Activity {
             adding = true;
         } else {
             //ovdje je postavljanje postojecih vijesti
-            news = (News) intent.getSerializableExtra("object");
+            news = (NewsEntry) intent.getSerializableExtra("object");
             txtTitle.setText(news.getTitle());
             txtText.setText(news.getText());
         }
@@ -70,7 +71,7 @@ public class EditNewsActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 fillObjectNews();
-                DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                NewsDbHelper db = new NewsDbHelper(getApplicationContext());
                 if (adding) {
                     //TODO: provijeri treba li spremati na uredaj i/ili online
                     //db.createNews(news);
@@ -95,7 +96,7 @@ public class EditNewsActivity extends Activity {
     private void fillObjectNews(){
         if (adding) {
             //TODO: na prvo mjesto ovog konstruktora (umjesto 1) stavi id korisnika koji trenutno koristi app
-            news = new News(1, "", "");
+            news = new NewsEntry(1, "", "");
         }
         news.setTitle(txtTitle.getText().toString());
         news.setText(txtText.getText().toString());

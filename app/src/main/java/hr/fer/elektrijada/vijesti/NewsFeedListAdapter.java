@@ -10,16 +10,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import hr.fer.elektrijada.R;
+import hr.fer.elektrijada.model.news.NewsEntry;
 
 /**
  * razred koj omogucuje prikaz vijesti (naslova, autora i datuma) u list view
  * Created by Ivica Brebrek
  */
 public class NewsFeedListAdapter extends BaseAdapter {
-    private ArrayList<News> listData;
+    private ArrayList<NewsEntry> listData;
     private LayoutInflater layoutInflater;
 
-    public NewsFeedListAdapter(Context aContext, ArrayList<News> listData) {
+    public NewsFeedListAdapter(Context aContext, ArrayList<NewsEntry> listData) {
         this.listData = listData;
         layoutInflater = LayoutInflater.from(aContext);
     }
