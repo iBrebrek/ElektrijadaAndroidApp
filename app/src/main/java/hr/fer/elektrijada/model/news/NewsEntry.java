@@ -1,4 +1,4 @@
-package hr.fer.elektrijada.vijesti;
+package hr.fer.elektrijada.model.news;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -17,7 +17,7 @@ import java.util.Locale;
  * <p/>
  * Created by Ivica Brebrek
  */
-public class News implements Serializable { //impementiramo Serializable da bi se objekt mogo slat izmedu Activity-a
+public class NewsEntry implements Serializable { //impementiramo Serializable da bi se objekt mogo slat izmedu Activity-a
     /**
      * id vijesti
      */
@@ -49,14 +49,14 @@ public class News implements Serializable { //impementiramo Serializable da bi s
      * @param text
      * @param timeOfCreation
      */
-    public News(int authorId, String title, String text, Date timeOfCreation, int id) {
+    public NewsEntry(int authorId, String title, String text, Date timeOfCreation, int id) {
         this.id = id;
         this.title = title;
         this.authorId = authorId;
         this.text = text;
         this.timeOfCreation = timeOfCreation;
     }
-    public News(int id, String title, String text, int authorId) {
+    public NewsEntry(int id, String title, String text, int authorId) {
         this(authorId, title, text, Calendar.getInstance().getTime(), id);
     }
 
@@ -68,7 +68,7 @@ public class News implements Serializable { //impementiramo Serializable da bi s
      * @param text           tekst vijesti
      * @param timeOfCreation vrijeme kada je vijest napisana
      */
-    public News(int authorId, String title, String text, Date timeOfCreation) {
+    public NewsEntry(int authorId, String title, String text, Date timeOfCreation) {
         this.title = title;
         this.authorId = authorId;
         this.text = text;
@@ -82,7 +82,7 @@ public class News implements Serializable { //impementiramo Serializable da bi s
      * @param authorId id korisnika koji je napisao vijest
      * @param text     tekst vijesti
      */
-    public News(int authorId, String title, String text) {
+    public NewsEntry(int authorId, String title, String text) {
         this(authorId, title, text, Calendar.getInstance().getTime());
     }
 

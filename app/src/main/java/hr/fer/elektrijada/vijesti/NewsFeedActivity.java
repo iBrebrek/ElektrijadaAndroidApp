@@ -15,7 +15,11 @@ import java.util.Comparator;
 import java.util.Date;
 
 import hr.fer.elektrijada.R;
-import hr.fer.elektrijada.vijesti.db.DatabaseHandler;
+import hr.fer.elektrijada.dal.mock.MockNewsRepository;
+import hr.fer.elektrijada.dal.sql.news.NewsDbHelper;
+import hr.fer.elektrijada.dal.sql.news.SqlNewsRepository;
+import hr.fer.elektrijada.model.news.NewsEntry;
+import hr.fer.elektrijada.model.news.NewsRepository;
 
 /**
  * Created by Ivica Brebrek
@@ -25,7 +29,7 @@ public class NewsFeedActivity extends Activity {
     /**
      * tu ce biti spremljene vijesti
      **/
-    private ArrayList<News> list;
+    private ArrayList<NewsEntry> list;
     /**
      * prikazuje sve vijesti; clanska varijabla da bi se mogla refreshat nakon izmjene
      **/
@@ -37,13 +41,17 @@ public class NewsFeedActivity extends Activity {
     /**
      * za rad s bazom
      */
-    private DatabaseHandler db;
+    private NewsRepository repository;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_feed);
-        db = new DatabaseHandler(getApplicationContext());
+        //TEST
+        repository = new MockNewsRepository();
+        //DB
+        //repository = new SqlNewsRepository(getApplicationContext());
+
 
         initScrollView();
         initAddButton();
@@ -68,7 +76,7 @@ public class NewsFeedActivity extends Activity {
      * prikaz svih vijesti koji omogucuje otvaranje pojedinace vijesti
      */
     private void initScrollView() {
-        getNews(); //ucitavanje vijesti
+        list = new ArrayList<>(repository.getNews());
         final ListView listView = (ListView) findViewById(R.id.listViewNewsFeed);
         newsAdapter = new NewsFeedListAdapter(this, list);
         listView.setAdapter(newsAdapter);
@@ -83,57 +91,6 @@ public class NewsFeedActivity extends Activity {
         });
     }
 
-    /**
-     * TODO: ovdje ucitati iz baze
-     * <p/>
-     * stavlja sve vijesti u clansku varijablu list
-     */
-    private void getNews() {
-        //list = db.getAllNews(); //dodavanje iz baze TODO: FIX, trenutno javlja da ne postoji tablica u metodi getAllNews
-        if(list == null){
-            list = new ArrayList<>();
-        }
-
-        //umjesto ovih add-ova u listu dodati vijesti iz baze
-        list.add(
-                new News(
-                        7,
-                        "Najstarija vijest ikad",
-                        "oldy",
-                        new Date(0)
-                )
-        );
-        StringBuilder test = new StringBuilder();
-        for (int i = 0; i < 100; i++) test.append(i + ". red\n");
-        list.add(
-                new News(
-                        7,
-                        "Vijest stara nekolko dana koja ima nevjerojatan dug naslov i tekst i ne znam hoće li se cijeli vidjeti, ko zna kolko reda ce prikazati, je li beskonacno????",
-                        test.toString(),
-                        new Date(Calendar.getInstance().getTime().getTime() - 600000000)
-                )
-        );
-        for (int i = 0; i < 15; i++) {
-            list.add(
-                    new News(
-                            i,
-                            "Naslov br " + i,
-                            "Randasdasdjfn asdf nasdflnasd \n asdfjnasa nasdf n\n sdf\n qffa \n sd\n\n aaaa",
-                            new Date(Calendar.getInstance().getTime().getTime() - 350000 * i)
-                    )
-            );
-        }
-        //koristi konstruktor koji dodaje TRENUTNO vrijeme
-        list.add(new News(
-                        555,
-                        "Isprobavam el sortira vrijeme",
-                        ""
-                )
-        );
-
-
-        sortList();
-    }
 
 
     /**
@@ -147,7 +104,7 @@ public class NewsFeedActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) { //obavezna provjera jer se rusi app ako se ne obavi radnja do kraja
-            News manipulatedNews = (News) data.getSerializableExtra("object");
+            NewsEntry manipulatedNews = (NewsEntry) data.getSerializableExtra("object");
             switch (requestCode) {
                 case 1:  //1 je kad se stvara novi
                     Toast.makeText(getApplicationContext(), "Dodana vijest:\n" + manipulatedNews.getTitle(), Toast.LENGTH_SHORT).show();
@@ -175,9 +132,9 @@ public class NewsFeedActivity extends Activity {
      * sortira vijesti, najmlada gore- najstarija dolje
      */
     private void sortList() {
-        Collections.sort(list, new Comparator<News>() {
+        Collections.sort(list, new Comparator<NewsEntry>() {
             @Override
-            public int compare(News n1, News n2) {
+            public int compare(NewsEntry n1, NewsEntry n2) {
                 return n2.getTimeOfCreation().compareTo(n1.getTimeOfCreation());
             }
         });
