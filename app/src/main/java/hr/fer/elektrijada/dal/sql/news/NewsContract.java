@@ -7,6 +7,7 @@ import hr.fer.elektrijada.model.news.NewsEntry;
 /**
  * Created by Boris Milašinović on 10.11.2015..
  * Prema uputi s http://developer.android.com/training/basics/data-storage/databases.html
+ * i http://www.androidhive.info/2013/09/android-sqlite-database-with-multiple-tables/
  * uz manje modifikacije
  */
 public final class NewsContract {
@@ -16,7 +17,9 @@ public final class NewsContract {
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
-    static final String SQL_CREATE_ENTRIES =
+
+    //SQL za stvaranje i brisanje tablice news
+    public static final String SQL_CREATE_NEWS =
             "CREATE TABLE " + NewsEntry.TABLE_NAME + " (" +
                     NewsEntry._ID + " INTEGER PRIMARY KEY," +
                     NewsEntry.COLUMN_NAME_TIME + TEXT_TYPE + COMMA_SEP +
@@ -25,7 +28,7 @@ public final class NewsContract {
                     NewsEntry.COLUMN_NAME_USER_ID + TEXT_TYPE +
             " )";
 
-    static final String SQL_DELETE_ENTRIES =
+    public static final String SQL_DELETE_NEWS =
             "DROP TABLE IF EXISTS " + NewsEntry.TABLE_NAME;
 
     //Boris: umjesto metode mogle su se definirati i int konstante... Kasnije mi je tek palo na pamet

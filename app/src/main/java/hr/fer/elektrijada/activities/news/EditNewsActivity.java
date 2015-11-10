@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import hr.fer.elektrijada.R;
-import hr.fer.elektrijada.dal.sql.news.NewsDbHelper;
 import hr.fer.elektrijada.model.news.NewsEntry;
 
 /**
@@ -71,17 +70,18 @@ public class EditNewsActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 fillObjectNews();
-                NewsDbHelper db = new NewsDbHelper(getApplicationContext());
-                if (adding) {
-                    //TODO: provijeri treba li spremati na uredaj i/ili online
-                    //db.createNews(news);
-                } else {
-                    //TODO: provijeri treba li mijenjati na uredaju i/ili online
-
-                    //da bi se moglo rec NewsFeedActivity-u da je doslo do promijene
-                    intent.putExtra("edited", true);
-                }
-                db.close();
+                //TO DO: Ovdje promijeniti da se ide na repozitorij umjesto na bazu
+//                DbHelper db = new NewsDbHelper(getApplicationContext());
+//                if (adding) {
+//                    //TODO: provijeri treba li spremati na uredaj i/ili online
+//                    //db.createNews(news);
+//                } else {
+//                    //TODO: provijeri treba li mijenjati na uredaju i/ili online
+//
+//                    //da bi se moglo rec NewsFeedActivity-u da je doslo do promijene
+//                    intent.putExtra("edited", true);
+//                }
+//                db.close();
 
                 intent.putExtra("object", news);
                 setResult(RESULT_OK, intent);

@@ -11,9 +11,11 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import hr.fer.elektrijada.dal.sql.DbHelper;
 import hr.fer.elektrijada.model.news.NewsEntry;
 import hr.fer.elektrijada.model.news.NewsRepository;
 import hr.fer.elektrijada.util.DateParserUtil;
+import hr.fer.elektrijada.util.Logger;
 
 /**
  * Created by Boris Milašinović on 10.11.2015..
@@ -22,7 +24,7 @@ public class SqlNewsRepository implements NewsRepository {
     SQLiteOpenHelper dbHelper;
     //TO DO: Provjeriti u Android dokumentaciji smije li biti više helpera ili mora biti singleton i što sa zatvaranjem
     public SqlNewsRepository(Context context){
-        dbHelper = new NewsDbHelper(context);
+        dbHelper = new DbHelper(context);
     }
     public void close(){
         if (dbHelper != null) {
@@ -85,7 +87,7 @@ public class SqlNewsRepository implements NewsRepository {
             cursor.close();
         }
         catch(Exception exc){
-            //TO DO: Call Logger.ShowError;
+            Logger.LogException(exc);
         }
         finally {
             if (db != null)

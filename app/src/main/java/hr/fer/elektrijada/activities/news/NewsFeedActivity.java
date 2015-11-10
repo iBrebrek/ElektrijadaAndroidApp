@@ -45,9 +45,9 @@ public class NewsFeedActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_feed);
         //TEST
-        repository = new MockNewsRepository();
+        //repository = new MockNewsRepository();
         //DB
-        //repository = new SqlNewsRepository(getApplicationContext());
+        repository = new SqlNewsRepository(getApplicationContext());
 
 
         initScrollView();
