@@ -8,5 +8,8 @@ import java.util.List;
 public interface NewsRepository {
     public boolean createNewsEntry(NewsEntry newsEntry);
     public List<NewsEntry> getNews();
+    public NewsEntry getEntry(int id);
     public int getNewsCount();
+
+    void close();
 }

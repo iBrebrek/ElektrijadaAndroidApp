@@ -14,6 +14,7 @@ import java.util.Comparator;
 
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.dal.mock.news.MockNewsRepository;
+import hr.fer.elektrijada.dal.sql.news.SqlNewsRepository;
 import hr.fer.elektrijada.model.news.NewsEntry;
 import hr.fer.elektrijada.model.news.NewsRepository;
 
@@ -51,6 +52,12 @@ public class NewsFeedActivity extends Activity {
 
         initScrollView();
         initAddButton();
+    }
+
+    @Override
+    protected void onDestroy() {
+        repository.close();
+        super.onDestroy();
     }
 
     /**

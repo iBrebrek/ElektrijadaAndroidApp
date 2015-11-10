@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,14 @@ import hr.fer.elektrijada.util.DateParserUtil;
  */
 public class SqlNewsRepository implements NewsRepository {
     SQLiteOpenHelper dbHelper;
+    //TO DO: Provjeriti u Android dokumentaciji smije li biti više helpera ili mora biti singleton i što sa zatvaranjem
     public SqlNewsRepository(Context context){
         dbHelper = new NewsDbHelper(context);
+    }
+    public void close(){
+        if (dbHelper != null) {
+            dbHelper.close();
+        }
     }
     public boolean createNewsEntry(NewsEntry news){
         SQLiteDatabase db = null;
@@ -71,13 +78,7 @@ public class SqlNewsRepository implements NewsRepository {
             Cursor cursor = db.rawQuery("SELECT * FROM " + NewsContract.NewsEntry.TABLE_NAME, null);
             if (cursor.moveToFirst()) {
                 do {
-                    NewsEntry news = new NewsEntry(
-                            cursor.getInt(NewsContract.getColumnPos(NewsContract.NewsEntry.COLUMN_NAME_USER_ID)),
-                            cursor.getString(NewsContract.getColumnPos(NewsContract.NewsEntry.COLUMN_NAME_TITLE)),
-                            cursor.getString(NewsContract.getColumnPos(NewsContract.NewsEntry.COLUMN_NAME_DESCRIPTION)),
-                            DateParserUtil.stringToDate( cursor.getString(NewsContract.getColumnPos(NewsContract.NewsEntry.COLUMN_NAME_TIME))),
-                            cursor.getInt(NewsContract.getColumnPos(NewsContract.NewsEntry._ID))
-                    );
+                    NewsEntry news = newsEntryFromCursor(cursor);
                     listOfNews.add(news);
                 } while (cursor.moveToNext());
             }
@@ -93,39 +94,63 @@ public class SqlNewsRepository implements NewsRepository {
         return listOfNews;
     }
 
-    /*
-     public NewsEntry getNews(int id){
-        SQLiteDatabase db = getReadableDatabase();
-
-        Cursor cursor = db.query(  //TODO: popraviti... javlja exception da ne postoji tablica
-                TABLE_NEWS,
-                new String[] { KEY_ID, KEY_TITLE, KEY_TEXT, KEY_TIME, KEY_USER_ID},
-                KEY_ID +"=?",
-                new String[] { String.valueOf(id)},
-                null,
-                null,
-                null,
-                null
+    @NonNull
+    private NewsEntry newsEntryFromCursor(Cursor cursor) {
+        return new NewsEntry(
+                cursor.getInt(NewsContract.getColumnPos(NewsContract.NewsEntry.COLUMN_NAME_USER_ID)),
+                cursor.getString(NewsContract.getColumnPos(NewsContract.NewsEntry.COLUMN_NAME_TITLE)),
+                cursor.getString(NewsContract.getColumnPos(NewsContract.NewsEntry.COLUMN_NAME_DESCRIPTION)),
+                DateParserUtil.stringToDate(cursor.getString(NewsContract.getColumnPos(NewsContract.NewsEntry.COLUMN_NAME_TIME))),
+                cursor.getInt(NewsContract.getColumnPos(NewsContract.NewsEntry._ID))
         );
-
-        if(cursor != null){
-            cursor.moveToFirst();
-        }
-
-
-        NewsEntry news = new NewsEntry(
-                Integer.parseInt(cursor.getString(4)),  //autor Id
-                cursor.getString(1),                    //naslov
-                cursor.getString(2),                    //tekst
-                stringToDate(cursor.getString(3)),      //vrijeme
-                Integer.parseInt(cursor.getString(0))   //id vijesti
-        );
-        db.close();
-        cursor.close();
-        return news;
     }
 
 
+    @Override
+     public NewsEntry getEntry(int id){
+         NewsEntry entry = null;
+         SQLiteDatabase db = null;
+         try{
+             db = dbHelper.getReadableDatabase();
+
+             // Define a projection that specifies which columns from the database
+             // you will actually use after this query.
+             String[] projection = {
+                     NewsContract.NewsEntry._ID,
+                     NewsContract.NewsEntry.COLUMN_NAME_TITLE,
+                     NewsContract.NewsEntry.COLUMN_NAME_DESCRIPTION,
+                     NewsContract.NewsEntry.COLUMN_NAME_TIME,
+                     NewsContract.NewsEntry.COLUMN_NAME_USER_ID
+             };
+
+             Cursor cursor = db.query(
+                     NewsContract.NewsEntry.TABLE_NAME,
+                     projection,
+                     NewsContract.NewsEntry._ID + "=?",
+                     new String[] { String.valueOf(id)},
+                     null,
+                     null,
+                     null
+             );
+
+             if(cursor != null){
+                 cursor.moveToFirst();
+             }
+
+             NewsEntry news = newsEntryFromCursor(cursor);
+             cursor.close();
+         }
+         catch(Exception exc){
+             //TO DO: Call Logger.ShowError;
+         }
+         finally {
+             if (db != null)
+                 db.close();
+         }
+         return entry;
+    }
+
+/*
 
     public void deleteNews(NewsEntry news){
         SQLiteDatabase db = getWritableDatabase();

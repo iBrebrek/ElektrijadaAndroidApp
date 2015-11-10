@@ -6,6 +6,8 @@ import hr.fer.elektrijada.model.news.NewsEntry;
 
 /**
  * Created by Boris Milašinović on 10.11.2015..
+ * Prema uputi s http://developer.android.com/training/basics/data-storage/databases.html
+ * uz manje modifikacije
  */
 public final class NewsContract {
     private NewsContract(){
@@ -20,16 +22,13 @@ public final class NewsContract {
                     NewsEntry.COLUMN_NAME_TIME + TEXT_TYPE + COMMA_SEP +
                     NewsEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
                     NewsEntry.COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
-                    NewsEntry.COLUMN_NAME_USER_ID + TEXT_TYPE + COMMA_SEP +
+                    NewsEntry.COLUMN_NAME_USER_ID + TEXT_TYPE +
             " )";
 
     static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + NewsEntry.TABLE_NAME;
 
-<<<<<<< HEAD
     //Boris: umjesto metode mogle su se definirati i int konstante... Kasnije mi je tek palo na pamet
-=======
->>>>>>> origin/vijesti
     public static  int getColumnPos(String columnName){
         switch(columnName){
             case NewsEntry._ID:

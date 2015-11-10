@@ -71,7 +71,17 @@ public class MockNewsRepository implements NewsRepository {
     }
 
     @Override
+    public NewsEntry getEntry(int id) {
+        return null;
+    }
+
+    @Override
     public int getNewsCount() {
         return getNews().size();
+    }
+
+    @Override
+    public void close() {
+
     }
 }

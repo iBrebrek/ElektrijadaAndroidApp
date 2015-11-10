@@ -28,6 +28,7 @@ public class NewsDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(NewsContract.SQL_CREATE_ENTRIES);
     }
 
