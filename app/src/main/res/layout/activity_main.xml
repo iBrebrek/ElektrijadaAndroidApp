@@ -27,6 +27,15 @@
         android:layout_alignParentRight="true"
         android:onClick="openTeams"
          />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NATJECANJA"
+        android:id="@+id/btnOpenCompetitions"
+        android:layout_above="@+id/btnOpenTeams"
+        android:layout_alignParentRight="true"
+        android:onClick="openCompetitions"
+        />
 
 
 </RelativeLayout>

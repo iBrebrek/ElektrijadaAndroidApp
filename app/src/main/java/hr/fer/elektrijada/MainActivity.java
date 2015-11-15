@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import hr.fer.elektrijada.activities.competitions.CompetitionsActivity;
 import hr.fer.elektrijada.activities.news.NewsFeedActivity;
 import hr.fer.elektrijada.activities.teams.TeamsActivity;
 
@@ -33,6 +34,10 @@ public class MainActivity extends ActionBarActivity {
 
     public void openTeams(View view){
         startActivity(new Intent(MainActivity.this, TeamsActivity.class));
+    }
+
+    public void openCompetitions(View view){
+        startActivity(new Intent(MainActivity.this, CompetitionsActivity.class));
     }
 
     @Override

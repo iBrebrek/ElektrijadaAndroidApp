@@ -29,6 +29,10 @@
         </activity>
         <activity android:name=".activities.competitions.CompetitionsActivity" >
         </activity>
+        <activity
+            android:name=".activities.competitions.NewCompetitionActivity"
+            android:label="@string/title_activity_new_competition" >
+        </activity>
     </application>
 
 </manifest>

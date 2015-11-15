@@ -1,0 +1,135 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    >
+
+    <RelativeLayout
+        android:id="@+id/layoutForCompetitions"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#656f65">
+
+        <TextView
+            android:id="@+id/textEditNewsMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Natjecanja"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btnSaveTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/save_icon"
+            android:onClick="saveCompetition"
+            />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/layoutForFaculties"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+        <TextView
+            android:id="@+id/categoryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Odaberite kategoriju"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/categorySpinner"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/categoryTextView"
+            android:background="@drawable/edit_text_style"
+            >
+
+        </Spinner>
+
+
+
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/textEditStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_style"
+        android:hint="Vrijeme pocetka"
+        android:maxLines="2"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/textEditFinishTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_style"
+        android:hint="Vrijeme kraja"
+        android:maxLines="2"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/textEditLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_style"
+        android:hint="Lokacija"
+        android:maxLines="2"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+
+    <RelativeLayout
+        android:id="@+id/layoutForAssumption"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+        <TextView
+            android:id="@+id/categoryTextAssumption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Da li je pretpodstavka?"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/categoryTextAssumption"
+            android:id="@+id/competitionAssumptionCheckBox"
+            />
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+</LinearLayout>
