@@ -18,5 +18,15 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EKIPE"
+        android:id="@+id/btnOpenTeams"
+        android:layout_above="@+id/btnOpenNews"
+        android:layout_alignParentRight="true"
+        android:onClick="openTeams"
+         />
+
 
 </RelativeLayout>

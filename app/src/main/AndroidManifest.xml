@@ -17,16 +17,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.news.NewsFeedActivity">
+        <activity android:name=".activities.news.NewsFeedActivity" >
         </activity>
-        <activity
-            android:name=".activities.news.NewsActivity">
+        <activity android:name=".activities.news.NewsActivity" >
         </activity>
-        <activity
-            android:name=".activities.news.EditNewsActivity">
+        <activity android:name=".activities.news.EditNewsActivity" >
         </activity>
-
+        <activity android:name=".activities.teams.TeamsActivity" >
+        </activity>
+        <activity android:name=".activities.teams.NewTeamActivity" >
+        </activity>
+        <activity android:name=".activities.competitions.CompetitionsActivity" >
+        </activity>
     </application>
 
 </manifest>

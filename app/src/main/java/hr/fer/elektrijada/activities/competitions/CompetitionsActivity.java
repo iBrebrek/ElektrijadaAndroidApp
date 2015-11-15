@@ -1,44 +1,25 @@
-package hr.fer.elektrijada;
+package hr.fer.elektrijada.activities.competitions;
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import hr.fer.elektrijada.activities.news.NewsFeedActivity;
-import hr.fer.elektrijada.activities.teams.TeamsActivity;
+import hr.fer.elektrijada.R;
 
-public class MainActivity extends ActionBarActivity {
+public class CompetitionsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initButtonNews();
-    }
-
-    /**
-     * omogucuje odlazak na NewsFeedActivity
-     */
-    private void initButtonNews(){
-        findViewById(R.id.btnOpenNews).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, NewsFeedActivity.class));
-            }
-        });
-    }
-
-    public void openTeams(View view){
-        startActivity(new Intent(MainActivity.this, TeamsActivity.class));
+        setContentView(R.layout.activity_competitions);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_competitions, menu);
         return true;
     }
 

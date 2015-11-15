@@ -1,0 +1,119 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    >
+
+    <RelativeLayout
+        android:id="@+id/layoutForNews"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#656f65">
+
+        <TextView
+            android:id="@+id/textEditNewsMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Ekipe"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btnSaveTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/save_icon"
+            android:onClick="saveTeam"
+            />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/textEditTeamName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_style"
+        android:hint="Ime ekipe"
+        android:maxLines="2"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <RelativeLayout
+        android:id="@+id/layoutForFaculties"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+
+        <TextView
+            android:id="@+id/facultyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Odaberite fakultet"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/facultySpinner"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/facultyTextView"
+            android:background="@drawable/edit_text_style"
+            >
+
+        </Spinner>
+
+
+
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/textEditSection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_style"
+        android:hint="Sekcija"
+        android:maxLines="2"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/textEditCompetition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_style"
+        android:hint="Natjecanje"
+        android:maxLines="2"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/textEditGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_style"
+        android:hint="Grupa ekipe"
+        android:maxLines="2"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+
+
+
+
+
+
+</LinearLayout>
