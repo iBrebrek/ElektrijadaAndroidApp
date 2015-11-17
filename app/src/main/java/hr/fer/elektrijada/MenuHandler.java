@@ -3,7 +3,9 @@ package hr.fer.elektrijada;
 import android.content.Context;
 import android.content.Intent;
 
+import hr.fer.elektrijada.activities.news.NewsActivity;
 import hr.fer.elektrijada.activities.news.NewsFeedActivity;
+import hr.fer.elektrijada.activities.settings.SettingsActivity;
 
 /**
  * Created by Boris on 17.11.2015.
@@ -12,11 +14,16 @@ import hr.fer.elektrijada.activities.news.NewsFeedActivity;
  */
 public class MenuHandler {
     public static void handle(Context context, int id) {
-        //kasnije ovo riješiti preko Intenta, a ne direktnim navođenjem aktivnosti
+        Class<?> action = null;
+
         if (id == R.id.nav_vijesti) {
-            context.startActivity(new Intent(context, NewsFeedActivity.class));
-        } else if (id == R.id.nav_vijesti) {
-            context.startActivity(new Intent(context, NewsFeedActivity.class));
+            action = NewsFeedActivity.class;
+        } else if (id == R.id.nav_postavke) {
+            action = SettingsActivity.class;
+        }
+
+        if (action != null){
+            context.startActivity(new Intent(context, action));
         }
     }
 }
