@@ -17,11 +17,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.news.NewsFeedActivity" >
+        <activity
+            android:name=".activities.news.NewsFeedActivity"
+            android:label="Vijesti"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".activities.news.NewsActivity" >
+        <activity
+            android:name=".activities.news.NewsActivity"
+            android:label="Vijest"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".activities.news.EditNewsActivity" >
+        <activity
+            android:name=".activities.news.EditNewsActivity"
+            android:label="Uređivanje vijesti"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".activities.teams.TeamsActivity" >
         </activity>

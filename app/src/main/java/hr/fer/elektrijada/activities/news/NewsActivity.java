@@ -2,51 +2,90 @@ package hr.fer.elektrijada.activities.news;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import hr.fer.elektrijada.R;
+import hr.fer.elektrijada.activities.BaseMenuActivity;
+import hr.fer.elektrijada.dal.sql.news.SqlNewsRepository;
 import hr.fer.elektrijada.model.news.NewsEntry;
 
 /**
  * Created by Ivica Brebrek
  */
-public class NewsActivity extends ActionBarActivity {
-
+public class NewsActivity extends BaseMenuActivity {
     /**
-     * objekt koji je prikazan
+     * vijest koja je prikazana
      **/
     private NewsEntry news;
-    /**
-     * zastavica da znamo je li bilo promijene
-     **/
-    private boolean isChanged;
+
+    @Override
+    protected int getContentLayoutId() {
+        return R.layout.news;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.news);
-        getSupportActionBar().hide(); //da bi maknuo labelu
-        Intent intent = getIntent();
-        initShownNews(intent);
+
+        loadEverything();
     }
 
-    private void initShownNews(Intent intent) { //dodan parametar jer pozivamo u raznim situacijama ovu metodu
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadEverything();
+    }
 
+    private void loadEverything() {
+        loadNews();
+        if (news != null) { //null ce biti samo ako je doslo do greske u loadNews()
+            initShownNews();
+        }
+    }
+
+    /**
+     * ucitava vijest u varijablu news
+     */
+    private void loadNews() {
+        SqlNewsRepository repo = new SqlNewsRepository(getApplicationContext());
+        try {
+            news = repo.getNews(getIntent().getIntExtra("news_id", -1));
+            //u slucaju ako ne postoji vijest s tim id-em, npr izbrisana milisekundu nakon sto smo mi u listi kliknuli na tu vijest
+            if (news == null) {
+                byeBye();
+            }
+        } catch (Exception exc) {
+            byeBye();
+        } finally {
+            repo.close();
+        }
+    }
+
+    private void byeBye() {
+        Toast.makeText(getApplicationContext(), "Greška prilikom otvaranja vijesti", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    /**
+     * prikazuje sve potrebne podatke o vijesti
+     */
+    private void initShownNews() {
         TextView txtTitle = (TextView) findViewById(R.id.textNewsTitle);
         TextView txtAuthor = (TextView) findViewById(R.id.textNewsAuthor);
         TextView txtDate = (TextView) findViewById(R.id.textNewsDate);
         TextView txtText = (TextView) findViewById(R.id.textNewsText);
 
-        news = (NewsEntry) intent.getSerializableExtra("object");
         txtTitle.setText(news.getTitle());
-        txtAuthor.setText("Autor: " + news.getAuthorId()); //TODO: getAuthorName umjesto getAuthorId
-        txtDate.setText("Objavljeno: " + news.getTimeToString());
+        txtAuthor.setText(String.format("Autor: %s", news.getAuthorId())); //TODO: getAuthorName umjesto getAuthorId
+        txtDate.setText(String.format("Objavljeno: %s", news.getTimeToString()));
         txtText.setText(news.getText());
-
     }
+
+    private final static String EDIT_NEWS = "Promijeni";
+    private final static String DELETE_NEWS = "Izbriši";
 
     /**
      * dodani "Promijeni" i "Izbrisi" u opcije
@@ -54,66 +93,28 @@ public class NewsActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_news, menu);
-        menu.add(menu.NONE, 1, 100, "Promijeni");
-        menu.add(menu.NONE, 2, 101, "Izbriši");
+        //TODO prikazi ove opcije samo ako korisnik ima dopustenje, tj., ako je vijest njegova
+        menu.add(EDIT_NEWS);
+        menu.add(DELETE_NEWS);
         return true;
     }
 
     /**
-     * klikom na "Promijeni"(id=1) otvara prozor za edit nad tim clankom,
-     * Izbrisi(id=2) brise otvorenu vijest i vraca na popis svih vijesti
+     * klikom na "Promijeni" otvara prozor za edit nad tim clankom,
+     * "Izbrisi" brise otvorenu vijest i vraca na popis svih vijesti
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
         Intent intent = new Intent(getApplicationContext(), EditNewsActivity.class);
-        switch (id) {
-            case 1: //1 je za edit (zadano u onCreateOptionsMenu)
-                intent.putExtra("edited", true);
-                intent.putExtra("object", news);
-                startActivityForResult(intent, 3);
-                break;
-            case 2: //2 je za brisanje
-                /*
-                NewsDbHelper db = new NewsDbHelper(getApplicationContext());
-                db.deleteNews(news);
-                db.close();
-                */
-                intent.putExtra("removed", true);
-                intent.putExtra("object", news);
-                setResult(RESULT_OK, intent);
-                finish();
-                break;
+        if (item.getTitle().equals(EDIT_NEWS)) {
+            intent.putExtra("news_id", news.getId());
+            startActivity(intent);
+        } else if (item.getTitle().equals(DELETE_NEWS)) {
+            SqlNewsRepository repo = new SqlNewsRepository(getApplicationContext());
+            repo.deleteNews(news);
+            repo.close();
+            finish();
         }
-        return super.onOptionsItemSelected(item); //ne znam zas je ovo tu :(
+        return super.onOptionsItemSelected(item);
     }
-
-
-    //dok se vratimo iz EditNewsActivity moramo osvijeziti tekst i updatat clansku varijablu news zbog mogucih promijena
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 3) {
-                isChanged = true;
-                news = (NewsEntry) data.getSerializableExtra("object");
-                initShownNews(data);
-            }
-        }
-    }
-
-    /**
-     * popisu svih vijesti javljamo izmijenu da bi se mogo azurirati
-     */
-    @Override
-    public void onBackPressed() {
-        if (isChanged) {
-            Intent intent = new Intent();
-            intent.putExtra("object", news);
-            intent.putExtra("edited", true);
-            setResult(RESULT_OK, intent);
-        }
-        finish();
-    }
-
 }

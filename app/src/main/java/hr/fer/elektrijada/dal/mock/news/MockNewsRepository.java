@@ -25,37 +25,37 @@ public class MockNewsRepository implements NewsRepository {
         //umjesto ovih add-ova u listu dodati vijesti iz baze
         list.add(
                 new NewsEntry(
-                        7,
                         "Najstarija vijest ikad",
                         "oldy",
-                        new Date(0)
+                        new Date(0),
+                        7
                 )
         );
         StringBuilder test = new StringBuilder();
         for (int i = 0; i < 100; i++) test.append(i + ". red\n");
         list.add(
                 new NewsEntry(
-                        7,
                         "Vijest stara nekolko dana koja ima nevjerojatan dug naslov i tekst i ne znam hoće li se cijeli vidjeti, ko zna kolko reda ce prikazati, je li beskonacno????",
                         test.toString(),
-                        new Date(Calendar.getInstance().getTime().getTime() - 600000000)
+                        new Date(Calendar.getInstance().getTime().getTime() - 600000000),
+                        7
                 )
         );
         for (int i = 0; i < 15; i++) {
             list.add(
                     new NewsEntry(
-                            i,
                             "Naslov br " + i,
                             "Randasdasdjfn asdf nasdflnasd \n asdfjnasa nasdf n\n sdf\n qffa \n sd\n\n aaaa",
-                            new Date(Calendar.getInstance().getTime().getTime() - 350000 * i)
+                            new Date(Calendar.getInstance().getTime().getTime() - 350000 * i),
+                            i
                     )
             );
         }
         //koristi konstruktor koji dodaje TRENUTNO vrijeme
         list.add(new NewsEntry(
-                        555,
                         "Isprobavam el sortira vrijeme",
-                        ""
+                        "",
+                        555
                 )
         );
 
@@ -71,7 +71,7 @@ public class MockNewsRepository implements NewsRepository {
     }
 
     @Override
-    public NewsEntry getEntry(int id) {
+    public NewsEntry getNews(int id) {
         return null;
     }
 

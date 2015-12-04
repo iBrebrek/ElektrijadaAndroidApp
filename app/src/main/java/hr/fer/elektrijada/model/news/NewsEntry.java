@@ -1,6 +1,5 @@
 package hr.fer.elektrijada.model.news;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,13 +10,13 @@ import java.util.Locale;
  * vijest se moze dobiti metodom getText, a mijenjati sa setText;
  * authorId je ID korisnika koji je napisao vijest, a timeOfCreation je vrijeme nastana vijesti,
  * oboje authorId i timeOfCreation se mogu SAMO procitati sa getAuthorId, tj. sa getTimeOfCreation;
- * postoje 2 konstruktora, jedan prima sva 3 navedena argumenta,
- * dok drugi ne prima vrijeme nego sam dodaje trenutno vrijeme (nisam siguran treba li paziti na vremensku zonu);
+ * postoje 3 konstruktora, jedan prima sve navedene argumente, drugi ne prima samo id,
+ * dok treci ne prima ni vrijeme nego sam dodaje trenutno vrijeme (nisam siguran treba li paziti na vremensku zonu);
  * metoda getTimeToString ovisno o starosti vijesti vraca format "Objavljeno: prije 3 dana" ili "Objavljeno: 25.10.2015."
  * <p/>
  * Created by Ivica Brebrek
  */
-public class NewsEntry implements Serializable { //impementiramo Serializable da bi se objekt mogo slat izmedu Activity-a
+public class NewsEntry {
     /**
      * id vijesti
      */
@@ -39,51 +38,30 @@ public class NewsEntry implements Serializable { //impementiramo Serializable da
      **/
     private Date timeOfCreation;
 
-
-    //TODO: prilagoditi potrebne konstruktore
     /**
-     * DODAN NOVI KONSTUKTOR ZBOG ID-a
-     * @param id
-     * @param title
-     * @param authorId
-     * @param text
-     * @param timeOfCreation
+     * svi podatci za ovaj razred
      */
-    public NewsEntry(int authorId, String title, String text, Date timeOfCreation, int id) {
+    public NewsEntry(int id, String title, String text, Date timeOfCreation, int authorId) {
         this.id = id;
         this.title = title;
-        this.authorId = authorId;
         this.text = text;
         this.timeOfCreation = timeOfCreation;
-    }
-    public NewsEntry(int id, String title, String text, int authorId) {
-        this(authorId, title, text, Calendar.getInstance().getTime(), id);
+        this.authorId = authorId;
     }
 
     /**
-     * konstruktor koji prima sva 3 podatka o vijesti,
-     * ovaj konstuktor ce se obicno krostiti za vec postojece vijesti
-     *
-     * @param authorId       id korisnika koji je napisao vijest
-     * @param text           tekst vijesti
-     * @param timeOfCreation vrijeme kada je vijest napisana
+     * konstuktor koji prima sve osim id-a
      */
-    public NewsEntry(int authorId, String title, String text, Date timeOfCreation) {
-        this.title = title;
-        this.authorId = authorId;
-        this.text = text;
-        this.timeOfCreation = timeOfCreation;
+    public NewsEntry(String title, String text, Date timeOfCreation, int authorId) {
+        this(0, title, text, timeOfCreation, authorId); //0 jer je id (int) po defaultu tak i tak 0
     }
 
     /**
      * konstruktor koji dodaje trenutno vrijeme,
      * ovaj konstruktor ce se koristiti za izradu novih vijesti
-     *
-     * @param authorId id korisnika koji je napisao vijest
-     * @param text     tekst vijesti
      */
-    public NewsEntry(int authorId, String title, String text) {
-        this(authorId, title, text, Calendar.getInstance().getTime());
+    public NewsEntry(String title, String text, int authorId) {
+        this(title, text, Calendar.getInstance().getTime(), authorId);
     }
 
     public int getAuthorId() {
@@ -162,5 +140,14 @@ public class NewsEntry implements Serializable { //impementiramo Serializable da
             }
         }
         return passedTime;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof NewsEntry)) return false;
+        NewsEntry otherNews = (NewsEntry) other;
+        return otherNews.getId() == this.id;
     }
 }

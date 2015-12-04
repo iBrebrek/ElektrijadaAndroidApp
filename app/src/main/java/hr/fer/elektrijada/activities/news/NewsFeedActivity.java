@@ -1,145 +1,106 @@
 package hr.fer.elektrijada.activities.news;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import hr.fer.elektrijada.R;
-import hr.fer.elektrijada.dal.mock.news.MockNewsRepository;
+import hr.fer.elektrijada.activities.BaseMenuActivity;
 import hr.fer.elektrijada.dal.sql.news.SqlNewsRepository;
 import hr.fer.elektrijada.model.news.NewsEntry;
-import hr.fer.elektrijada.model.news.NewsRepository;
 
 /**
  * Created by Ivica Brebrek
  */
-public class NewsFeedActivity extends Activity {
+public class NewsFeedActivity extends BaseMenuActivity {
 
-    /**
-     * tu ce biti spremljene vijesti
-     **/
-    private ArrayList<NewsEntry> list;
-    /**
-     * prikazuje sve vijesti; clanska varijabla da bi se mogla refreshat nakon izmjene
-     **/
-    private NewsFeedListAdapter newsAdapter;
-    /**
-     * index news-a koji je kliknut
-     **/
-    private int clickedIndex;
-    /**
-     * za rad s bazom
-     */
-    private NewsRepository repository;
+    @Override
+    protected int getContentLayoutId() {
+        return R.layout.news_feed;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.news_feed);
-        //TEST
-        repository = new MockNewsRepository();
-        //DB
-        //repository = new SqlNewsRepository(getApplicationContext());
-
 
         initScrollView();
-        initAddButton();
-    }
-
-    @Override
-    protected void onDestroy() {
-        repository.close();
-        super.onDestroy();
-    }
-
-    /**
-     * tipka za dodavanje (gore desno) otvara izradu nove vijesti
-     */
-    private void initAddButton() {
-        findViewById(R.id.btnAddNewNews).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), EditNewsActivity.class);
-                intent.putExtra("add", true);
-                //ocekuj rezultat, ovaj broj: this code will be returned in onActivityResult() when the activity exits
-                startActivityForResult(intent, 1);
-            }
-        });
     }
 
     /**
      * prikaz svih vijesti koji omogucuje otvaranje pojedinace vijesti
      */
     private void initScrollView() {
-        list = new ArrayList<>(repository.getNews());
+        SqlNewsRepository repository = new SqlNewsRepository(getApplicationContext());
+        final ArrayList<NewsEntry> list = new ArrayList<>(repository.getNews());
+        repository.close();
+        if (list.size() == 0) {
+            noNews();
+        }else {
+            findViewById(R.id.ifNoNews).setVisibility(View.GONE);
+        }
         final ListView listView = (ListView) findViewById(R.id.listViewNewsFeed);
-        newsAdapter = new NewsFeedListAdapter(this, list);
+        NewsFeedListAdapter newsAdapter = new NewsFeedListAdapter(this, list);
         listView.setAdapter(newsAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //otvaranje pojedinacne vijesti
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), NewsActivity.class);
-                clickedIndex = position;
-                intent.putExtra("object", list.get(position));
-                startActivityForResult(intent, 2);
+                intent.putExtra("news_id", list.get(position).getId());
+                startActivity(intent);
             }
         });
     }
 
+    private void noNews() {
+        TextView text = (TextView) findViewById(R.id.ifNoNews);
+        text.setText(String.format("Nema vijesti :(\n\nBudite prvi i dodajte vijest\n(gore desno -> \"Dodaj vijest\")"));
+        text.setGravity(Gravity.CENTER);
+        text.setVisibility(View.VISIBLE);
+    }
 
 
-    /**
-     * povratak iz EditNewsActivity, dodaje(tj. mijenja) novu(tj. izmijenjenu) vijest
-     *
-     * @param requestCode kod koj smo zadali, a zadao sam 1 za dodavanje i 2 za edit/remove
-     * @param resultCode  RESULT_OK ako je uspijesno obavljeno
-     * @param data        dobiveni intent, preko toga saljemo podatke izmedu activitya
-     */
+    //npr kad se vratimo iz edita ili dodavanja nove vijesti...
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) { //obavezna provjera jer se rusi app ako se ne obavi radnja do kraja
-            NewsEntry manipulatedNews = (NewsEntry) data.getSerializableExtra("object");
-            switch (requestCode) {
-                case 1:  //1 je kad se stvara novi
-                    Toast.makeText(getApplicationContext(), "Dodana vijest:\n" + manipulatedNews.getTitle(), Toast.LENGTH_SHORT).show();
-                    list.add(manipulatedNews);
-                    sortList();
-                    break;
-                case 2: //2 je izmijena ili brisanje
-                    if (data.getBooleanExtra("removed", false)) {
-                        Toast.makeText(getApplicationContext(), "Na poziciji " + clickedIndex + " obrisan:\n" + manipulatedNews.getTitle(), Toast.LENGTH_SHORT).show();
-                        list.remove(clickedIndex);
-                    } else {
-                        if (data.getBooleanExtra("edited", false)) {
-                            Toast.makeText(getApplicationContext(), "Na poziciji " + clickedIndex + " izmijenjena vijest:\n" + manipulatedNews.getTitle(), Toast.LENGTH_SHORT).show();
-                            list.remove(clickedIndex);
-                            list.add(clickedIndex, manipulatedNews);
-                        }
-                    }
-                    break;
-            }
-            newsAdapter.notifyDataSetChanged(); //refresh list view
-        }
+    protected void onResume() {
+        super.onResume();
+        initScrollView();
     }
 
-    /**
-     * sortira vijesti, najmlada gore- najstarija dolje
-     */
-    private void sortList() {
-        Collections.sort(list, new Comparator<NewsEntry>() {
-            @Override
-            public int compare(NewsEntry n1, NewsEntry n2) {
-                return n2.getTimeOfCreation().compareTo(n1.getTimeOfCreation());
-            }
-        });
+    //ovo je ime opcije koja ce biti u popisu opcija
+    //varijabla postoji samo zato sto se ime koristi na vise mjesta (pa da se lakse mjenja naziv)
+    private final static String ADD_NEW_NEWS = "Dodaj vijest";
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_start, menu);
+        menu.add(ADD_NEW_NEWS);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (item.getTitle().equals(ADD_NEW_NEWS)) {
+            Intent intent = new Intent(getApplicationContext(), EditNewsActivity.class);
+            intent.putExtra("add", true);
+            startActivity(intent);
+        }
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

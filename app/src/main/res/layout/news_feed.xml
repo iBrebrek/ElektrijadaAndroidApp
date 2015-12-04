@@ -4,37 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/layoutForNews"
+    <TextView
+        android:id="@+id/ifNoNews"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#656f65">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="Vijesti"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/btnAddNewNews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="#066006"
-            android:text="+"
-            android:textColor="#00FF00"
-            android:textSize="20sp" />
-
-    </RelativeLayout>
+        android:layout_height="match_parent" />
 
     <ListView
         android:id="@+id/listViewNewsFeed"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layoutForNews" />
+        android:layout_height="wrap_content" />
 
 
 </RelativeLayout>

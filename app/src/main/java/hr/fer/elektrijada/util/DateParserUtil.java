@@ -6,21 +6,23 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by Boris Milašinović on 10.11.2015..
+ * mozda bi bilo bolje sve datume u bazi pohraniti kao string i pomocu ovoga uvijek spremiti/ucitvatati datume?
  */
 public class DateParserUtil {
-    public static SimpleDateFormat getTimeFormat(){
-        return new SimpleDateFormat("HH:mm dd.MM.yyyy.", Locale.getDefault());
-    }
+    static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy.", Locale.getDefault());
 
     public static Date stringToDate(String string){
-        //Ivica Brebrek: jer mi neda da ne obradim gresku iako znam da ce uvijek biti format iz getTimeFormat....
         Date date;
         try {
-            date = getTimeFormat().parse(string);
+            date = dateFormat.parse(string);
         }catch (ParseException exc){
+            //ovo je 1.1.1970.
             date = new Date(0);
         }
         return date;
+    }
+
+    public static String dateToString(Date date) {
+        return dateFormat.format(date);
     }
 }
