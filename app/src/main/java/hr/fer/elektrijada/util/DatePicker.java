@@ -84,8 +84,7 @@ public class DatePicker <T extends TextView> {
             }
         });
         Calendar today = Calendar.getInstance();
-        setDate(today.get(Calendar.DAY_OF_MONTH), today.get(Calendar.MONTH), today.get(Calendar.YEAR));
-
+        setDate(today.get(Calendar.DAY_OF_MONTH), today.get(Calendar.MONTH)+1, today.get(Calendar.YEAR)); //jer mjeseci idu od 0
     }
 
     /**
@@ -150,7 +149,7 @@ public class DatePicker <T extends TextView> {
          */
         @Override
         public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            whoCalledMe.setDate(dayOfMonth, monthOfYear+1, year); //jer mjeseci idu od 0
+            whoCalledMe.setDate(dayOfMonth, monthOfYear+1, year);
         }
     }
 }

@@ -22,7 +22,14 @@ public class TimePicker <T extends TextView> {
     private int hour;
     private int minute;
 
-    public TimePicker(final FragmentManager manager, T textView) throws ClassCastException{
+    /**
+     * povezuje pogled s dijalogom odabira,
+     * postavlja vrijeme na puni sat, npr ako je 16:37 postavlja na 16:00
+     * 
+     * @param manager   dovoljno je samo getFragmentManager()
+     * @param textView  pogledan povezan s odabirom vremena
+     */
+    public TimePicker(final FragmentManager manager, T textView) {
         final TimePicker thisObject = this;
         timeDisplay = textView;
         textView.setOnClickListener(new View.OnClickListener() {
@@ -34,7 +41,7 @@ public class TimePicker <T extends TextView> {
             }
         });
         Calendar today = Calendar.getInstance();
-        setTime(today.get(Calendar.HOUR), today.get(Calendar.MINUTE));
+        setTime(today.get(Calendar.HOUR_OF_DAY), 0);  //minute izgledaju ruzno
 
     }
 
