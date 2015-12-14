@@ -1,14 +1,15 @@
 package hr.fer.elektrijada;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import hr.fer.elektrijada.activities.BaseMenuActivity;
 
+
+/**
+ * OD SAD JE EventsActivity POCETNA!!!
+ */
 public class StartActivity extends BaseMenuActivity {
 
     @Override
@@ -18,7 +19,7 @@ public class StartActivity extends BaseMenuActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+/*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -27,6 +28,7 @@ public class StartActivity extends BaseMenuActivity {
                         .setAction("Action", null).show();
             }
         });
+*/
     }
 
 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="50dp"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:id="@+id/eventTimeSport"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:padding="5dp"
+        android:textSize="13sp" />
+
+
+    <Space
+        android:id="@+id/eventLeftSpaceS"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignEnd="@+id/eventTimeSport"
+        android:layout_alignRight="@+id/eventTimeSport" />
+
+    <LinearLayout
+        android:id="@+id/eventOnNameClickSport"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_alignLeft="@+id/eventLeftSpaceS"
+        android:layout_alignRight="@+id/eventRightSpaceS"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/eventTeamsNameSport"
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textColor="#000099"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/eventDescriptionSport"
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:maxLines="1"
+            android:textColor="#949494"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+    <Space
+        android:id="@+id/eventRightSpaceS"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignLeft="@+id/eventResultSport"
+        android:layout_alignStart="@+id/eventResultSport" />
+
+    <TextView
+        android:id="@+id/eventResultSport"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:minWidth="50sp"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:textSize="15sp" />
+
+</RelativeLayout>

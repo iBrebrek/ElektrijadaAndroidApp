@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Povezuje neki View (koji mora biti barem TextView, note: Button, EditText i jos neki naslijeduju TextView pa mogu biti i oni)
@@ -85,6 +86,18 @@ public class DatePicker <T extends TextView> {
         });
         Calendar today = Calendar.getInstance();
         setDate(today.get(Calendar.DAY_OF_MONTH), today.get(Calendar.MONTH)+1, today.get(Calendar.YEAR)); //jer mjeseci idu od 0
+    }
+
+    /**
+     * kao gornji konstruktor, samo postavlja pocetni datum zadan sa date
+     */
+    public DatePicker(final FragmentManager manager, T view, Date date) {
+        this(manager, view);
+        Calendar cal = Calendar.getInstance();
+        if(date != null) {
+            cal.setTime(date);
+        }
+        setDate(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH)+1, cal.get(Calendar.YEAR));
     }
 
     /**

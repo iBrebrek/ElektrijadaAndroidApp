@@ -3,7 +3,7 @@ package hr.fer.elektrijada;
 import android.content.Context;
 import android.content.Intent;
 
-import hr.fer.elektrijada.activities.news.NewsActivity;
+import hr.fer.elektrijada.activities.events.EventsActivity;
 import hr.fer.elektrijada.activities.news.NewsFeedActivity;
 import hr.fer.elektrijada.activities.settings.SettingsActivity;
 
@@ -20,6 +20,8 @@ public class MenuHandler {
             action = NewsFeedActivity.class;
         } else if (id == R.id.nav_postavke) {
             action = SettingsActivity.class;
+        } else if (id == R.id.nav_dogadjanja) {
+            action = EventsActivity.class;
         }
 
         if (action != null){

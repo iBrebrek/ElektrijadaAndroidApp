@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -44,6 +45,21 @@ public class TimePicker <T extends TextView> {
         setTime(today.get(Calendar.HOUR_OF_DAY), 0);  //minute izgledaju ruzno
 
     }
+
+    /**
+     *  postavlja pocetno vrijeme date
+     */
+    public TimePicker(final FragmentManager manager, T textView, Date date) {
+        this(manager, textView);
+        if(date != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            setTime(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
+        } else {
+            setTime(0,0);
+        }
+    }
+
 
     public void setTime(int hour, int minute) {
         this.hour = hour;
