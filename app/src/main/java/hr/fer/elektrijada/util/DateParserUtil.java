@@ -6,10 +6,10 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * mozda bi bilo bolje sve datume u bazi pohraniti kao string i pomocu ovoga uvijek spremiti/ucitvatati datume?
+ * mozda bi bilo bolje sve datume u bazi pohraniti kao string i pomocu ovoga uvijek spremiti/ucitvatati datume
  */
 public class DateParserUtil {
-    static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy.", Locale.getDefault());
+    static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.getDefault());
 
     public static Date stringToDate(String string){
         Date date;

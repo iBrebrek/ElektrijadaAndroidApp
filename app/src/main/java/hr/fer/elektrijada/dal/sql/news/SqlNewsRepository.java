@@ -27,7 +27,7 @@ import hr.fer.elektrijada.util.Logger;
  * repo.close();
  */
 public class SqlNewsRepository implements NewsRepository {
-    SQLiteOpenHelper dbHelper;
+    private SQLiteOpenHelper dbHelper;
 
     //TO DO: Provjeriti u Android dokumentaciji smije li biti više helpera ili mora biti singleton i što sa zatvaranjem
     /*

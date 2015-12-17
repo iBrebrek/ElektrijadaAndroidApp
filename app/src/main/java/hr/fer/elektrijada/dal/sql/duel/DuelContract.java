@@ -17,8 +17,8 @@ public class DuelContract {
     public static final String SQL_CREATE_DUEL =
             "CREATE TABLE " + DuelEntry.TABLE_NAME + " (" +
                     DuelEntry._ID + " INTEGER PRIMARY KEY," +
-                    DuelEntry.COLUMN_NAME_TIME_FROM + " DATETIME" + COMMA_SEP +
-                    DuelEntry.COLUMN_NAME_TIME_TO + " DATETIME" + COMMA_SEP +
+                    DuelEntry.COLUMN_NAME_TIME_FROM + TEXT_TYPE + COMMA_SEP +
+                    DuelEntry.COLUMN_NAME_TIME_TO + TEXT_TYPE + COMMA_SEP +
                     DuelEntry.COLUMN_NAME_CATEGORY_ID + " INTEGER" + COMMA_SEP +
                     DuelEntry.COLUMN_NAME_COMPETITOR_1_ID + " INTEGER" + COMMA_SEP +
                     DuelEntry.COLUMN_NAME_COMPETITOR_2_ID + " INTEGER" + COMMA_SEP +

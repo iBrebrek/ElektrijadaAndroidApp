@@ -178,4 +178,15 @@ public abstract class Event implements Comparable<Event>{
         }
         return compareStart;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return !(o == null || !(o instanceof Event))
+                && id == ((Event)o).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id*7;
+    }
 }

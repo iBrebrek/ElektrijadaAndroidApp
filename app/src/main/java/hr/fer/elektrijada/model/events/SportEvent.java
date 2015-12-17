@@ -2,18 +2,20 @@ package hr.fer.elektrijada.model.events;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Ivica Brebrek
  */
 public class SportEvent extends Event {
-    private Score score;
+    private Score myResult;
+    private Score result;
     private boolean hasResult = false;
     private String teamHome;
     private String teamAway;
-    private HashMap<Score, Integer> allResults;
+    private HashMap<Score, Integer> allResults = new HashMap<>();
 
-    private static class Score {
+    public class Score {
         private int homeScore;
         private int awayScore;
 
@@ -39,11 +41,41 @@ public class SportEvent extends Event {
         }
     }
 
-    public void addPossibleScore (int homeScore, int awayScore){
+    /**
+     *
+     * @param homeScore
+     * @param awayScore
+     * @param frequencyOfThisResult     koliko puta se taj rezutat pojavljuje, obicno se koristi za unos iz baze,
+     *                                  npr., ako se u bazi taj rezultat pojavi 143 puta ovaj broj ce biti 143
+     *                               !  ako ne unosis iz baze pisi 1
+     */
+    public void addPossibleResult (int homeScore, int awayScore, int frequencyOfThisResult){
         Score score = new Score(homeScore, awayScore);
         Integer numberOfScore = allResults.get(score);
-        allResults.put(score, numberOfScore == null? 1 : numberOfScore+1);
-        //TODO: el treba updatadat bazu?
+        allResults.put(score, numberOfScore == null? frequencyOfThisResult : numberOfScore+frequencyOfThisResult);
+    }
+
+    public Score getMostFrequentResult () {
+        Score score = null;
+        if(allResults != null) {
+            int max = 0;
+            for (Map.Entry<Score, Integer> entry : allResults.entrySet()) {
+                int current = entry.getValue();
+                if (current > max) {
+                    max = current;
+                    score = entry.getKey();
+                }
+            }
+        }
+        return score;
+    }
+
+    public void setMyResult(int homeScore, int awayScore) {
+        myResult = new Score(homeScore, awayScore);
+    }
+
+    public Score getMyResult() {
+        return result;
     }
 
 
@@ -94,7 +126,7 @@ public class SportEvent extends Event {
 
     public void setResult(int homeScore, int awayScore) {
         hasResult = true;
-        score = new Score(homeScore, awayScore);
+        result = new Score(homeScore, awayScore);
     }
 
     /**
@@ -111,7 +143,7 @@ public class SportEvent extends Event {
      */
     public String getResult() {
         if(hasResult) {
-            return score.homeScore + ":" + score.awayScore;
+            return result.homeScore + ":" + result.awayScore;
         } else {
             return "  -  ";
         }

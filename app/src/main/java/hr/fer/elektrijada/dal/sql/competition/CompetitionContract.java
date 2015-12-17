@@ -18,8 +18,8 @@ public class CompetitionContract {
     public static final String SQL_CREATE_COMPETITION =
             "CREATE TABLE " + CompetitionEntry.TABLE_NAME + " (" +
                     CompetitionEntry._ID + " INTEGER PRIMARY KEY," +
-                    CompetitionEntry.COLUMN_NAME_TIME_FROM + " DATETIME" + COMMA_SEP +
-                    CompetitionEntry.COLUMN_NAME_TIME_TO + " DATETIME" + COMMA_SEP +
+                    CompetitionEntry.COLUMN_NAME_TIME_FROM + TEXT_TYPE + COMMA_SEP +
+                    CompetitionEntry.COLUMN_NAME_TIME_TO + TEXT_TYPE + COMMA_SEP +
                     CompetitionEntry.COLUMN_NAME_CATEGORY_ID + " INTEGER" + COMMA_SEP +
                     CompetitionEntry.COLUMN_NAME_LOCATION + TEXT_TYPE + COMMA_SEP +
                     CompetitionEntry.COLUMN_NAME_IS_ASSUMPTION + " BOOLEAN" +

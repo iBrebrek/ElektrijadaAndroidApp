@@ -17,6 +17,7 @@ import java.util.List;
 
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.activities.BaseMenuActivity;
+import hr.fer.elektrijada.dal.sql.helper.events.SqlGetEventsInfo;
 import hr.fer.elektrijada.model.events.DateStamp;
 import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.events.KnowledgeEvent;
@@ -106,6 +107,16 @@ public class EventsActivity extends BaseMenuActivity{
     private Button type;
     private void initFilterButtons() {
         Button time = (Button) findViewById(R.id.eventsFilterTime);
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SqlGetEventsInfo repo = new SqlGetEventsInfo(getApplicationContext());
+                repo.addFakeEvents();
+                List<Event> events;
+                events = repo.getAllEvents();
+                repo.close();
+            }
+        });
         type = (Button) findViewById(R.id.eventsFilterType);
         type.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +135,7 @@ public class EventsActivity extends BaseMenuActivity{
         eventTypes.add("Znanje");
         eventTypes.add("Favoriti");
         dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setTitle("Odaberi prikazane događaje");
+        dialogBuilder.setTitle("Odaberi prikazane dogaÄ‘aje");
         dialogBuilder.setSingleChoiceItems(
                 listOfTypes,
                 eventTypes.indexOf(type.getText().toString()),
