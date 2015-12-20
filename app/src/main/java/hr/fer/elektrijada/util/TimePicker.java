@@ -75,8 +75,13 @@ public class TimePicker <T extends TextView> {
         return minute;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s:%s", twoDigits(hour), twoDigits(minute));
+    }
+
     private void updateDisplay() {
-        timeDisplay.setText(new StringBuilder().append(twoDigits(hour)).append(":").append(twoDigits(minute)));
+        timeDisplay.setText(toString());
     }
 
     private static String twoDigits(int c) {

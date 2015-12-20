@@ -1,5 +1,7 @@
 package hr.fer.elektrijada.model.events;
 
+import android.support.annotation.NonNull;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -156,7 +158,7 @@ public abstract class Event implements Comparable<Event>{
      * ako imaju definiran kraj manji je onaj koji prije zavrsava
      */
     @Override
-    public int compareTo(Event another) {
+    public int compareTo(@NonNull Event another) {
         int compareStart = timeFrom.compareTo(another.timeFrom);
         if (compareStart==0) {
             if(timeTo == null) {

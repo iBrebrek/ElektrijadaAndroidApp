@@ -13,7 +13,7 @@ public class SportEvent extends Event {
     private boolean hasResult = false;
     private String teamHome;
     private String teamAway;
-    private HashMap<Score, Integer> allResults = new HashMap<>();
+    private HashMap<Score, Integer> allResults;
 
     public class Score {
         private int homeScore;
@@ -50,6 +50,9 @@ public class SportEvent extends Event {
      *                               !  ako ne unosis iz baze pisi 1
      */
     public void addPossibleResult (int homeScore, int awayScore, int frequencyOfThisResult){
+        if (allResults == null) {
+            allResults = new HashMap<>();
+        }
         Score score = new Score(homeScore, awayScore);
         Integer numberOfScore = allResults.get(score);
         allResults.put(score, numberOfScore == null? frequencyOfThisResult : numberOfScore+frequencyOfThisResult);

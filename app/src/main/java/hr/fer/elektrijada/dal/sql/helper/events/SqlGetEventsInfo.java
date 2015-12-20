@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import hr.fer.elektrijada.dal.sql.DbHelper;
 import hr.fer.elektrijada.dal.sql.category.CategoryContract;
@@ -43,15 +42,40 @@ public class SqlGetEventsInfo {
         long test;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        /*
+/*
         db.delete(CategoryContract.CategoryEntry.TABLE_NAME, CategoryContract.CategoryEntry._ID + "=?", new String[]{"5"});
-        db.delete(CompetitionContract.CompetitionEntry.TABLE_NAME, CompetitionContract.CompetitionEntry._ID + "=?", new String[]{"7"});
+        //db.delete(CompetitionContract.CompetitionEntry.TABLE_NAME, CompetitionContract.CompetitionEntry._ID + "=?", new String[]{"7"});
 
         values.put(CategoryContract.CategoryEntry._ID, 5);
-        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "blabla");
-        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NICK, "blablaaa");
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Matematika");
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NICK, "mat");
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, 0);
         test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
+        values = new ContentValues();
+        values.put(CategoryContract.CategoryEntry._ID, 3);
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Nogomet");
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NICK, "Muški");
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, 5);
+        test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
+        values = new ContentValues();
+        values.put(CategoryContract.CategoryEntry._ID, 55);
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Informatika");
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, 0);
+        test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
+        values = new ContentValues();
+        values.put(CategoryContract.CategoryEntry._ID, 777);
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Veslanje");
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, 5);
+        test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
+        for(int i = 100; i<150;i++) {
+            values = new ContentValues();
+            values.put(CategoryContract.CategoryEntry._ID, i);
+            values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Test "+i);
+            values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, -9);
+            test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
+        }
+
+
         values = new ContentValues();
         values.put(CompetitionContract.CompetitionEntry._ID, 7);
         values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID, 5);
@@ -120,15 +144,15 @@ public class SqlGetEventsInfo {
         db.close();
     }
 
-    public List<Event> getAllEvents() {
-        List<Event> listOfEvents = new ArrayList<>();
+    public ArrayList<Event> getAllEvents() {
+        ArrayList<Event> listOfEvents = new ArrayList<>();
         listOfEvents.addAll(getAllKnowledgeEvents());
         listOfEvents.addAll(getAllSportEvents());
         return listOfEvents;
     }
 
-    public List<SportEvent> getAllSportEvents() {
-        List<SportEvent> listOfSportEvents = new ArrayList<>();
+    public ArrayList<Event> getAllSportEvents() {
+        ArrayList<Event> listOfSportEvents = new ArrayList<>();
         SQLiteDatabase db = null;
         try {
             db = dbHelper.getReadableDatabase();
@@ -219,8 +243,8 @@ public class SqlGetEventsInfo {
         }
     }
 
-    public List<KnowledgeEvent> getAllKnowledgeEvents() {
-        List<KnowledgeEvent> listOfKnowledgeEvents = new ArrayList<>();
+    public ArrayList<Event> getAllKnowledgeEvents() {
+        ArrayList<Event> listOfKnowledgeEvents = new ArrayList<>();
         SQLiteDatabase db = null;
         try {
             db = dbHelper.getReadableDatabase();

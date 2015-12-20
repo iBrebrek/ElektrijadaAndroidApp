@@ -122,15 +122,16 @@ public class DatePicker <T extends TextView> {
         return year;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s.%s.%s.", year, month, day);
+    }
+
     /**
      * mjenja tekst pogleda u odabrani datum
      */
     private void updateDisplay() {
-        dateDisplay.setText(new StringBuilder()
-                        .append(day).append(".")
-                        .append(month).append(".")
-                        .append(year).append(".")
-        );
+        dateDisplay.setText(toString());
     }
 
     /**

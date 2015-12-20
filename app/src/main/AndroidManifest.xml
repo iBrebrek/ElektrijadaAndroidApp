@@ -17,6 +17,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.events.CreateNewEventActivity"
+            android:label="Novi događaj"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
+        </activity>
+        <activity
             android:name=".activities.news.NewsFeedActivity"
             android:label="Vijesti"
             android:theme="@style/AppTheme.NoActionBar">

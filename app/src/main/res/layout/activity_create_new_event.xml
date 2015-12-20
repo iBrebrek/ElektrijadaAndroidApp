@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:scrollbars="none">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal">
+
+        <!-- biranje kategorije -->
+        <Spinner
+            android:id="@+id/spinnerCreateEventPickCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
+
+        <!-- biranje tima, ako sport -->
+        <LinearLayout
+            android:id="@+id/createEventPickTeams"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Spinner
+                android:id="@+id/spinnerCreateEventFirstTeam"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:text=" : "
+                android:layout_gravity="center_vertical"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spinnerCreateEventSecondTeam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
+        <!-- lokacija -->
+        <EditText
+            android:id="@+id/editTextCreateEventLocation"
+            android:hint="Lokacija..."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- početak -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Od:"
+            android:textColor="#e84b4b4b" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnCreateEventStartDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnCreateEventStartTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <!-- kraj -->
+        <CheckBox
+            android:id="@+id/createEventHasEnd"
+            android:checked="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Do:"
+            android:textColor="#e84b4b4b" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnCreateEventEndDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnCreateEventEndTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+
+        <!-- is assumption? -->
+        <CheckBox
+            android:id="@+id/createEventIsAssumption"
+            android:text="Ovo je pretpostavka"
+            android:layout_marginBottom="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+
+    </LinearLayout>
+
+
+</ScrollView>
