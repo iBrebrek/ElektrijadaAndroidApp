@@ -20,9 +20,9 @@ import hr.fer.elektrijada.util.TimePicker;
 /**
  * Created by Ivica Brebrek
  */
-public class EventsOnClickActions {
+public class EventsOnTimeClickAction {
     //ne treba nam konstruktor
-    private EventsOnClickActions() {
+    private EventsOnTimeClickAction() {
     }
 
     private static TimePicker startTime;

@@ -13,7 +13,7 @@ import java.util.GregorianCalendar;
 public class DateStamp extends Event{
 
     public DateStamp(Date date) {
-        super(0, "no name", date);
+        super(-1, "no name", date);
         Calendar cal = new GregorianCalendar();
         cal.setTime(getTimeFrom());
         cal.set(Calendar.MINUTE, 0);

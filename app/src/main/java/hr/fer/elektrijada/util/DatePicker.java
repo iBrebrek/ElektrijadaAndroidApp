@@ -124,7 +124,7 @@ public class DatePicker <T extends TextView> {
 
     @Override
     public String toString() {
-        return String.format("%s.%s.%s.", year, month, day);
+        return String.format("%s.%s.%s.", day, month, year);
     }
 
     /**

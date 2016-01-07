@@ -42,8 +42,8 @@ public class SqlGetEventsInfo {
         long test;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-/*
-        db.delete(CategoryContract.CategoryEntry.TABLE_NAME, CategoryContract.CategoryEntry._ID + "=?", new String[]{"5"});
+
+        //db.delete(CategoryContract.CategoryEntry.TABLE_NAME, CategoryContract.CategoryEntry._ID + "=?", new String[]{"5"});
         //db.delete(CompetitionContract.CompetitionEntry.TABLE_NAME, CompetitionContract.CompetitionEntry._ID + "=?", new String[]{"7"});
 
         values.put(CategoryContract.CategoryEntry._ID, 5);
@@ -67,10 +67,10 @@ public class SqlGetEventsInfo {
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Veslanje");
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, 5);
         test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
-        for(int i = 100; i<150;i++) {
+        for (int i = 100; i < 150; i++) {
             values = new ContentValues();
             values.put(CategoryContract.CategoryEntry._ID, i);
-            values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Test "+i);
+            values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Test " + i);
             values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, -9);
             test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
         }
@@ -83,7 +83,7 @@ public class SqlGetEventsInfo {
         values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_FROM, "2015.12.16. 20:59:00");
         values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_TO, "2015.12.16. 22:33:00");
         values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
-        test= db.insert(CompetitionContract.CompetitionEntry.TABLE_NAME, null, values);
+        test = db.insert(CompetitionContract.CompetitionEntry.TABLE_NAME, null, values);
         values = new ContentValues();
         values.put(CompetitionScoreContract.CompetitionScoreEntry._ID, 777);
         values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_RESULT, "100");
@@ -94,12 +94,11 @@ public class SqlGetEventsInfo {
         values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_IS_OFFICIAL, 1);
         test = db.insert(CompetitionScoreContract.CompetitionScoreEntry.TABLE_NAME, null, values);
         //db.delete(CompetitionScoreContract.CompetitionScoreEntry.TABLE_NAME,null,null);
-        */
- /*       values = new ContentValues();
+        values = new ContentValues();
         values.put(DuelContract.DuelEntry._ID, 85);
         values.put(DuelContract.DuelEntry.COLUMN_NAME_TIME_FROM, "2015.12.16. 20:59:00");
         values.put(DuelContract.DuelEntry.COLUMN_NAME_TIME_TO, "2015.12.16. 22:33:00");
-        values.put(DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID, 5);
+        values.put(DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID, 3);
         values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_1_ID, 1);
         values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID, 2);
         values.put(DuelContract.DuelEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
@@ -126,8 +125,8 @@ public class SqlGetEventsInfo {
 
         values = new ContentValues();
         values.put(CompetitorContract.CompetitorEntry._ID, 1);
-        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "Mirko");
-        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME, "Mir");
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "Ime");
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME, "Prezime");
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_PERSON, 1);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 1);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED, 0);
@@ -140,7 +139,6 @@ public class SqlGetEventsInfo {
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 1);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED, 0);
         test = db.insert(CompetitorContract.CompetitorEntry.TABLE_NAME, null, values);
-*/
         db.close();
     }
 
@@ -162,28 +160,28 @@ public class SqlGetEventsInfo {
                             + DuelContract.DuelEntry.TABLE_NAME + "." + DuelContract.DuelEntry.COLUMN_NAME_TIME_FROM + ", "
                             + DuelContract.DuelEntry.TABLE_NAME + "." + DuelContract.DuelEntry.COLUMN_NAME_TIME_TO + ", "
                             + "(SELECT CASE "
-                                + "WHEN " + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME + " IS NULL "
-                                + "THEN " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME
-                                + " ELSE " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME + " ||  ' ' || "
-                                + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME
-                                + " END AS FullName1 "
-                                + "FROM " + CompetitorContract.CompetitorEntry.TABLE_NAME
-                                + " WHERE " + CompetitorContract.CompetitorEntry._ID + " = "
-                                + DuelContract.DuelEntry.TABLE_NAME + "." + DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_1_ID
+                            + "WHEN " + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME + " IS NULL "
+                            + "THEN " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME
+                            + " ELSE " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME + " ||  ' ' || "
+                            + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME
+                            + " END AS FullName1 "
+                            + "FROM " + CompetitorContract.CompetitorEntry.TABLE_NAME
+                            + " WHERE " + CompetitorContract.CompetitorEntry._ID + " = "
+                            + DuelContract.DuelEntry.TABLE_NAME + "." + DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_1_ID
                             + "), "
                             + "(SELECT CASE "
-                                + "WHEN " + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME + " IS NULL "
-                                + "THEN " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME
-                                + " ELSE " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME + " ||  ' ' || "
-                                + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME
-                                + " END AS FullName2 "
-                                + "FROM " + CompetitorContract.CompetitorEntry.TABLE_NAME
-                                + " WHERE " + CompetitorContract.CompetitorEntry._ID + " = "
-                                + DuelContract.DuelEntry.TABLE_NAME + "." + DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID
+                            + "WHEN " + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME + " IS NULL "
+                            + "THEN " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME
+                            + " ELSE " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME + " ||  ' ' || "
+                            + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME
+                            + " END AS FullName2 "
+                            + "FROM " + CompetitorContract.CompetitorEntry.TABLE_NAME
+                            + " WHERE " + CompetitorContract.CompetitorEntry._ID + " = "
+                            + DuelContract.DuelEntry.TABLE_NAME + "." + DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID
                             + ") " +
-                        "FROM " + DuelContract.DuelEntry.TABLE_NAME + ", "
+                            "FROM " + DuelContract.DuelEntry.TABLE_NAME + ", "
                             + CategoryContract.CategoryEntry.TABLE_NAME +
-                        " WHERE " + DuelContract.DuelEntry.TABLE_NAME + "." + DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID +
+                            " WHERE " + DuelContract.DuelEntry.TABLE_NAME + "." + DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID +
                             " = "
                             + CategoryContract.CategoryEntry.TABLE_NAME + "." + CategoryContract.CategoryEntry._ID,
                     null);
@@ -219,9 +217,9 @@ public class SqlGetEventsInfo {
                     "SELECT " + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_1 + ", "
                             + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_2 + ", "
                             + "COUNT(*) " +
-                        "FROM " + DuelScoreContract.DuelScoreEntry.TABLE_NAME +
-                        " WHERE " + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_DUEL_ID + " = " + event.getId() +
-                        " GROUP BY "
+                            "FROM " + DuelScoreContract.DuelScoreEntry.TABLE_NAME +
+                            " WHERE " + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_DUEL_ID + " = " + event.getId() +
+                            " GROUP BY "
                             + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_1 + ", "
                             + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_2,
                     null);
@@ -254,14 +252,14 @@ public class SqlGetEventsInfo {
                             + CompetitionContract.CompetitionEntry.TABLE_NAME + "." + CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_FROM + ", "
                             + CompetitionContract.CompetitionEntry.TABLE_NAME + "." + CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_TO + ", "
                             + "(SELECT " + CompetitionScoreContract.CompetitionScoreEntry._ID +
-                                " FROM " + CompetitionScoreContract.CompetitionScoreEntry.TABLE_NAME +
-                                " WHERE " + CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITION_ID +
-                                " = "
-                                + CompetitionContract.CompetitionEntry.TABLE_NAME + "." + CompetitionContract.CompetitionEntry._ID
+                            " FROM " + CompetitionScoreContract.CompetitionScoreEntry.TABLE_NAME +
+                            " WHERE " + CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITION_ID +
+                            " = "
+                            + CompetitionContract.CompetitionEntry.TABLE_NAME + "." + CompetitionContract.CompetitionEntry._ID
                             + ") " +
-                        "FROM " + CompetitionContract.CompetitionEntry.TABLE_NAME + ", "
+                            "FROM " + CompetitionContract.CompetitionEntry.TABLE_NAME + ", "
                             + CategoryContract.CategoryEntry.TABLE_NAME +
-                        " WHERE " + CompetitionContract.CompetitionEntry.TABLE_NAME + "." + CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID +
+                            " WHERE " + CompetitionContract.CompetitionEntry.TABLE_NAME + "." + CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID +
                             " = "
                             + CategoryContract.CategoryEntry.TABLE_NAME + "." + CategoryContract.CategoryEntry._ID,
                     null);

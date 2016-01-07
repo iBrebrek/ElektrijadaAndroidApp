@@ -5,6 +5,7 @@
 
     <ListView
         android:id="@+id/listViewEvents"
+        android:layout_alignParentTop="true"
         android:listSelector="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
         android:layout_above="@+id/eventsFilterButtons"

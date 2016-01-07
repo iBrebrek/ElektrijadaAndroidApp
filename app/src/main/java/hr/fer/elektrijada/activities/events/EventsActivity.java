@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import hr.fer.elektrijada.R;
@@ -20,6 +23,7 @@ import hr.fer.elektrijada.activities.BaseMenuActivity;
 import hr.fer.elektrijada.dal.sql.helper.events.SqlGetEventsInfo;
 import hr.fer.elektrijada.model.events.DateStamp;
 import hr.fer.elektrijada.model.events.Event;
+import hr.fer.elektrijada.model.events.SportNameLabel;
 
 /**
  * Created by Ivica Brebrek
@@ -30,7 +34,10 @@ public class EventsActivity extends BaseMenuActivity{
      * lista u kojoj su filtirani (ili svi) dogadaji
      */
     private ArrayList<Event> listOfEvents;
-    EventsListAdapter eventsListAdapter;
+    private BaseAdapter eventsListAdapter;
+    private Button typeButton;
+    private Button dateButton;
+    private ListView listView;
 
     @Override
     protected int getContentLayoutId() {
@@ -43,19 +50,16 @@ public class EventsActivity extends BaseMenuActivity{
         setTitle("Događanja");
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.sharedLayout);
         layout.setPadding(0, 0, 0, 0); //da bi donje tipke mogle biti uz rub
-
-        initScrollView();
+        listView = (ListView) findViewById(R.id.listViewEvents);
         initFilterButtons();
+        initScrollView();
 
     }
 
-
     //da bi se mogli ponovo sortirati dogadaji nakon izmjene nekog pocetka
     public void refreshAndSort() {
-        removeDateStamps(listOfEvents);
-        Collections.sort(listOfEvents);
-        insertDateStamps(listOfEvents);
-        eventsListAdapter.notifyDataSetChanged();
+        removeHelperTypes(listOfEvents);
+        adjustList();
     }
 
     private void initScrollView() {
@@ -66,12 +70,40 @@ public class EventsActivity extends BaseMenuActivity{
     }
 
     private void adjustList() {
-        Collections.sort(listOfEvents);
-        insertDateStamps(listOfEvents);
-        ListView listView = (ListView) findViewById(R.id.listViewEvents);
-        eventsListAdapter = new EventsListAdapter(this, listOfEvents);
+        if(typeButton.getText().toString().equals("Sport")) {
+            Collections.sort(listOfEvents, new Comparator<Event>() {
+                @Override
+                public int compare(Event lhs, Event rhs) {
+                    int byName = lhs.getName().compareTo(rhs.getName());
+                    if(byName != 0) return byName;
+                    return lhs.compareTo(rhs);
+                }
+            });
+            insertDateStamps(listOfEvents);
+            insertSportNames(listOfEvents);
+            eventsListAdapter = new SportEventsListAdapter(this, listOfEvents);
+        } else {
+            Collections.sort(listOfEvents);
+            insertDateStamps(listOfEvents);
+            eventsListAdapter = new EventsListAdapter(this, listOfEvents);
+        }
         listView.setAdapter(eventsListAdapter);
-        eventsListAdapter.notifyDataSetChanged();
+       // eventsListAdapter.notifyDataSetChanged();
+    }
+
+    private void insertSportNames(List<Event> list) {
+        String typeName = "";
+        for(int i=0, size=list.size(); i<size; i++) {
+            Event event = list.get(i);
+            if(event instanceof DateStamp) event = list.get(i+1);
+            String iteratedName = event.getName();
+            if(!typeName.equals(iteratedName)) {
+                typeName = iteratedName;
+                list.add(i, new SportNameLabel(typeName));
+                i++;
+                size++;
+            }
+        }
     }
 
     private void insertDateStamps(List<Event> list) {
@@ -80,17 +112,21 @@ public class EventsActivity extends BaseMenuActivity{
             date = new DateStamp(list.get(0).getTimeFrom());
             list.add(0, date);
         }
-        for(int i=2; i<list.size(); i++) {
+        for(int i=2, size=list.size(); i<size; i++) {
             if(!date.sameStartDate(list.get(i))){
                 date = new DateStamp(list.get(i).getTimeFrom());
                 list.add(i, date);
+                i++;
+                size++;
             }
         }
     }
 
-    private void removeDateStamps(List<Event> list) {
+    //helperTypes: DateStamps, SportNameLabel
+    private void removeHelperTypes(List<Event> list) {
         for(int i=0, size=list.size(); i<size; i++) {
-            if(list.get(i) instanceof DateStamp) {
+            Event event = list.get(i);
+            if(event instanceof DateStamp || event instanceof SportNameLabel) {
                 list.remove(i);
                 i--;
                 size--;
@@ -98,33 +134,28 @@ public class EventsActivity extends BaseMenuActivity{
         }
     }
 
-    private Button type;
     private void initFilterButtons() {
-        Button time = (Button) findViewById(R.id.eventsFilterTime);
-        time.setOnClickListener(new View.OnClickListener() {
+        dateButton = (Button) findViewById(R.id.eventsFilterTime);
+        dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SqlGetEventsInfo repo = new SqlGetEventsInfo(getApplicationContext());
-                repo.addFakeEvents();
-                List<Event> events;
-                events = repo.getAllEvents();
-                repo.close();
+                initFilterDate();
             }
         });
-        type = (Button) findViewById(R.id.eventsFilterType);
-        type.setOnClickListener(new View.OnClickListener() {
+        typeButton = (Button) findViewById(R.id.eventsFilterType);
+        typeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                filterType();
+                initFilterType();
             }
         });
     }
 
-    private void filterType() {
+    private void initFilterType() {
         AlertDialog.Builder dialogBuilder;
-        final String[] listOfTypes = {"Sve", "Sport", "Znanje", "Favoriti"};
+        final String[] listOfTypes = {"Svi događaji", "Sport", "Znanje", "Favoriti"};
         final ArrayList<String> eventTypes = new ArrayList<>();
-        eventTypes.add("Sve");
+        eventTypes.add("Svi događaji");
         eventTypes.add("Sport");
         eventTypes.add("Znanje");
         eventTypes.add("Favoriti");
@@ -132,29 +163,13 @@ public class EventsActivity extends BaseMenuActivity{
         dialogBuilder.setTitle("Odaberi prikazane događaje");
         dialogBuilder.setSingleChoiceItems(
                 listOfTypes,
-                eventTypes.indexOf(type.getText().toString()),
+                eventTypes.indexOf(typeButton.getText().toString()),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SqlGetEventsInfo repo = new SqlGetEventsInfo(getApplicationContext());
                         String typeName = eventTypes.get(which);
-                        switch (typeName) {
-                            case "Sve":
-                                listOfEvents = repo.getAllEvents();
-                                break;
-                            case "Sport":
-                                listOfEvents = repo.getAllSportEvents();
-                                break;
-                            case "Znanje":
-                                listOfEvents = repo.getAllKnowledgeEvents();
-                                break;
-                            case "Favoriti":
-                                //TODO: stavi favorite u listOfEvents
-                                break;
-                        }
-                        type.setText(typeName);
-                        repo.close();
-                        adjustList();
+                        typeButton.setText(typeName);
+                        filter();
                         dialog.cancel();
                     }
                 }
@@ -163,6 +178,80 @@ public class EventsActivity extends BaseMenuActivity{
         dialog.show();
     }
 
+    private void initFilterDate() {
+        SqlGetEventsInfo repo = new SqlGetEventsInfo(getApplicationContext());
+        List<Event> allEvents = repo.getAllEvents();
+        repo.close();
+        Collections.sort(allEvents);
+        insertDateStamps(allEvents);
+        final List<String> allDates = new ArrayList<>();
+        allDates.add("Svi datumi");
+        for(Event event:allEvents) {
+            if(event instanceof DateStamp) allDates.add(event.getStartDate());
+        }
+        AlertDialog.Builder dialogBuilder;
+        dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Odaberi datum");
+        dialogBuilder.setSingleChoiceItems(
+                allDates.toArray(new String[allDates.size()]),
+                allDates.indexOf(dateButton.getText().toString()),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String dateName = allDates.get(which);
+                        dateButton.setText(dateName);
+                        filter();
+                        dialog.cancel();
+                    }
+                }
+        );
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
+    private void filter() {
+        removeHelperTypes(listOfEvents);
+        filterByType();
+        filterByDate();
+        adjustList();
+    }
+
+    private void filterByType() {
+        SqlGetEventsInfo repo = new SqlGetEventsInfo(getApplicationContext());
+        String typeName = typeButton.getText().toString();
+        switch (typeName) {
+            case "Svi događaji":
+                listOfEvents = repo.getAllEvents();
+                break;
+
+            case "Sport":
+                listOfEvents = repo.getAllSportEvents();
+                break;
+
+            case "Znanje":
+                listOfEvents = repo.getAllKnowledgeEvents();
+                break;
+
+            case "Favoriti":
+                //TODO: listOfEvents=favoriti
+                break;
+
+            default:
+                listOfEvents = repo.getAllEvents();
+                break;
+        }
+        repo.close();
+    }
+
+    private void filterByDate() {
+        String date = dateButton.getText().toString();
+        if (!date.contains(".")) return;
+        for (Iterator<Event> iterator = listOfEvents.iterator(); iterator.hasNext();) {
+            Event event = iterator.next();
+            if(event.getStartDate().equals(date)) continue;
+            iterator.remove();
+        }
+    }
 
     private static String ADD_NEW_EVENT = "Dodaj događaj";
 
