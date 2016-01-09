@@ -13,7 +13,11 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import hr.fer.elektrijada.R;
+import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
+import hr.fer.elektrijada.dal.sql.duel.SqlDuelRepository;
 import hr.fer.elektrijada.model.events.Event;
+import hr.fer.elektrijada.model.events.KnowledgeEvent;
+import hr.fer.elektrijada.model.events.SportEvent;
 import hr.fer.elektrijada.util.DatePicker;
 import hr.fer.elektrijada.util.TimePicker;
 
@@ -41,21 +45,56 @@ public class EventsOnTimeClickAction {
      */
     private static boolean hadNoEnd;
 
-    static void openTimeDialog(final Event event, final Activity activity) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
-        dialogBuilder.setTitle("Odredi vrijeme");
+    private static Event event;
+    private static Activity activity;
+
+    static void openTimeDialog(Event event, Activity activity) {
+        EventsOnTimeClickAction.event = event;
+        EventsOnTimeClickAction.activity = activity;
+
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setView(getView())
+                .setTitle("Odredi vrijeme")
+                .setPositiveButton("Spremi", null) //null jer ce se ovo overridat
+                .setNegativeButton("Odustani", null)
+                .create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface d) {
+                /*
+                overridam pozitivan button da bi mogo sprijecit zatvaranje dialoga klikom na button(npr. kada pocetak>kraj)
+                 */
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                positiveButtonFunction(dialog);
+                            }
+                        });
+            }
+        });
+        dialog.show();
+    }
+
+    private static View getView() {
         LayoutInflater inflater = activity.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.events_time_dialog, null);
-        dialogBuilder.setView(dialogView);
+        initAllClassParams(dialogView);
+        return dialogView;
+    }
 
+    private static void initAllClassParams(View dialogView) {
         Button startingTime = (Button) dialogView.findViewById(R.id.eventTimeDialogStartingTime);
         startTime = new TimePicker<>(activity.getFragmentManager(), startingTime, event.getTimeFrom());
         endingTime = (Button) dialogView.findViewById(R.id.eventTimeDialogEndingTime);
         endTime = new TimePicker<>(activity.getFragmentManager(), endingTime, event.getTimeTo());
+
         startingDate = (Button) dialogView.findViewById(R.id.eventTimeDialogStartingDate);
         startDate = new DatePicker<>(activity.getFragmentManager(), startingDate, event.getTimeFrom());
         endingDate = (Button) dialogView.findViewById(R.id.eventTimeDialogEndingDate);
         endDate = new DatePicker<>(activity.getFragmentManager(), endingDate, event.getTimeTo());
+
         hasEnd = event.getTimeTo() != null;
         hadNoEnd = !hasEnd;
         toggleEndingTime = (Button) dialogView.findViewById(R.id.eventTimeDialogAddOrRemoveEnd);
@@ -72,43 +111,52 @@ public class EventsOnTimeClickAction {
             }
         });
         toggleEnd();
-        dialogBuilder.setPositiveButton("Spremi", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                try {
-                    Calendar start = new GregorianCalendar(
-                            startDate.getYear(),
-                            startDate.getMonth()-1,
-                            startDate.getDay(),
-                            startTime.getHour(),
-                            startTime.getMinute()
-                    );
-                    Calendar end = null;
-                    if (hasEnd) {
-                        end = new GregorianCalendar(
-                                endDate.getYear(),
-                                endDate.getMonth()-1,
-                                endDate.getDay(),
-                                endTime.getHour(),
-                                endTime.getMinute()
-                        );
-                    }
-                    event.setStartAndEnd(start.getTime(), end!=null?end.getTime():null);
-                    ((EventsActivity) activity).refreshAndSort();
-                } catch (IllegalArgumentException exc) {
-                    if (exc.getMessage().equals("End must be after start.")) {
-                        Toast.makeText(activity, "Kraj ne može biti prije početka", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        //dialog.cancel();
-                    } else {
-                        throw exc;
-                    }
-                }
+    }
+
+    private static void positiveButtonFunction(AlertDialog dialog) {
+        try {
+            Calendar end = null;
+            if (hasEnd) {
+                end = new GregorianCalendar(
+                        endDate.getYear(),
+                        endDate.getMonth() - 1,
+                        endDate.getDay(),
+                        endTime.getHour(),
+                        endTime.getMinute()
+                );
             }
-        });
-        dialogBuilder.setNegativeButton("Odustani", null);
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
+            Calendar start = new GregorianCalendar(
+                    startDate.getYear(),
+                    startDate.getMonth() - 1,
+                    startDate.getDay(),
+                    startTime.getHour(),
+                    startTime.getMinute()
+            );
+            event.setStartAndEnd(start.getTime(), end != null ? end.getTime() : null);
+            updateEvent();
+            ((EventsActivity) activity).onResume();
+            dialog.dismiss();
+        } catch (IllegalArgumentException exc) {
+            Toast.makeText(activity, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static void updateEvent() {
+        if(event instanceof SportEvent) {
+            SqlDuelRepository repoDuel = new SqlDuelRepository(activity);
+            SqlDuelRepository.DuelFromDb duel = repoDuel.getDuel(event.getId());
+            duel.setTimeFrom(event.getStartYMDHM());
+            duel.setTimeTo(event.getEndYMDHM());
+            repoDuel.updateDuel(duel);
+            repoDuel.close();
+        } else if(event instanceof KnowledgeEvent) {
+            SqlCompetitionRepository repoComp = new SqlCompetitionRepository(activity);
+            SqlCompetitionRepository.CompetitionFromDb competition = repoComp.getCompetition(event.getId());
+            competition.setTimeFrom(event.getStartYMDHM());
+            competition.setTimeTo(event.getEndYMDHM());
+            repoComp.updateCompetition(competition);
+            repoComp.close();
+        }
     }
 
     private static void toggleEnd() {

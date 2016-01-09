@@ -122,9 +122,19 @@ public class DatePicker <T extends TextView> {
         return year;
     }
 
+    /*
+    DAY.MONTH.YEAR.
+     */
     @Override
     public String toString() {
         return String.format("%s.%s.%s.", day, month, year);
+    }
+
+    /*
+    YEAR.MONTH.DAY.
+     */
+    public String toStringYearFirst() {
+        return String.format("%s.%s.%s.", year, month, day);
     }
 
     /**

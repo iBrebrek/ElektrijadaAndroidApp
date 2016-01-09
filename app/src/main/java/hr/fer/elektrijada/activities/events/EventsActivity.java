@@ -38,6 +38,7 @@ public class EventsActivity extends BaseMenuActivity{
     private Button typeButton;
     private Button dateButton;
     private ListView listView;
+    private boolean shouldAddDateStamps = true;
 
     @Override
     protected int getContentLayoutId() {
@@ -56,10 +57,10 @@ public class EventsActivity extends BaseMenuActivity{
 
     }
 
-    //da bi se mogli ponovo sortirati dogadaji nakon izmjene nekog pocetka
-    public void refreshAndSort() {
-        removeHelperTypes(listOfEvents);
-        adjustList();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        filter(); //npr, kada se doda novi dogadaj zbog ovoga se odma vidi
     }
 
     private void initScrollView() {
@@ -79,12 +80,16 @@ public class EventsActivity extends BaseMenuActivity{
                     return lhs.compareTo(rhs);
                 }
             });
-            insertDateStamps(listOfEvents);
+            if(shouldAddDateStamps) {
+                insertDateStamps(listOfEvents);
+            }
             insertSportNames(listOfEvents);
             eventsListAdapter = new SportEventsListAdapter(this, listOfEvents);
         } else {
             Collections.sort(listOfEvents);
-            insertDateStamps(listOfEvents);
+            if(shouldAddDateStamps) {
+                insertDateStamps(listOfEvents);
+            }
             eventsListAdapter = new EventsListAdapter(this, listOfEvents);
         }
         listView.setAdapter(eventsListAdapter);
@@ -245,7 +250,11 @@ public class EventsActivity extends BaseMenuActivity{
 
     private void filterByDate() {
         String date = dateButton.getText().toString();
-        if (!date.contains(".")) return;
+        if (!date.contains(".")) {
+            shouldAddDateStamps = true;
+            return;
+        }
+        shouldAddDateStamps = false;
         for (Iterator<Event> iterator = listOfEvents.iterator(); iterator.hasNext();) {
             Event event = iterator.next();
             if(event.getStartDate().equals(date)) continue;

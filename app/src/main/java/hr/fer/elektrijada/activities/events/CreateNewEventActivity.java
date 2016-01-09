@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +45,7 @@ public class CreateNewEventActivity extends BaseMenuActivity {
         RememberPickedDetails.location = (EditText) findViewById(R.id.editTextCreateEventLocation);
         initTimeAndDate();
         RememberPickedDetails.hasEnd = (CheckBox) findViewById(R.id.createEventHasEnd);
-        RememberPickedDetails.isAssumption = (CheckBox) findViewById(R.id.createEventIsAssumption);
+        //RememberPickedDetails.isAssumption = (CheckBox) findViewById(R.id.createEventIsAssumption);
     }
 
     private void initCategorySpinner() {
@@ -132,31 +133,42 @@ public class CreateNewEventActivity extends BaseMenuActivity {
     private void saveAndExit() {
         //TODO: provijeriti gdje se treba spremiti, lokalno ili online
 
-        String startTime = RememberPickedDetails.startDate.toString() + " " + RememberPickedDetails.startTime.toString()+":00"; //00 su sekunde
-        String endTime = RememberPickedDetails.hasEnd.isChecked() ? RememberPickedDetails.endDate.toString() + " " + RememberPickedDetails.endTime.toString()+":00" : null;
+        String startTime = RememberPickedDetails.startDate.toStringYearFirst() + " "
+                           + RememberPickedDetails.startTime.toString()+":00"; //00 su sekunde
+        String endTime = RememberPickedDetails.hasEnd.isChecked()
+                         ? RememberPickedDetails.endDate.toStringYearFirst() + " "
+                           + RememberPickedDetails.endTime.toString()+":00"
+                         : null;
         String location = RememberPickedDetails.location!=null ? RememberPickedDetails.location.getText().toString() : null;
-        if(isSport) {
-            SqlDuelRepository repoDuel = new SqlDuelRepository(getApplicationContext());
-            repoDuel.createNewDuel(new SqlDuelRepository.DuelFromDb(
-                    startTime,
-                    endTime,
-                    RememberPickedDetails.categoryId,
-                    RememberPickedDetails.firstId,
-                    RememberPickedDetails.secondId,
-                    location,
-                    RememberPickedDetails.isAssumption.isChecked()
-            ));
-            repoDuel.close();
-        } else {
-            SqlCompetitionRepository repoComp = new SqlCompetitionRepository(getApplicationContext());
-            repoComp.createNewCompetition(new SqlCompetitionRepository.CompetitionFromDb(
-                    startTime,
-                    endTime,
-                    RememberPickedDetails.categoryId,
-                    location,
-                    RememberPickedDetails.isAssumption.isChecked()
-            ));
-            repoComp.close();
+
+        //koristi se try jer se nesmije dozvoliti da je kraj prije pocetka
+        try {
+            if (isSport) {
+                SqlDuelRepository repoDuel = new SqlDuelRepository(getApplicationContext());
+                repoDuel.createNewDuel(new SqlDuelRepository.DuelFromDb(
+                        startTime,
+                        endTime,
+                        RememberPickedDetails.categoryId,
+                        RememberPickedDetails.firstId,
+                        RememberPickedDetails.secondId,
+                        location,
+                        false  //RememberPickedDetails.isAssumption.isChecked()
+                ));
+                repoDuel.close();
+            } else {
+                SqlCompetitionRepository repoComp = new SqlCompetitionRepository(getApplicationContext());
+                repoComp.createNewCompetition(new SqlCompetitionRepository.CompetitionFromDb(
+                        startTime,
+                        endTime,
+                        RememberPickedDetails.categoryId,
+                        location,
+                        false  //RememberPickedDetails.isAssumption.isChecked()
+                ));
+                repoComp.close();
+            }
+        } catch (IllegalArgumentException exc) {
+            Toast.makeText(getApplicationContext(), exc.getMessage(), Toast.LENGTH_LONG).show();
+            return;
         }
         finish();
     }
@@ -194,7 +206,7 @@ public class CreateNewEventActivity extends BaseMenuActivity {
         private static DatePicker endDate;
         private static TimePicker startTime;
         private static TimePicker endTime;
-        private static CheckBox isAssumption;
+        //private static CheckBox isAssumption;
     }
 
 }

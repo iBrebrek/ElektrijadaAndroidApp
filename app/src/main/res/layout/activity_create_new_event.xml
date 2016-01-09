@@ -119,16 +119,14 @@
         </LinearLayout>
 
 
-        <!-- is assumption? -->
+        <!-- is assumption
         <CheckBox
             android:id="@+id/createEventIsAssumption"
             android:text="Ovo je pretpostavka"
             android:layout_marginBottom="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-
-
+            -->
 
     </LinearLayout>
 

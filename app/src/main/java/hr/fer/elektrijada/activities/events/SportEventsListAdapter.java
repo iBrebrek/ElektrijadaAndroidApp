@@ -116,7 +116,7 @@ public class SportEventsListAdapter extends BaseAdapter {
         LinearLayout textLayout;
 
         void adjustRow(final SportEvent event) {
-            time.setText(event.getStartToEnd());
+            time.setText(event.getStartToEndHoursMinutes());
             time.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

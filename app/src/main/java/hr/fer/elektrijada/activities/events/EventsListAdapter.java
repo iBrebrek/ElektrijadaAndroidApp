@@ -117,7 +117,7 @@ public class EventsListAdapter extends BaseAdapter {
         TextView result;
 
         void adjustRow(final KnowledgeEvent event) {
-            time.setText(event.getStartToEnd());
+            time.setText(event.getStartToEndHoursMinutes());
             time.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -132,7 +132,7 @@ public class EventsListAdapter extends BaseAdapter {
                 }
             });
             if (event.hasResults()) {
-                result.setText("-----\n-----");
+                result.setText("[R]");
                 result.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -159,7 +159,7 @@ public class EventsListAdapter extends BaseAdapter {
         LinearLayout textLayout;
 
         void adjustRow(final SportEvent event) {
-            time.setText(event.getStartToEnd());
+            time.setText(event.getStartToEndHoursMinutes());
             time.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

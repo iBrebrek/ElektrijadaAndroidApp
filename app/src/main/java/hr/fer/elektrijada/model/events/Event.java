@@ -78,7 +78,7 @@ public abstract class Event implements Comparable<Event>{
                 throw new IllegalArgumentException("End must be after start.");
             }
             if(this.timeTo == null) {
-                this.timeTo = (Calendar) timeFrom.clone();
+                this.timeTo = new GregorianCalendar();
             }
             this.timeTo.setTime(timeTo);
             secAndMilToZero(this.timeTo);
@@ -111,7 +111,7 @@ public abstract class Event implements Comparable<Event>{
 
     public String getStartDate() {
         return String.format(
-                "%s.%s.%s", timeFrom.get(Calendar.DAY_OF_MONTH), (timeFrom.get(Calendar.MONTH)+1), timeFrom.get(Calendar.YEAR)
+                "%s.%s.%s.", timeFrom.get(Calendar.DAY_OF_MONTH), (timeFrom.get(Calendar.MONTH)+1), timeFrom.get(Calendar.YEAR)
         );
     }
 
@@ -120,22 +120,51 @@ public abstract class Event implements Comparable<Event>{
      * ovisi postoji li definiran kraj,
      * vraca ili: "pocetak \n kraj" ili "pocetak"
      */
-    public String getStartToEnd() {
+    public String getStartToEndHoursMinutes() {
         if(timeTo != null) {
-            return getStart() + "\n" + getEnd();
+            return getStartHoursMinutes() + "\n" + getEndHoursMinutes();
         }
-        return getStart();
+        return getStartHoursMinutes();
     }
 
-    public String getStart() {
+    public String getStartHoursMinutes() {
         return twoDigits(timeFrom.get(Calendar.HOUR_OF_DAY)) + ":" + twoDigits(timeFrom.get(Calendar.MINUTE));
     }
 
-    public String getEnd() {
+    public String getEndHoursMinutes() {
         if(timeTo != null) {
             return twoDigits(timeTo.get(Calendar.HOUR_OF_DAY)) + ":" + twoDigits(timeTo.get(Calendar.MINUTE));
         }
         return "...";
+    }
+
+    /**
+     * @return start: yyyy.MM.dd. HH:mm:ss
+     */
+    public String getStartYMDHM() {
+        return String.format(
+                "%s.%s.%s. %s:%s:00",
+                timeFrom.get(Calendar.YEAR),
+                (timeFrom.get(Calendar.MONTH) + 1),
+                timeFrom.get(Calendar.DAY_OF_MONTH),
+                timeFrom.get(Calendar.HOUR_OF_DAY),
+                timeFrom.get(Calendar.MINUTE)
+        );
+    }
+
+    /**
+     * @return end: yyyy.MM.dd. HH:mm:ss, ili null ako nema kraja
+     */
+    public String getEndYMDHM() {
+        if(timeTo == null) return null;
+        return String.format(
+                "%s.%s.%s. %s:%s:00",
+                timeTo.get(Calendar.YEAR),
+                (timeTo.get(Calendar.MONTH) + 1),
+                timeTo.get(Calendar.DAY_OF_MONTH),
+                timeTo.get(Calendar.HOUR_OF_DAY),
+                timeTo.get(Calendar.MINUTE)
+        );
     }
 
     private static String twoDigits(int c) {
