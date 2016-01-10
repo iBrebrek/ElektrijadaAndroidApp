@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.model.events.Event;
-import hr.fer.elektrijada.model.events.KnowledgeEvent;
-import hr.fer.elektrijada.model.events.SportEvent;
+import hr.fer.elektrijada.model.events.CompetitionEvent;
+import hr.fer.elektrijada.model.events.DuelEvent;
 
 import static hr.fer.elektrijada.activities.events.EventsOnTimeClickAction.openTimeDialog;
 
@@ -40,10 +40,10 @@ public class EventsListAdapter extends BaseAdapter {
 
     public int getItemViewType(int position) {
         Event event = listData.get(position);
-        if(event instanceof SportEvent) {
+        if(event instanceof DuelEvent) {
             return 0;
         }
-        if(event instanceof KnowledgeEvent) {
+        if(event instanceof CompetitionEvent) {
             return 1;
         }
         return 2;
@@ -77,7 +77,7 @@ public class EventsListAdapter extends BaseAdapter {
                 holder.textLayout = (LinearLayout) convertView.findViewById(R.id.eventOnNameClickSport);
                 holder.result = (TextView) convertView.findViewById(R.id.eventResultSport);
                 convertView.setTag(holder);
-                holder.adjustRow((SportEvent) listData.get(position));
+                holder.adjustRow((DuelEvent) listData.get(position));
             } else if (type == 1){
                 convertView = layoutInflater.inflate(R.layout.events_list_knowledge, null);
                 KnowledgeViewHolder holder = new KnowledgeViewHolder();
@@ -85,7 +85,7 @@ public class EventsListAdapter extends BaseAdapter {
                 holder.name = (TextView) convertView.findViewById(R.id.eventNameKnowledge);
                 holder.result = (TextView) convertView.findViewById(R.id.eventResultKnowledge);
                 convertView.setTag(holder);
-                holder.adjustRow((KnowledgeEvent) listData.get(position));
+                holder.adjustRow((CompetitionEvent) listData.get(position));
             } else {
                 convertView = layoutInflater.inflate(R.layout.events_list_date, null);
                 TextView date = (TextView) convertView.findViewById(R.id.eventsDate);
@@ -94,10 +94,10 @@ public class EventsListAdapter extends BaseAdapter {
         } else {
             if(type == 0) {
                 SportViewHolder holder = (SportViewHolder) convertView.getTag();
-                holder.adjustRow((SportEvent)listData.get(position));
+                holder.adjustRow((DuelEvent)listData.get(position));
             }else if(type ==1){
                 KnowledgeViewHolder holder = (KnowledgeViewHolder) convertView.getTag();
-                holder.adjustRow((KnowledgeEvent)listData.get(position));
+                holder.adjustRow((CompetitionEvent)listData.get(position));
             } else {
                 TextView date = (TextView) convertView.findViewById(R.id.eventsDate);
                 date.setText(listData.get(position).getStartDate());
@@ -116,7 +116,7 @@ public class EventsListAdapter extends BaseAdapter {
         TextView name;
         TextView result;
 
-        void adjustRow(final KnowledgeEvent event) {
+        void adjustRow(final CompetitionEvent event) {
             time.setText(event.getStartToEndHoursMinutes());
             time.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -158,7 +158,7 @@ public class EventsListAdapter extends BaseAdapter {
         TextView result;
         LinearLayout textLayout;
 
-        void adjustRow(final SportEvent event) {
+        void adjustRow(final DuelEvent event) {
             time.setText(event.getStartToEndHoursMinutes());
             time.setOnClickListener(new View.OnClickListener() {
                 @Override

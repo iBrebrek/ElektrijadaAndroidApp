@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by Ivica Brebrek
  */
-public class KnowledgeEvent extends Event {
+public class CompetitionEvent extends Event {
     private boolean hasResults;
 
     /**
@@ -16,7 +16,7 @@ public class KnowledgeEvent extends Event {
      * @param timeTo        vrijeme kraja
      * @param hasResults    true ako ima tablice bodove, inace false; ova varijabla oznacava treba li omoguciti link iz prikaza dogadaja na prikaz rezultata
      */
-    public KnowledgeEvent(int id, String name, Date timeFrom, Date timeTo, boolean hasResults) {
+    public CompetitionEvent(int id, String name, Date timeFrom, Date timeTo, boolean hasResults) {
         super(id, name, timeFrom, timeTo);
         this.hasResults = hasResults;
     }
@@ -24,7 +24,7 @@ public class KnowledgeEvent extends Event {
     /**
      *  bez kraja
      */
-    public KnowledgeEvent(int id, String name, Date start, boolean hasResults) {
+    public CompetitionEvent(int id, String name, Date start, boolean hasResults) {
         super(id, name, start);
         this.hasResults = hasResults;
     }

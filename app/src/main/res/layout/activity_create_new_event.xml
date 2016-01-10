@@ -11,6 +11,31 @@
         android:orientation="vertical"
         android:layout_gravity="center_horizontal">
 
+        <!-- odabir vrste, duel/competition
+        <TextView
+            android:text="Ovaj događaj je:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioGroup
+            android:id="@+id/radioCreateEventPickType"
+            android:paddingLeft="16dp"
+            android:checkedButton="@+id/radioCreateEventDuel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/radioCreateEventDuel"
+                android:text="Dvoboj (utakmica)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/radioCreateEventCompetition"
+                android:text="Natijecanje (znanje, kros/veslanje)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RadioGroup> -->
+
+
         <!-- biranje kategorije -->
         <Spinner
             android:id="@+id/spinnerCreateEventPickCategory"

@@ -29,7 +29,7 @@ import hr.fer.elektrijada.util.TimePicker;
  * Created by Ivica Brebrek
  */
 public class CreateNewEventActivity extends BaseMenuActivity {
-    private boolean isSport;
+    private boolean isDuel = true; //da se zna u koju tablicu spremamo
 
     @Override
     protected int getContentLayoutId() {
@@ -40,6 +40,7 @@ public class CreateNewEventActivity extends BaseMenuActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //initRadioButtons();
         initCategorySpinner();
         initTeamSpinners();
         RememberPickedDetails.location = (EditText) findViewById(R.id.editTextCreateEventLocation);
@@ -47,6 +48,26 @@ public class CreateNewEventActivity extends BaseMenuActivity {
         RememberPickedDetails.hasEnd = (CheckBox) findViewById(R.id.createEventHasEnd);
         //RememberPickedDetails.isAssumption = (CheckBox) findViewById(R.id.createEventIsAssumption);
     }
+
+//    private void initRadioButtons() {
+//        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioCreateEventPickType);
+//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                switch (checkedId) {
+//                    case R.id.radioCreateEventDuel:
+//                        isDuel = true;
+//                        findViewById(R.id.createEventPickTeams).setVisibility(View.VISIBLE);
+//                        break;
+//                    case R.id.radioCreateEventCompetition:
+//                        isDuel = false;
+//                        findViewById(R.id.createEventPickTeams).setVisibility(View.GONE);
+//                        break;
+//                }
+//
+//            }
+//        });
+//    }
 
     private void initCategorySpinner() {
         SqlCategoryRepository repo = new SqlCategoryRepository(this);
@@ -63,15 +84,17 @@ public class CreateNewEventActivity extends BaseMenuActivity {
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                RememberPickedDetails.categoryId = categories.get(position).getId();
-                isSport = categories.get(position).isSport();
-                if (isSport) {
+                SqlCategoryRepository.CategoryFromDb category = categories.get(position);
+                RememberPickedDetails.categoryId = category.getId();
+                String categoryName = category.getName().toLowerCase().trim();
+                if (category.isSport() && !(categoryName.equals("veslanje")||(categoryName.equals("kros")))) {
                     findViewById(R.id.createEventPickTeams).setVisibility(View.VISIBLE);
+                    isDuel = true;
                 } else {
                     findViewById(R.id.createEventPickTeams).setVisibility(View.GONE);
+                    isDuel = false;
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -143,7 +166,7 @@ public class CreateNewEventActivity extends BaseMenuActivity {
 
         //koristi se try jer se nesmije dozvoliti da je kraj prije pocetka
         try {
-            if (isSport) {
+            if (isDuel) {
                 SqlDuelRepository repoDuel = new SqlDuelRepository(getApplicationContext());
                 repoDuel.createNewDuel(new SqlDuelRepository.DuelFromDb(
                         startTime,

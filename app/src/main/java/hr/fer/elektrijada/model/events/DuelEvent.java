@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Created by Ivica Brebrek
  */
-public class SportEvent extends Event {
+public class DuelEvent extends Event {
     private Score myResult;
     private Score result;
     private boolean hasResult = false;
@@ -96,7 +96,7 @@ public class SportEvent extends Event {
      * @param teamAway      ime TIMA koji je gost (onaj koji se pise s desne strane), ne smije biti null
      * @param awayScore     bodovi GOSTA (desna strana)
      */
-    public SportEvent(int id, String name, Date timeFrom, Date timeTo, String teamHome, int homeScore, String teamAway, int awayScore) {
+    public DuelEvent(int id, String name, Date timeFrom, Date timeTo, String teamHome, int homeScore, String teamAway, int awayScore) {
         this(id, name, timeFrom, timeTo, teamHome, teamAway);
         setResult(homeScore, awayScore);
     }
@@ -104,14 +104,14 @@ public class SportEvent extends Event {
     /**
      *  bez kraja
      */
-    public SportEvent(int id, String name, Date timeFrom, String teamHome, int homeScore, String teamAway, int awayScore) {
+    public DuelEvent(int id, String name, Date timeFrom, String teamHome, int homeScore, String teamAway, int awayScore) {
         this(id, name, timeFrom, null, teamHome, homeScore, teamAway, awayScore);
     }
 
     /**
      *  bez rezultata
      */
-    public SportEvent(int id, String name, Date timeFrom, Date timeTo, String teamHome, String teamAway) {
+    public DuelEvent(int id, String name, Date timeFrom, Date timeTo, String teamHome, String teamAway) {
         super(id, name, timeFrom, timeTo);
         if(teamAway == null || teamHome == null) {
             throw new IllegalArgumentException("Sport event must have both teams");
@@ -123,7 +123,7 @@ public class SportEvent extends Event {
     /**
      *  bez kraja i bez rezultata
      */
-    public SportEvent(int id, String name, Date timeFrom, String teamHome, String teamAway){
+    public DuelEvent(int id, String name, Date timeFrom, String teamHome, String teamAway){
         this(id, name, timeFrom, null, teamHome, teamAway);
     }
 

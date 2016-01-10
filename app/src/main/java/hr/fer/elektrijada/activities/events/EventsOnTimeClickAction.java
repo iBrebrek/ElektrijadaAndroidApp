@@ -16,8 +16,8 @@ import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
 import hr.fer.elektrijada.dal.sql.duel.SqlDuelRepository;
 import hr.fer.elektrijada.model.events.Event;
-import hr.fer.elektrijada.model.events.KnowledgeEvent;
-import hr.fer.elektrijada.model.events.SportEvent;
+import hr.fer.elektrijada.model.events.CompetitionEvent;
+import hr.fer.elektrijada.model.events.DuelEvent;
 import hr.fer.elektrijada.util.DatePicker;
 import hr.fer.elektrijada.util.TimePicker;
 
@@ -142,14 +142,14 @@ public class EventsOnTimeClickAction {
     }
 
     private static void updateEvent() {
-        if(event instanceof SportEvent) {
+        if(event instanceof DuelEvent) {
             SqlDuelRepository repoDuel = new SqlDuelRepository(activity);
             SqlDuelRepository.DuelFromDb duel = repoDuel.getDuel(event.getId());
             duel.setTimeFrom(event.getStartYMDHM());
             duel.setTimeTo(event.getEndYMDHM());
             repoDuel.updateDuel(duel);
             repoDuel.close();
-        } else if(event instanceof KnowledgeEvent) {
+        } else if(event instanceof CompetitionEvent) {
             SqlCompetitionRepository repoComp = new SqlCompetitionRepository(activity);
             SqlCompetitionRepository.CompetitionFromDb competition = repoComp.getCompetition(event.getId());
             competition.setTimeFrom(event.getStartYMDHM());

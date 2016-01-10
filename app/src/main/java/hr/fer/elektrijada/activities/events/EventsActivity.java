@@ -39,6 +39,7 @@ public class EventsActivity extends BaseMenuActivity{
     private Button dateButton;
     private ListView listView;
     private boolean shouldAddDateStamps = true;
+    private boolean shouldAddSportNameLabel = false;
 
     @Override
     protected int getContentLayoutId() {
@@ -71,19 +72,19 @@ public class EventsActivity extends BaseMenuActivity{
     }
 
     private void adjustList() {
-        if(typeButton.getText().toString().equals("Sport")) {
+        if(shouldAddSportNameLabel) {
             Collections.sort(listOfEvents, new Comparator<Event>() {
                 @Override
                 public int compare(Event lhs, Event rhs) {
                     int byName = lhs.getName().compareTo(rhs.getName());
-                    if(byName != 0) return byName;
+                    if (byName != 0) return byName;
                     return lhs.compareTo(rhs);
                 }
             });
-            if(shouldAddDateStamps) {
-                insertDateStamps(listOfEvents);
-            }
             insertSportNames(listOfEvents);
+            if(shouldAddDateStamps) {
+                insertDateStampsAfterLabels(listOfEvents);
+            }
             eventsListAdapter = new SportEventsListAdapter(this, listOfEvents);
         } else {
             Collections.sort(listOfEvents);
@@ -99,12 +100,41 @@ public class EventsActivity extends BaseMenuActivity{
     private void insertSportNames(List<Event> list) {
         String typeName = "";
         for(int i=0, size=list.size(); i<size; i++) {
-            Event event = list.get(i);
-            if(event instanceof DateStamp) event = list.get(i+1);
-            String iteratedName = event.getName();
+            String iteratedName = list.get(i).getName();
             if(!typeName.equals(iteratedName)) {
                 typeName = iteratedName;
                 list.add(i, new SportNameLabel(typeName));
+                i++;
+                size++;
+            }
+        }
+    }
+
+    /*
+    ova metoda se koristi samo ako je odabran tip Sport
+
+    dodano radi performansa, ova metoda dodaje DateStamp tako da uzme u obzir SportNameLabe,
+    dok metoda insterDateStamp samo dodaje
+     */
+    private void insertDateStampsAfterLabels(List<Event> list){
+        DateStamp date = null;
+        if(list.size()>1) {
+            date = new DateStamp(list.get(1).getTimeFrom());
+            list.add(1, date);
+        }
+        for(int i=3, size=list.size(); i<size; i++) {
+            Event currentEvent = list.get(i);
+            if(currentEvent instanceof SportNameLabel) {
+                i++;
+                date = new DateStamp(list.get(i).getTimeFrom());
+                list.add(i, date);
+                i++;
+                size++;
+                continue;
+            }
+            if(!date.sameStartDate(currentEvent)){
+                date = new DateStamp(list.get(i).getTimeFrom());
+                list.add(i, date);
                 i++;
                 size++;
             }
@@ -224,17 +254,25 @@ public class EventsActivity extends BaseMenuActivity{
     private void filterByType() {
         SqlGetEventsInfo repo = new SqlGetEventsInfo(getApplicationContext());
         String typeName = typeButton.getText().toString();
+        shouldAddSportNameLabel = false;
         switch (typeName) {
             case "Svi događaji":
                 listOfEvents = repo.getAllEvents();
                 break;
 
             case "Sport":
-                listOfEvents = repo.getAllSportEvents();
+                listOfEvents = repo.getAllDuelEvents();
+                for(Event event:repo.getAllCompetitionEvents()) {
+                    String categoryName = event.getName().toLowerCase();
+                    if(categoryName.equals("veslanje") || categoryName.equals("kros")) {
+                        listOfEvents.add(event);
+                    }
+                }
+                shouldAddSportNameLabel = true;
                 break;
 
             case "Znanje":
-                listOfEvents = repo.getAllKnowledgeEvents();
+                listOfEvents = repo.getAllCompetitionEvents();
                 break;
 
             case "Favoriti":

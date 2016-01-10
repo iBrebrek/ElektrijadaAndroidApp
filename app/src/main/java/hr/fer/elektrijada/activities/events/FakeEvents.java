@@ -5,8 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import hr.fer.elektrijada.model.events.Event;
-import hr.fer.elektrijada.model.events.KnowledgeEvent;
-import hr.fer.elektrijada.model.events.SportEvent;
+import hr.fer.elektrijada.model.events.CompetitionEvent;
+import hr.fer.elektrijada.model.events.DuelEvent;
 
 /**
  * Created by Ivica Brebrek
@@ -19,7 +19,7 @@ public class FakeEvents {
         final long MILISEC_QUARTER_OF_DAY = 2160000;
         for (int i=0; i<20; i+=2) {
             list.add(
-                    new SportEvent(
+                    new DuelEvent(
                             i,
                             i+". Košarkaška(Ž) utakmica",
                             new Date(Calendar.getInstance().getTime().getTime() - (i+1)*MILISEC_QUARTER_OF_DAY),
@@ -30,7 +30,7 @@ public class FakeEvents {
         }
         for (int i=1; i<20; i+=2) {
             list.add(
-                    new SportEvent(
+                    new DuelEvent(
                             i,
                             i+". Nogometna(M) utakmica",
                             new Date(Calendar.getInstance().getTime().getTime() - (i+1)*MILISEC_QUARTER_OF_DAY),
@@ -42,7 +42,7 @@ public class FakeEvents {
         }
         for (int i=0; i<20; i+=2) {
             list.add(
-                    new KnowledgeEvent(
+                    new CompetitionEvent(
                             i,
                             i+". Teorija",
                             new Date(Calendar.getInstance().getTime().getTime() - (i+1)*MILISEC_QUARTER_OF_DAY),
@@ -53,7 +53,7 @@ public class FakeEvents {
         }
         for (int i=1; i<10; i+=2) {
             list.add(
-                    new KnowledgeEvent(
+                    new CompetitionEvent(
                             i,
                             i+". Natjecanje u znanju\n123\n123",
                             new Date(Calendar.getInstance().getTime().getTime() - (i+1)*MILISEC_QUARTER_OF_DAY),

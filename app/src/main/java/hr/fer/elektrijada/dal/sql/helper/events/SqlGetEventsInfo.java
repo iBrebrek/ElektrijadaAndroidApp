@@ -16,8 +16,8 @@ import hr.fer.elektrijada.dal.sql.competitor.CompetitorContract;
 import hr.fer.elektrijada.dal.sql.duel.DuelContract;
 import hr.fer.elektrijada.dal.sql.duelscore.DuelScoreContract;
 import hr.fer.elektrijada.model.events.Event;
-import hr.fer.elektrijada.model.events.KnowledgeEvent;
-import hr.fer.elektrijada.model.events.SportEvent;
+import hr.fer.elektrijada.model.events.CompetitionEvent;
+import hr.fer.elektrijada.model.events.DuelEvent;
 import hr.fer.elektrijada.util.DateParserUtil;
 import hr.fer.elektrijada.util.Logger;
 
@@ -144,13 +144,13 @@ public class SqlGetEventsInfo {
 
     public ArrayList<Event> getAllEvents() {
         ArrayList<Event> listOfEvents = new ArrayList<>();
-        listOfEvents.addAll(getAllKnowledgeEvents());
-        listOfEvents.addAll(getAllSportEvents());
+        listOfEvents.addAll(getAllCompetitionEvents());
+        listOfEvents.addAll(getAllDuelEvents());
         return listOfEvents;
     }
 
-    public ArrayList<Event> getAllSportEvents() {
-        ArrayList<Event> listOfSportEvents = new ArrayList<>();
+    public ArrayList<Event> getAllDuelEvents() {
+        ArrayList<Event> listOfDuelEvents = new ArrayList<>();
         SQLiteDatabase db = null;
         try {
             db = dbHelper.getReadableDatabase();
@@ -187,7 +187,7 @@ public class SqlGetEventsInfo {
                     null);
             if (cursor.moveToFirst()) {
                 do {
-                    SportEvent event = new SportEvent(
+                    DuelEvent event = new DuelEvent(
                             cursor.getInt(0),
                             cursor.getString(1),
                             DateParserUtil.stringToDate(cursor.getString(2)),
@@ -195,7 +195,7 @@ public class SqlGetEventsInfo {
                             cursor.getString(4),
                             cursor.getString(5)
                     );
-                    listOfSportEvents.add(event);
+                    listOfDuelEvents.add(event);
                     setResultMap(event);
                 } while (cursor.moveToNext());
             }
@@ -206,10 +206,10 @@ public class SqlGetEventsInfo {
             if (db != null)
                 db.close();
         }
-        return listOfSportEvents;
+        return listOfDuelEvents;
     }
 
-    private void setResultMap(SportEvent event) {
+    private void setResultMap(DuelEvent event) {
         SQLiteDatabase db = null;
         try {
             db = dbHelper.getReadableDatabase();
@@ -241,8 +241,8 @@ public class SqlGetEventsInfo {
         }
     }
 
-    public ArrayList<Event> getAllKnowledgeEvents() {
-        ArrayList<Event> listOfKnowledgeEvents = new ArrayList<>();
+    public ArrayList<Event> getAllCompetitionEvents() {
+        ArrayList<Event> listOfCompetitionEvents = new ArrayList<>();
         SQLiteDatabase db = null;
         try {
             db = dbHelper.getReadableDatabase();
@@ -265,14 +265,14 @@ public class SqlGetEventsInfo {
                     null);
             if (cursor.moveToFirst()) {
                 do {
-                    KnowledgeEvent event = new KnowledgeEvent(
+                    CompetitionEvent event = new CompetitionEvent(
                             cursor.getInt(0),
                             cursor.getString(1),
                             DateParserUtil.stringToDate(cursor.getString(2)),
                             DateParserUtil.stringToDate(cursor.getString(3)),
                             cursor.getInt(4) > 0
                     );
-                    listOfKnowledgeEvents.add(event);
+                    listOfCompetitionEvents.add(event);
                 } while (cursor.moveToNext());
             }
             cursor.close();
@@ -282,6 +282,6 @@ public class SqlGetEventsInfo {
             if (db != null)
                 db.close();
         }
-        return listOfKnowledgeEvents;
+        return listOfCompetitionEvents;
     }
 }
