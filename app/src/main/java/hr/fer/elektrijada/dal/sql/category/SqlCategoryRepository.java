@@ -26,7 +26,33 @@ public class SqlCategoryRepository {
         }
     }
 
-    //TODO: insert, update, delete
+    //napisati ostale metode ako zatrebaju...
+
+    public String getCategoryName(int id) {
+        String name = null;
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT " + CategoryContract.CategoryEntry.COLUMN_NAME_NAME
+                            + " FROM " + CategoryContract.CategoryEntry.TABLE_NAME
+                            + " WHERE " + CategoryContract.CategoryEntry._ID +" = " + id,
+                    null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                name = cursor.getString(0);
+                cursor.close();
+            }
+        } catch (Exception exc) {
+
+        } finally {
+            if (db != null)
+                db.close();
+        }
+        return name;
+    }
 
     public ArrayList<CategoryFromDb> getAllCategories(){
         ArrayList<CategoryFromDb> listOfAllCategories = new ArrayList<>();

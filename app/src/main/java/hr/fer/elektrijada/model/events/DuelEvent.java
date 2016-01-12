@@ -15,7 +15,7 @@ public class DuelEvent extends Event {
     private String teamAway;
     private HashMap<Score, Integer> allResults;
 
-    public class Score {
+    public static class Score {
         private int homeScore;
         private int awayScore;
 
@@ -130,6 +130,11 @@ public class DuelEvent extends Event {
     public void setResult(int homeScore, int awayScore) {
         hasResult = true;
         result = new Score(homeScore, awayScore);
+    }
+
+    public void setResult(Score score) {
+        hasResult = true;
+        result = score;
     }
 
     /**

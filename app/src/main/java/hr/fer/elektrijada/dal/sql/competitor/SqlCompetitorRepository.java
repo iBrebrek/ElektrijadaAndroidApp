@@ -26,7 +26,38 @@ public class SqlCompetitorRepository {
         }
     }
 
-    //TODO: napisati ostatak..., meni je trebala samo ta jedna metoda
+    //dodati ostale metode ako zatrebaju...
+
+    public String getCompetitorName(int id) {
+        String name = null;
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT " + "CASE "
+                                + "WHEN " + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME + " IS NULL "
+                                + "THEN " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME
+                                + " ELSE " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME + " ||  ' ' || "
+                                + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME
+                                + " END "
+                            + "FROM " + CompetitorContract.CompetitorEntry.TABLE_NAME
+                            + " WHERE " + CompetitorContract.CompetitorEntry._ID +" = " + id,
+                    null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                name = cursor.getString(0);
+                cursor.close();
+            }
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
+        }
+        return name;
+    }
 
     /**
      * na prvu bi izgledalo bolje da je id kljuc, ali ovakva struktura mi bolje pase za spinner

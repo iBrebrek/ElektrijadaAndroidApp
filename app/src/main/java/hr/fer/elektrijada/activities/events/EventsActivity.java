@@ -24,6 +24,7 @@ import hr.fer.elektrijada.dal.sql.helper.events.SqlGetEventsInfo;
 import hr.fer.elektrijada.model.events.DateStamp;
 import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.events.SportNameLabel;
+import hr.fer.elektrijada.util.Favorites;
 
 /**
  * Created by Ivica Brebrek
@@ -273,10 +274,17 @@ public class EventsActivity extends BaseMenuActivity{
 
             case "Znanje":
                 listOfEvents = repo.getAllCompetitionEvents();
+                for (Iterator<Event> iterator = listOfEvents.iterator(); iterator.hasNext();) {
+                    Event event = iterator.next();
+                    String name = event.getName().toLowerCase();
+                    if(name.equals("veslanje") || name.equals("kros")) {
+                        iterator.remove();
+                    }
+                }
                 break;
 
             case "Favoriti":
-                //TODO: listOfEvents=favoriti
+                listOfEvents = Favorites.getFavorites(getApplicationContext());
                 break;
 
             default:
@@ -306,15 +314,25 @@ public class EventsActivity extends BaseMenuActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_start, menu);
         menu.add(ADD_NEW_EVENT);
+        menu.add("-");//TODO: maknuti ovo
+        menu.add("+");
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getTitle().equals(ADD_NEW_EVENT)) {
+        String name = item.getTitle().toString();
+        if (name.equals(ADD_NEW_EVENT)) {
             Intent intent = new Intent(getApplicationContext(), CreateNewEventActivity.class);
             startActivity(intent);
+        } else if(name.equals("-")) {
+            for(Event event:listOfEvents) {
+                Favorites.removeFavorite(getApplicationContext(), event);
+            }
+        } else if(name.equals("+")) {
+            for(Event event:listOfEvents) {
+                Favorites.addFavorite(getApplicationContext(), event);
+            }
         }
         return super.onOptionsItemSelected(item);
     }

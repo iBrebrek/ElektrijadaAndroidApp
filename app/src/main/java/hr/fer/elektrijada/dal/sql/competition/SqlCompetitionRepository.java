@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import hr.fer.elektrijada.dal.sql.DbHelper;
+import hr.fer.elektrijada.dal.sql.competitionscore.CompetitionScoreContract;
 import hr.fer.elektrijada.util.DateParserUtil;
 
 /**
@@ -26,6 +27,30 @@ public class SqlCompetitionRepository {
     }
 
     //napisati ostale metode, ako zatreba
+
+    public boolean hasScore(int id) {
+        boolean hasScore = false;
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT " + CompetitionScoreContract.CompetitionScoreEntry._ID
+                            + " FROM " + CompetitionScoreContract.CompetitionScoreEntry.TABLE_NAME
+                            + " WHERE " + CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITION_ID +" = " + id,
+                    null);
+
+            if (cursor != null && cursor.getCount()>0) {
+                hasScore = true;
+            }
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
+        }
+        return hasScore;
+    }
 
     public CompetitionFromDb getCompetition(int id) {
         CompetitionFromDb competitionFromDb = null;
