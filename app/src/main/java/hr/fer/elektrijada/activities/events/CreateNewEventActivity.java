@@ -154,8 +154,6 @@ public class CreateNewEventActivity extends BaseMenuActivity {
     }
 
     private void saveAndExit() {
-        //TODO: provijeriti gdje se treba spremiti, lokalno ili online
-
         String startTime = RememberPickedDetails.startDate.toStringYearFirst() + " "
                            + RememberPickedDetails.startTime.toString()+":00"; //00 su sekunde
         String endTime = RememberPickedDetails.hasEnd.isChecked()

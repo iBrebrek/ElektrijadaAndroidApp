@@ -28,6 +28,29 @@ public class SqlCategoryRepository {
 
     //napisati ostale metode ako zatrebaju...
 
+    //ako je kategorija sport s ovim znamo je li dvoboj ili veslane/kros
+    //zakomentirano jer ne radi ako ta kategorija jos nikad nije bila koristena
+//    public boolean isDuel(int categoryId) {
+//        SQLiteDatabase db = null;
+//        try {
+//            db = dbHelper.getReadableDatabase();
+//            Cursor cursor = db.rawQuery(
+//                    "SELECT * FROM " + DuelContract.DuelEntry.TABLE_NAME
+//                            + " WHERE " + DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID + " = " +categoryId,
+//                    null);
+//            if (cursor.moveToFirst()) {
+//                return true;
+//            }
+//            cursor.close();
+//        } catch (Exception exc) {
+//            Logger.LogException(exc);
+//        } finally {
+//            if (db != null)
+//                db.close();
+//        }
+//        return false;
+//    }
+
     public String getCategoryName(int id) {
         String name = null;
         SQLiteDatabase db = null;

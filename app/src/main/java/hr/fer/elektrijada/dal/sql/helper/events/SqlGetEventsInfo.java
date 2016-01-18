@@ -84,15 +84,6 @@ public class SqlGetEventsInfo {
         values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_TO, "2015.12.16. 22:33:00");
         values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
         test = db.insert(CompetitionContract.CompetitionEntry.TABLE_NAME, null, values);
-        values = new ContentValues();
-        values.put(CompetitionScoreContract.CompetitionScoreEntry._ID, 777);
-        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_RESULT, "100");
-        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITION_ID, 7);
-        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_USER_ID, 11);
-        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITOR_ID, 55);
-        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
-        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_IS_OFFICIAL, 1);
-        test = db.insert(CompetitionScoreContract.CompetitionScoreEntry.TABLE_NAME, null, values);
         //db.delete(CompetitionScoreContract.CompetitionScoreEntry.TABLE_NAME,null,null);
         values = new ContentValues();
         values.put(DuelContract.DuelEntry._ID, 85);
@@ -144,16 +135,18 @@ public class SqlGetEventsInfo {
 
     public ArrayList<Event> getAllEvents() {
         ArrayList<Event> listOfEvents = new ArrayList<>();
-        listOfEvents.addAll(getAllCompetitionEvents());
-        listOfEvents.addAll(getAllDuelEvents());
+        listOfEvents.addAll(getAllKnowledgeEvents());
+        listOfEvents.addAll(getAllSportEvents());
         return listOfEvents;
     }
 
-    public ArrayList<Event> getAllDuelEvents() {
-        ArrayList<Event> listOfDuelEvents = new ArrayList<>();
+    public ArrayList<Event> getAllSportEvents() {
+        ArrayList<Event> listOfSportEvents = new ArrayList<>();
         SQLiteDatabase db = null;
         try {
             db = dbHelper.getReadableDatabase();
+
+            //uzmi sve iz duela
             Cursor cursor = db.rawQuery(
                     "SELECT " + DuelContract.DuelEntry.TABLE_NAME + "." + DuelContract.DuelEntry._ID + ", "
                             + CategoryContract.CategoryEntry.TABLE_NAME + "." + CategoryContract.CategoryEntry.COLUMN_NAME_NAME + ", "
@@ -195,18 +188,51 @@ public class SqlGetEventsInfo {
                             cursor.getString(4),
                             cursor.getString(5)
                     );
-                    listOfDuelEvents.add(event);
+                    listOfSportEvents.add(event);
                     setResultMap(event);
                 } while (cursor.moveToNext());
             }
-            cursor.close();
+
+            //uzmi sve iz competitiona koji su sport
+            db = dbHelper.getReadableDatabase(); //inace mi javlja da sam vec zatvorio o,o
+            Cursor cursor2 = db.rawQuery(
+                    "SELECT " + CompetitionContract.CompetitionEntry.TABLE_NAME + "." + CompetitionContract.CompetitionEntry._ID + ", "
+                            + CategoryContract.CategoryEntry.TABLE_NAME + "." + CategoryContract.CategoryEntry.COLUMN_NAME_NAME + ", "
+                            + CompetitionContract.CompetitionEntry.TABLE_NAME + "." + CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_FROM + ", "
+                            + CompetitionContract.CompetitionEntry.TABLE_NAME + "." + CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_TO + ", "
+                            + "(SELECT " + CompetitionScoreContract.CompetitionScoreEntry._ID +
+                            " FROM " + CompetitionScoreContract.CompetitionScoreEntry.TABLE_NAME +
+                            " WHERE " + CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITION_ID +
+                            " = "
+                            + CompetitionContract.CompetitionEntry.TABLE_NAME + "." + CompetitionContract.CompetitionEntry._ID
+                            + ") " +
+                            " FROM " + CompetitionContract.CompetitionEntry.TABLE_NAME + ", "
+                            + CategoryContract.CategoryEntry.TABLE_NAME +
+                            " WHERE " + CompetitionContract.CompetitionEntry.TABLE_NAME + "." + CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID +
+                            " = "
+                            + CategoryContract.CategoryEntry.TABLE_NAME + "." + CategoryContract.CategoryEntry._ID +
+                            " AND " + CategoryContract.CategoryEntry.TABLE_NAME + "." + CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT + " > 0",
+                    null);
+            if (cursor2.moveToFirst()) {
+                do {
+                    listOfSportEvents.add(
+                            new CompetitionEvent(
+                                    cursor2.getInt(0),
+                                    cursor2.getString(1),
+                                    DateParserUtil.stringToDate(cursor2.getString(2)),
+                                    DateParserUtil.stringToDate(cursor2.getString(3)),
+                                    cursor2.getInt(4) > 0
+                            ));
+                } while (cursor2.moveToNext());
+            }
+            cursor2.close();
         } catch (Exception exc) {
             Logger.LogException(exc);
         } finally {
             if (db != null)
                 db.close();
         }
-        return listOfDuelEvents;
+        return listOfSportEvents;
     }
 
     private void setResultMap(DuelEvent event) {
@@ -241,7 +267,7 @@ public class SqlGetEventsInfo {
         }
     }
 
-    public ArrayList<Event> getAllCompetitionEvents() {
+    public ArrayList<Event> getAllKnowledgeEvents() {
         ArrayList<Event> listOfCompetitionEvents = new ArrayList<>();
         SQLiteDatabase db = null;
         try {
@@ -261,18 +287,19 @@ public class SqlGetEventsInfo {
                             + CategoryContract.CategoryEntry.TABLE_NAME +
                             " WHERE " + CompetitionContract.CompetitionEntry.TABLE_NAME + "." + CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID +
                             " = "
-                            + CategoryContract.CategoryEntry.TABLE_NAME + "." + CategoryContract.CategoryEntry._ID,
+                            + CategoryContract.CategoryEntry.TABLE_NAME + "." + CategoryContract.CategoryEntry._ID +
+                            " AND " + CategoryContract.CategoryEntry.TABLE_NAME + "." + CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT + " < 1",
                     null);
             if (cursor.moveToFirst()) {
                 do {
-                    CompetitionEvent event = new CompetitionEvent(
-                            cursor.getInt(0),
-                            cursor.getString(1),
-                            DateParserUtil.stringToDate(cursor.getString(2)),
-                            DateParserUtil.stringToDate(cursor.getString(3)),
-                            cursor.getInt(4) > 0
-                    );
-                    listOfCompetitionEvents.add(event);
+                    listOfCompetitionEvents.add(
+                            new CompetitionEvent(
+                                    cursor.getInt(0),
+                                    cursor.getString(1),
+                                    DateParserUtil.stringToDate(cursor.getString(2)),
+                                    DateParserUtil.stringToDate(cursor.getString(3)),
+                                    cursor.getInt(4) > 0
+                    ));
                 } while (cursor.moveToNext());
             }
             cursor.close();

@@ -55,7 +55,7 @@ public class EventsActivity extends BaseMenuActivity{
         layout.setPadding(0, 0, 0, 0); //da bi donje tipke mogle biti uz rub
         listView = (ListView) findViewById(R.id.listViewEvents);
         initFilterButtons();
-        initScrollView();
+       // initScrollView();
 
     }
 
@@ -65,12 +65,12 @@ public class EventsActivity extends BaseMenuActivity{
         filter(); //npr, kada se doda novi dogadaj zbog ovoga se odma vidi
     }
 
-    private void initScrollView() {
-        SqlGetEventsInfo repo = new SqlGetEventsInfo(getApplicationContext());
-        listOfEvents = repo.getAllEvents();
-        repo.close();
-        adjustList();
-    }
+//    private void initScrollView() {
+//        SqlGetEventsInfo repo = new SqlGetEventsInfo(getApplicationContext());
+//        listOfEvents = repo.getAllEvents();
+//        repo.close();
+//        adjustList();
+//    }
 
     private void adjustList() {
         if(shouldAddSportNameLabel) {
@@ -85,18 +85,30 @@ public class EventsActivity extends BaseMenuActivity{
             insertSportNames(listOfEvents);
             if(shouldAddDateStamps) {
                 insertDateStampsAfterLabels(listOfEvents);
+                //setScrollPosition();
             }
             eventsListAdapter = new SportEventsListAdapter(this, listOfEvents);
         } else {
             Collections.sort(listOfEvents);
             if(shouldAddDateStamps) {
                 insertDateStamps(listOfEvents);
+                //setScrollPosition();
             }
             eventsListAdapter = new EventsListAdapter(this, listOfEvents);
         }
         listView.setAdapter(eventsListAdapter);
        // eventsListAdapter.notifyDataSetChanged();
     }
+
+//    private void setScrollPosition() {
+//        DateStamp today = new DateStamp(new Date());
+//        int index = 0;
+//        for(Event event:listOfEvents) {
+//            if(event.compareTo(today) > 1) break;
+//            index++;
+//        }
+//        listView.setSelection(index);
+//    }
 
     private void insertSportNames(List<Event> list) {
         String typeName = "";
@@ -160,6 +172,7 @@ public class EventsActivity extends BaseMenuActivity{
 
     //helperTypes: DateStamps, SportNameLabel
     private void removeHelperTypes(List<Event> list) {
+        if (list == null) return;
         for(int i=0, size=list.size(); i<size; i++) {
             Event event = list.get(i);
             if(event instanceof DateStamp || event instanceof SportNameLabel) {
@@ -262,25 +275,12 @@ public class EventsActivity extends BaseMenuActivity{
                 break;
 
             case "Sport":
-                listOfEvents = repo.getAllDuelEvents();
-                for(Event event:repo.getAllCompetitionEvents()) {
-                    String categoryName = event.getName().toLowerCase();
-                    if(categoryName.equals("veslanje") || categoryName.equals("kros")) {
-                        listOfEvents.add(event);
-                    }
-                }
+                listOfEvents = repo.getAllSportEvents();
                 shouldAddSportNameLabel = true;
                 break;
 
             case "Znanje":
-                listOfEvents = repo.getAllCompetitionEvents();
-                for (Iterator<Event> iterator = listOfEvents.iterator(); iterator.hasNext();) {
-                    Event event = iterator.next();
-                    String name = event.getName().toLowerCase();
-                    if(name.equals("veslanje") || name.equals("kros")) {
-                        iterator.remove();
-                    }
-                }
+                listOfEvents = repo.getAllKnowledgeEvents();
                 break;
 
             case "Favoriti":
