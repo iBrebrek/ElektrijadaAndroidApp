@@ -45,7 +45,6 @@ public class CreateNewEventActivity extends BaseMenuActivity {
         initTeamSpinners();
         RememberPickedDetails.location = (EditText) findViewById(R.id.editTextCreateEventLocation);
         initTimeAndDate();
-        RememberPickedDetails.hasEnd = (CheckBox) findViewById(R.id.createEventHasEnd);
         //RememberPickedDetails.isAssumption = (CheckBox) findViewById(R.id.createEventIsAssumption);
     }
 
@@ -86,8 +85,7 @@ public class CreateNewEventActivity extends BaseMenuActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SqlCategoryRepository.CategoryFromDb category = categories.get(position);
                 RememberPickedDetails.categoryId = category.getId();
-                String categoryName = category.getName().toLowerCase().trim();
-                if (category.isSport() && !(categoryName.equals("veslanje")||(categoryName.equals("kros")))) {
+                if (category.isDuel()) {
                     findViewById(R.id.createEventPickTeams).setVisibility(View.VISIBLE);
                     isDuel = true;
                 } else {
@@ -138,19 +136,35 @@ public class CreateNewEventActivity extends BaseMenuActivity {
     }
 
     private void initTimeAndDate(){
-        Button button;
-
-        button = (Button) findViewById(R.id.btnCreateEventStartDate);
-        RememberPickedDetails.startDate = new DatePicker<>(getFragmentManager(), button);
-
-        button = (Button) findViewById(R.id.btnCreateEventStartTime);
-        RememberPickedDetails.startTime = new TimePicker<>(getFragmentManager(), button);
-
-        button = (Button) findViewById(R.id.btnCreateEventEndDate);
-        RememberPickedDetails.endDate = new DatePicker<>(getFragmentManager(), button);
-
-        button = (Button) findViewById(R.id.btnCreateEventEndTime);
-        RememberPickedDetails.endTime = new TimePicker<>(getFragmentManager(), button);
+        RememberPickedDetails.startDate = new DatePicker<>(
+                getFragmentManager(),
+                (Button) findViewById(R.id.btnCreateEventStartDate)
+        );
+        RememberPickedDetails.startTime = new TimePicker<>(
+                getFragmentManager(),
+                (Button) findViewById(R.id.btnCreateEventStartTime)
+        );
+        RememberPickedDetails.endDate = new DatePicker<>(
+                getFragmentManager(),
+                (Button) findViewById(R.id.btnCreateEventEndDate)
+        );
+        RememberPickedDetails.endTime = new TimePicker<>(
+                getFragmentManager(),
+                (Button) findViewById(R.id.btnCreateEventEndTime)
+        );
+        RememberPickedDetails.hasEnd = (CheckBox) findViewById(R.id.createEventHasEnd);
+        RememberPickedDetails.hasEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(RememberPickedDetails.hasEnd.isChecked()) {
+                    findViewById(R.id.btnCreateEventEndDate).setVisibility(View.VISIBLE);
+                    findViewById(R.id.btnCreateEventEndTime).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.btnCreateEventEndDate).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.btnCreateEventEndTime).setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     private void saveAndExit() {
@@ -162,8 +176,8 @@ public class CreateNewEventActivity extends BaseMenuActivity {
                          : null;
         String location = RememberPickedDetails.location!=null ? RememberPickedDetails.location.getText().toString() : null;
 
-        //koristi se try jer se nesmije dozvoliti da je kraj prije pocetka
         try {
+            //koristi se try jer se nesmije dozvoliti da je kraj prije pocetka
             if (isDuel) {
                 SqlDuelRepository repoDuel = new SqlDuelRepository(getApplicationContext());
                 repoDuel.createNewDuel(new SqlDuelRepository.DuelFromDb(
@@ -198,22 +212,22 @@ public class CreateNewEventActivity extends BaseMenuActivity {
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Zatvaranje prozora")
-                .setMessage("Želite li spremiti prije izlaska?")
-                .setPositiveButton("Da", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.dialog_onbackpressed_title)
+                .setMessage(R.string.dialog_onbackpressed_message)
+                .setPositiveButton(R.string.dialog_onbackpressed_postive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         saveAndExit();
                     }
 
                 })
-                .setNegativeButton("Ne", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.dialog_onbackpressed_negative, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
                 })
-                .setNeutralButton("Odustani", null)
+                .setNeutralButton(R.string.dialog_onbackpressed_cancel, null)
                 .show();
     }
 

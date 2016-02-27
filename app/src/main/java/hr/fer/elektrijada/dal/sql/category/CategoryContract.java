@@ -19,7 +19,8 @@ public class CategoryContract {
                     CategoryEntry._ID + " INTEGER PRIMARY KEY," +
                     CategoryEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     CategoryEntry.COLUMN_NAME_NICK + TEXT_TYPE + COMMA_SEP +
-                    CategoryEntry.COLUMN_NAME_IS_SPORT + " BOOLEAN" +
+                    CategoryEntry.COLUMN_NAME_IS_SPORT + " BOOLEAN, " +
+                    CategoryEntry.COLUMN_NAME_IS_DUEL + " BOOLEAN" +
                     " )";
 
     public static final String SQL_DELETE_CATEGORY =
@@ -36,6 +37,8 @@ public class CategoryContract {
                 return 2;
             case CategoryEntry.COLUMN_NAME_IS_SPORT:
                 return 3;
+            case CategoryEntry.COLUMN_NAME_IS_DUEL:
+                return 4;
             default:
                 throw new RuntimeException(String.format("Invalid column:%s for table %s",
                         columnName, CategoryEntry.TABLE_NAME));
@@ -48,5 +51,6 @@ public class CategoryContract {
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_NICK = "nick";
         public static final String COLUMN_NAME_IS_SPORT = "issport";
+        public static final String COLUMN_NAME_IS_DUEL = "isduel";
     }
 }

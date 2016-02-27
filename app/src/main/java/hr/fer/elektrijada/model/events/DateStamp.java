@@ -24,4 +24,17 @@ public class DateStamp extends Event{
     public boolean sameStartDate(Event event) {
         return event.getStartDate().equals(this.getStartDate());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof DateStamp)){
+            return false;
+        }
+        return this.getTimeFrom().equals(((DateStamp) o).getTimeFrom());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getTimeFrom().hashCode();
+    }
 }

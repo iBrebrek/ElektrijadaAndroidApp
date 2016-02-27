@@ -50,30 +50,35 @@ public class SqlGetEventsInfo {
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Matematika");
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NICK, "mat");
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, 0);
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_DUEL, 0);
         test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
         values = new ContentValues();
         values.put(CategoryContract.CategoryEntry._ID, 3);
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Nogomet");
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NICK, "Muški");
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, 5);
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_DUEL, 5);
         test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
         values = new ContentValues();
         values.put(CategoryContract.CategoryEntry._ID, 55);
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Informatika");
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, 0);
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_DUEL, 0);
         test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
         values = new ContentValues();
         values.put(CategoryContract.CategoryEntry._ID, 777);
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Veslanje");
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, 5);
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_DUEL, -5);
         test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
-        for (int i = 100; i < 150; i++) {
-            values = new ContentValues();
-            values.put(CategoryContract.CategoryEntry._ID, i);
-            values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Test " + i);
-            values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, -9);
-            test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
-        }
+//        for (int i = 100; i < 150; i++) {
+//            values = new ContentValues();
+//            values.put(CategoryContract.CategoryEntry._ID, i);
+//            values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Test " + i);
+//            values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, -9);
+//            values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_DUEL, -5);
+//            test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
+//        }
 
 
         values = new ContentValues();

@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -52,11 +53,9 @@ public class EventsActivity extends BaseMenuActivity{
         super.onCreate(savedInstanceState);
         setTitle("Događanja");
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.sharedLayout);
-        layout.setPadding(0, 0, 0, 0); //da bi donje tipke mogle biti uz rub
+        layout.setPadding(0, 16, 0, 0); //da bi donje tipke mogle biti uz rub
         listView = (ListView) findViewById(R.id.listViewEvents);
         initFilterButtons();
-       // initScrollView();
-
     }
 
     @Override
@@ -65,12 +64,18 @@ public class EventsActivity extends BaseMenuActivity{
         filter(); //npr, kada se doda novi dogadaj zbog ovoga se odma vidi
     }
 
-//    private void initScrollView() {
-//        SqlGetEventsInfo repo = new SqlGetEventsInfo(getApplicationContext());
-//        listOfEvents = repo.getAllEvents();
-//        repo.close();
-//        adjustList();
-//    }
+    private void setStartingScrollPostition(){
+        int position = 0;
+        for(Event date:listOfEvents) {
+            if (date instanceof DateStamp) {
+                if(date.getTimeFrom().after(new Date())) {
+                    break;
+                }
+                position = listOfEvents.indexOf(date);
+            }
+        }
+        listView.setSelection(position);
+    }
 
     private void adjustList() {
         if(shouldAddSportNameLabel) {
@@ -98,17 +103,8 @@ public class EventsActivity extends BaseMenuActivity{
         }
         listView.setAdapter(eventsListAdapter);
        // eventsListAdapter.notifyDataSetChanged();
+        setStartingScrollPostition();
     }
-
-//    private void setScrollPosition() {
-//        DateStamp today = new DateStamp(new Date());
-//        int index = 0;
-//        for(Event event:listOfEvents) {
-//            if(event.compareTo(today) > 1) break;
-//            index++;
-//        }
-//        listView.setSelection(index);
-//    }
 
     private void insertSportNames(List<Event> list) {
         String typeName = "";
@@ -267,6 +263,7 @@ public class EventsActivity extends BaseMenuActivity{
 
     private void filterByType() {
         SqlGetEventsInfo repo = new SqlGetEventsInfo(getApplicationContext());
+        repo.addFakeEvents();
         String typeName = typeButton.getText().toString();
         shouldAddSportNameLabel = false;
         switch (typeName) {

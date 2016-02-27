@@ -13,4 +13,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
+
+    <string name="dialog_onbackpressed_title">Zatvaranje prozora</string>
+    <string name="dialog_onbackpressed_message">Želite li spremiti prije izlaska?</string>
+    <string name="dialog_onbackpressed_postive">Da</string>
+    <string name="dialog_onbackpressed_negative">Ne</string>
+    <string name="dialog_onbackpressed_cancel">Odustani</string>
+
 </resources>

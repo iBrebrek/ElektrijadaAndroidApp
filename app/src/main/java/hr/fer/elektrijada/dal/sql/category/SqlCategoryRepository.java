@@ -90,7 +90,8 @@ public class SqlCategoryRepository {
                             cursor.getInt(CategoryContract.getColumnPos(CategoryContract.CategoryEntry._ID)),
                             cursor.getString(CategoryContract.getColumnPos(CategoryContract.CategoryEntry.COLUMN_NAME_NAME)),
                             cursor.getString(CategoryContract.getColumnPos(CategoryContract.CategoryEntry.COLUMN_NAME_NICK)),
-                            cursor.getInt(CategoryContract.getColumnPos(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT)) > 0
+                            cursor.getInt(CategoryContract.getColumnPos(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT)) > 0,
+                            cursor.getInt(CategoryContract.getColumnPos(CategoryContract.CategoryEntry.COLUMN_NAME_IS_DUEL)) > 0
                     ));
                 } while (cursor.moveToNext());
             }
@@ -109,12 +110,14 @@ public class SqlCategoryRepository {
         private String name;
         private String nick;
         private boolean isSport;
+        private boolean isDuel;
 
-        public CategoryFromDb(int id, String name, String nick, boolean isSport) {
+        public CategoryFromDb(int id, String name, String nick, boolean isSport, boolean isDuel) {
             this.id = id;
             this.name = name;
             this.nick = nick;
             this.isSport = isSport;
+            this.isDuel = isDuel;
         }
 
         public int getId() {
@@ -131,6 +134,10 @@ public class SqlCategoryRepository {
 
         public boolean isSport() {
             return isSport;
+        }
+
+        public boolean isDuel() {
+            return isDuel;
         }
 
         @Override
