@@ -1,7 +1,5 @@
 package hr.fer.elektrijada.activities.news;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -11,8 +9,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import hr.fer.elektrijada.MenuHandler;
 import hr.fer.elektrijada.R;
-import hr.fer.elektrijada.activities.BaseMenuActivity;
+import hr.fer.elektrijada.activities.SaveBeforeExitActivity;
 import hr.fer.elektrijada.dal.sql.news.SqlNewsRepository;
 import hr.fer.elektrijada.model.news.NewsEntry;
 
@@ -21,7 +20,7 @@ import hr.fer.elektrijada.model.news.NewsEntry;
  * <p/>
  * Created by Ivica Brebrek
  */
-public class EditNewsActivity extends BaseMenuActivity {
+public class EditNewsActivity extends SaveBeforeExitActivity {
     /**
      * naslov vijesti
      **/
@@ -42,6 +41,11 @@ public class EditNewsActivity extends BaseMenuActivity {
     @Override
     protected int getContentLayoutId() {
         return R.layout.news_add_edit;
+    }
+
+    @Override
+    protected int belongingToMenuItemId() {
+        return MenuHandler.NEWS_ID;
     }
 
     @Override
@@ -116,9 +120,9 @@ public class EditNewsActivity extends BaseMenuActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (item.getTitle().equals(SAVE_EDITED_NEWS)) {
-            saveAndExit();
+            save();
+            finish();
         } else if (item.getTitle().equals(CANCEL_EDIT_NEWS)) {
             finish();
         }
@@ -141,22 +145,6 @@ public class EditNewsActivity extends BaseMenuActivity {
         return true;
     }
 
-    private void saveAndExit() {
-        fillObjectNews();
-        if (!isReadyToSave()) {
-            return;
-        }
-        //TODO: provijeriti gdje se treba spremiti, lokalno ili online
-        SqlNewsRepository repo = new SqlNewsRepository(getApplicationContext());
-        if (adding) {
-            repo.createNewsEntry(news);
-        } else {
-            repo.updateNews(news);
-        }
-        repo.close();
-        finish();
-    }
-
     /**
      * postavlja potrebne elemente clanskoj varijabli news
      */
@@ -170,25 +158,18 @@ public class EditNewsActivity extends BaseMenuActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Zatvaranje prozora")
-                .setMessage("Želite li spremiti prije izlaska?")
-                .setPositiveButton("Da", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        saveAndExit();
-                    }
-
-                })
-                .setNegativeButton("Ne", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setNeutralButton("Odustani", null)
-                .show();
+    protected void save() {
+        fillObjectNews();
+        if (!isReadyToSave()) {
+            return;
+        }
+        //TODO: provijeriti gdje se treba spremiti, lokalno ili online
+        SqlNewsRepository repo = new SqlNewsRepository(getApplicationContext());
+        if (adding) {
+            repo.createNewsEntry(news);
+        } else {
+            repo.updateNews(news);
+        }
+        repo.close();
     }
 }

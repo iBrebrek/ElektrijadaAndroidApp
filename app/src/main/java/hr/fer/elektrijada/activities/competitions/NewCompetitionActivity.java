@@ -1,14 +1,11 @@
 package hr.fer.elektrijada.activities.competitions;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -18,7 +15,7 @@ import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.activities.BaseMenuActivity;
 import hr.fer.elektrijada.model.competitions.CompetitionsEntry;
 
-public class NewCompetitionActivity extends BaseMenuActivity {
+public abstract class NewCompetitionActivity extends BaseMenuActivity {
 
     private static final String SAVE = "Spremi";
     private static final String QUIT = "Odustani";

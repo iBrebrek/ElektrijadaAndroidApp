@@ -17,6 +17,10 @@ public class StartActivity extends BaseMenuActivity {
         return R.layout.content_start_activity;
     }
     @Override
+    protected int belongingToMenuItemId() {
+        return MenuHandler.EVENTS_ID;
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 /*

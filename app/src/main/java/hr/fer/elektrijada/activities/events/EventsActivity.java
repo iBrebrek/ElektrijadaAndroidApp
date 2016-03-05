@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import hr.fer.elektrijada.MenuHandler;
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.activities.BaseMenuActivity;
 import hr.fer.elektrijada.dal.sql.helper.events.SqlGetEventsInfo;
@@ -46,6 +47,11 @@ public class EventsActivity extends BaseMenuActivity{
     @Override
     protected int getContentLayoutId() {
         return R.layout.activity_events;
+    }
+
+    @Override
+    protected int belongingToMenuItemId() {
+        return MenuHandler.EVENTS_ID;
     }
 
     @Override

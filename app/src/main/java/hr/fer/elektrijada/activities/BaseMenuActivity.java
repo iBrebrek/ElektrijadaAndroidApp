@@ -14,9 +14,7 @@ import android.view.ViewStub;
 import hr.fer.elektrijada.MenuHandler;
 import hr.fer.elektrijada.R;
 
-/**
- * Created by b on 17.11.2015..
- */
+
 public abstract class BaseMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -28,6 +26,14 @@ public abstract class BaseMenuActivity extends AppCompatActivity
      * @return Should return custom layout id (e.g. R.layout.content_settings_activity)
      */
     protected abstract int getContentLayoutId();
+
+    /**
+     * u MenuHandler se nalaze konstante za svaki meni,
+     * vrati onu konstantu koja pripada meniu koji bi trebao biti oznacen kada je ova activity aktivna
+     *
+     * @return  jedna od konstanta iz MenuHandler
+     */
+    protected abstract int belongingToMenuItemId();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,6 @@ public abstract class BaseMenuActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         ViewStub stub = (ViewStub) findViewById(R.id.layout_stub);
         stub.setLayoutResource(getContentLayoutId());
         View inflated = stub.inflate();
@@ -57,6 +62,13 @@ public abstract class BaseMenuActivity extends AppCompatActivity
 //        View child = LayoutInflater.from(this).inflate(
 //                getContentLayoutId(), null);
 //        inclusionViewGroup.addView(child);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //oznacuje potrebni menu u draweru, tj., navigaciji
+        MenuHandler.selectMenu(belongingToMenuItemId(), (NavigationView) findViewById(R.id.nav_view));
     }
 
     @Override

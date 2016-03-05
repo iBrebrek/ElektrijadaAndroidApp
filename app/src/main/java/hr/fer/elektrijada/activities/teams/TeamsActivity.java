@@ -1,18 +1,13 @@
 package hr.fer.elektrijada.activities.teams;
 
 
-import android.app.Activity;
 import android.content.Intent;
-
 import android.os.Bundle;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-
 import android.widget.ListView;
-
 
 import java.util.ArrayList;
 
@@ -21,7 +16,7 @@ import hr.fer.elektrijada.activities.BaseMenuActivity;
 import hr.fer.elektrijada.dal.mock.teams.MockTeamsRepository;
 import hr.fer.elektrijada.model.teams.TeamsEntry;
 
-public class TeamsActivity extends BaseMenuActivity {
+public abstract class TeamsActivity extends BaseMenuActivity {
 
 
     private static final String NEW_TEAM = "Dodaj ekipu";

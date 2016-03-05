@@ -1,12 +1,9 @@
 package hr.fer.elektrijada.activities.competitions;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -17,7 +14,7 @@ import hr.fer.elektrijada.activities.BaseMenuActivity;
 import hr.fer.elektrijada.dal.mock.competitions.MockCompetitionsRepository;
 import hr.fer.elektrijada.model.competitions.CompetitionsEntry;
 
-public class CompetitionsActivity extends BaseMenuActivity {
+public abstract class CompetitionsActivity extends BaseMenuActivity {
 
     private static final int REQUEST_ADD = 1;
     private static final String NEW_COMPETITION = "Dodaj natjecanje" ;

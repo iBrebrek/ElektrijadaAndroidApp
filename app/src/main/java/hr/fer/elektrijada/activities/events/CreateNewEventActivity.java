@@ -1,7 +1,5 @@
 package hr.fer.elektrijada.activities.events;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,8 +14,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import hr.fer.elektrijada.MenuHandler;
 import hr.fer.elektrijada.R;
-import hr.fer.elektrijada.activities.BaseMenuActivity;
+import hr.fer.elektrijada.activities.SaveBeforeExitActivity;
 import hr.fer.elektrijada.dal.sql.category.SqlCategoryRepository;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
 import hr.fer.elektrijada.dal.sql.competitor.SqlCompetitorRepository;
@@ -28,12 +27,17 @@ import hr.fer.elektrijada.util.TimePicker;
 /**
  * Created by Ivica Brebrek
  */
-public class CreateNewEventActivity extends BaseMenuActivity {
+public class CreateNewEventActivity extends SaveBeforeExitActivity {
     private boolean isDuel = true; //da se zna u koju tablicu spremamo
 
     @Override
     protected int getContentLayoutId() {
         return R.layout.activity_create_new_event;
+    }
+
+    @Override
+    protected int belongingToMenuItemId() {
+        return MenuHandler.EVENTS_ID;
     }
 
     @Override
@@ -167,13 +171,14 @@ public class CreateNewEventActivity extends BaseMenuActivity {
         });
     }
 
-    private void saveAndExit() {
+    @Override
+    protected void save() {
         String startTime = RememberPickedDetails.startDate.toStringYearFirst() + " "
-                           + RememberPickedDetails.startTime.toString()+":00"; //00 su sekunde
+                + RememberPickedDetails.startTime.toString()+":00"; //00 su sekunde
         String endTime = RememberPickedDetails.hasEnd.isChecked()
-                         ? RememberPickedDetails.endDate.toStringYearFirst() + " "
-                           + RememberPickedDetails.endTime.toString()+":00"
-                         : null;
+                ? RememberPickedDetails.endDate.toStringYearFirst() + " "
+                + RememberPickedDetails.endTime.toString()+":00"
+                : null;
         String location = RememberPickedDetails.location!=null ? RememberPickedDetails.location.getText().toString() : null;
 
         try {
@@ -205,30 +210,6 @@ public class CreateNewEventActivity extends BaseMenuActivity {
             Toast.makeText(getApplicationContext(), exc.getMessage(), Toast.LENGTH_LONG).show();
             return;
         }
-        finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle(R.string.dialog_onbackpressed_title)
-                .setMessage(R.string.dialog_onbackpressed_message)
-                .setPositiveButton(R.string.dialog_onbackpressed_postive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        saveAndExit();
-                    }
-
-                })
-                .setNegativeButton(R.string.dialog_onbackpressed_negative, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setNeutralButton(R.string.dialog_onbackpressed_cancel, null)
-                .show();
     }
 
     private static class RememberPickedDetails{

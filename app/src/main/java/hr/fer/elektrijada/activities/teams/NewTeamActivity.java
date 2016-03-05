@@ -1,10 +1,8 @@
 package hr.fer.elektrijada.activities.teams;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,12 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.activities.BaseMenuActivity;
 import hr.fer.elektrijada.model.teams.TeamsEntry;
 
-public class NewTeamActivity extends BaseMenuActivity {
+public abstract class NewTeamActivity extends BaseMenuActivity {
 
     private static final String SAVE_TEAM = "Spremi";
     private static final String CANCEL = "Odustani";

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import hr.fer.elektrijada.MenuHandler;
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.activities.BaseMenuActivity;
 import hr.fer.elektrijada.util.DatePicker;
@@ -16,6 +17,11 @@ public class SettingsActivity extends BaseMenuActivity {
     @Override
     protected int getContentLayoutId(){
         return R.layout.content_settings_activity;
+    }
+
+    @Override
+    protected int belongingToMenuItemId() {
+        return MenuHandler.SETTINGS_ID;
     }
 
     @Override

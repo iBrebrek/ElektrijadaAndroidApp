@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import hr.fer.elektrijada.MenuHandler;
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.activities.BaseMenuActivity;
 import hr.fer.elektrijada.dal.sql.news.SqlNewsRepository;
@@ -24,6 +25,11 @@ public class NewsActivity extends BaseMenuActivity {
     @Override
     protected int getContentLayoutId() {
         return R.layout.news;
+    }
+
+    @Override
+    protected int belongingToMenuItemId() {
+        return MenuHandler.NEWS_ID;
     }
 
     @Override
