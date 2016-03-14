@@ -28,28 +28,36 @@ public class SqlCategoryRepository {
 
     //napisati ostale metode ako zatrebaju...
 
-    //ako je kategorija sport s ovim znamo je li dvoboj ili veslane/kros
-    //zakomentirano jer ne radi ako ta kategorija jos nikad nije bila koristena
-//    public boolean isDuel(int categoryId) {
-//        SQLiteDatabase db = null;
-//        try {
-//            db = dbHelper.getReadableDatabase();
-//            Cursor cursor = db.rawQuery(
-//                    "SELECT * FROM " + DuelContract.DuelEntry.TABLE_NAME
-//                            + " WHERE " + DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID + " = " +categoryId,
-//                    null);
-//            if (cursor.moveToFirst()) {
-//                return true;
-//            }
-//            cursor.close();
-//        } catch (Exception exc) {
-//            Logger.LogException(exc);
-//        } finally {
-//            if (db != null)
-//                db.close();
-//        }
-//        return false;
-//    }
+    public CategoryFromDb getCategory(int id) {
+        CategoryFromDb category = null;
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT * "
+                            + " FROM " + CategoryContract.CategoryEntry.TABLE_NAME
+                            + " WHERE " + CategoryContract.CategoryEntry._ID +" = " + id,
+                    null);
+
+            if (cursor.moveToFirst()) {
+                category = new CategoryFromDb(
+                        cursor.getInt(CategoryContract.getColumnPos(CategoryContract.CategoryEntry._ID)),
+                        cursor.getString(CategoryContract.getColumnPos(CategoryContract.CategoryEntry.COLUMN_NAME_NAME)),
+                        cursor.getString(CategoryContract.getColumnPos(CategoryContract.CategoryEntry.COLUMN_NAME_NICK)),
+                        cursor.getInt(CategoryContract.getColumnPos(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT)) > 0,
+                        cursor.getInt(CategoryContract.getColumnPos(CategoryContract.CategoryEntry.COLUMN_NAME_IS_DUEL)) > 0
+                );
+            }
+            cursor.close();
+        } catch (Exception exc) {
+
+        } finally {
+            if (db != null)
+                db.close();
+        }
+        return category;
+    }
 
     public String getCategoryName(int id) {
         String name = null;
@@ -143,6 +151,14 @@ public class SqlCategoryRepository {
         @Override
         public String toString() {
             return name + (nick==null?"":" ("+nick+")");
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof CategoryFromDb && ((CategoryFromDb) o).id == id) {
+                return true;
+            }
+            return false;
         }
     }
 }

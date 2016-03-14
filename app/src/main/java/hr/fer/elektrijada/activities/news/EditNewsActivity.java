@@ -3,8 +3,6 @@ package hr.fer.elektrijada.activities.news;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -103,31 +101,6 @@ public class EditNewsActivity extends SaveBeforeExitActivity {
     private void byeBye() {
         Toast.makeText(getApplicationContext(), "Greška prilikom otvaranja vijesti", Toast.LENGTH_SHORT).show();
         finish();
-    }
-
-    //varijable postoje samo zato sto se stringovi koriste na vise mjesta (pa da se lakse mjenja naziv)
-    private final static String SAVE_EDITED_NEWS = "Spremi";
-    private final static String CANCEL_EDIT_NEWS = "Odustani";
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_news, menu);
-        menu.add(SAVE_EDITED_NEWS);
-        menu.add(CANCEL_EDIT_NEWS);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getTitle().equals(SAVE_EDITED_NEWS)) {
-            save();
-            finish();
-        } else if (item.getTitle().equals(CANCEL_EDIT_NEWS)) {
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private boolean isReadyToSave() {

@@ -96,6 +96,7 @@ public class SqlDuelRepository {
             if (duel.location != null) {
                 values.put(DuelContract.DuelEntry.COLUMN_NAME_LOCATION, duel.location);
             }
+            values.put(DuelContract.DuelEntry.COLUMN_NAME_STAGE_ID, duel.stageId);
             values.put(DuelContract.DuelEntry.COLUMN_NAME_IS_ASSUMPTION, duel.isAssumption);
 
             long rowId = db.insert(DuelContract.DuelEntry.TABLE_NAME, null, values);
@@ -166,6 +167,14 @@ public class SqlDuelRepository {
         }
 
         /*
+        bez id, section
+         */
+        public DuelFromDb(String timeFrom, String timeTo, int categoryId, int firstId, int secondId, int stageId, String location, boolean isAssumption) {
+            this(timeFrom, timeTo, categoryId, firstId, secondId, location, isAssumption);
+            this.stageId = stageId;
+        }
+
+        /*
         konstruktor sa svim podatcima
          */
         public DuelFromDb(int id, String timeFrom, String timeTo, int categoryId, int firstId,
@@ -178,6 +187,10 @@ public class SqlDuelRepository {
 
         public int getId() {
             return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
         }
 
         public String getTimeFrom() {
@@ -250,6 +263,14 @@ public class SqlDuelRepository {
 
         public void setSection(String section) {
             this.section = section;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof DuelFromDb && ((DuelFromDb) o).id == id) {
+                return true;
+            }
+            return false;
         }
     }
 }

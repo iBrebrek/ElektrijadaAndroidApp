@@ -1,6 +1,7 @@
 package hr.fer.elektrijada.activities.events;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,7 +129,10 @@ public class EventsListAdapter extends BaseAdapter {
             name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showToast("znanje-naziv");
+                    Intent intent = new Intent(activity.getApplicationContext(), EditEventActivity.class);
+                    intent.putExtra("isDuel", false);
+                    intent.putExtra("event_id", event.getId());
+                    activity.startActivity(intent);
                 }
             });
             if (event.hasResults()) {
@@ -151,6 +155,7 @@ public class EventsListAdapter extends BaseAdapter {
         }
     }
 
+    //ovo je zapravo duel, npr. veslanje ne spada tu
     private class SportViewHolder {
         TextView time;
         TextView teams;
@@ -171,7 +176,10 @@ public class EventsListAdapter extends BaseAdapter {
             textLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showToast("sport-naziv");
+                    Intent intent = new Intent(activity.getApplicationContext(), EditEventActivity.class);
+                    intent.putExtra("isDuel", true);
+                    intent.putExtra("event_id", event.getId());
+                    activity.startActivity(intent);
                 }
             });
             result.setText(event.getResult());

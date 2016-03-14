@@ -311,7 +311,7 @@ public class EventsActivity extends BaseMenuActivity{
         }
     }
 
-    private static String ADD_NEW_EVENT = "Dodaj događaj";
+    private final static String ADD_NEW_EVENT = "Dodaj događaj";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

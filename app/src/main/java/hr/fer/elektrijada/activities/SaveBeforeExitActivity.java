@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import hr.fer.elektrijada.R;
 
@@ -44,5 +46,29 @@ public abstract class SaveBeforeExitActivity extends BaseMenuActivity {
 
     private void goBack() { //da bi mogo pozvat super.onBackPressed u anonimnom razredu
         super.onBackPressed();
+    }
+
+
+    private final static String SAVE = "Spremi i izađi";
+    private final static String CANCEL = "Odustani i izađi";
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_start, menu);
+        menu.add(SAVE);
+        menu.add(CANCEL);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getTitle().equals(SAVE)) {
+            save();
+            finish();
+        } else if (item.getTitle().equals(CANCEL)) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

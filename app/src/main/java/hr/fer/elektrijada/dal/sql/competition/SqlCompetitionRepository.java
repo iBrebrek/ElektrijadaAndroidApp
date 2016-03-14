@@ -182,6 +182,10 @@ public class SqlCompetitionRepository {
             return id;
         }
 
+        public void setId(int id) {
+            this.id = id;
+        }
+
         public String getTimeFrom() {
             return timeFrom;
         }
@@ -220,6 +224,14 @@ public class SqlCompetitionRepository {
 
         public void setIsAssumption(boolean isAssumption) {
             this.isAssumption = isAssumption;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof CompetitionFromDb && ((CompetitionFromDb) o).id == id) {
+                return true;
+            }
+            return false;
         }
     }
 }

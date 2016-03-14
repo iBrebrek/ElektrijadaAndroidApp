@@ -1,6 +1,7 @@
 package hr.fer.elektrijada.activities.events;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import hr.fer.elektrijada.R;
-import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.events.CompetitionEvent;
 import hr.fer.elektrijada.model.events.DuelEvent;
+import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.events.SportNameLabel;
 
 import static hr.fer.elektrijada.activities.events.EventsOnTimeClickAction.openTimeDialog;
@@ -139,7 +140,10 @@ public class SportEventsListAdapter extends BaseAdapter {
             name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showToast("znanje-naziv");
+                    Intent intent = new Intent(activity.getApplicationContext(), EditEventActivity.class);
+                    intent.putExtra("isDuel", false);
+                    intent.putExtra("event_id", event.getId());
+                    activity.startActivity(intent);
                 }
             });
             if (event.hasResults()) {
@@ -182,7 +186,10 @@ public class SportEventsListAdapter extends BaseAdapter {
             textLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showToast("sport-naziv");
+                    Intent intent = new Intent(activity.getApplicationContext(), EditEventActivity.class);
+                    intent.putExtra("isDuel", true);
+                    intent.putExtra("event_id", event.getId());
+                    activity.startActivity(intent);
                 }
             });
             result.setText(event.getResult());

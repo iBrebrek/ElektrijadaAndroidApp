@@ -15,6 +15,7 @@ import hr.fer.elektrijada.dal.sql.competitionscore.CompetitionScoreContract;
 import hr.fer.elektrijada.dal.sql.competitor.CompetitorContract;
 import hr.fer.elektrijada.dal.sql.duel.DuelContract;
 import hr.fer.elektrijada.dal.sql.duelscore.DuelScoreContract;
+import hr.fer.elektrijada.dal.sql.stage.StageContract;
 import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.events.CompetitionEvent;
 import hr.fer.elektrijada.model.events.DuelEvent;
@@ -135,6 +136,31 @@ public class SqlGetEventsInfo {
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 1);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED, 0);
         test = db.insert(CompetitorContract.CompetitorEntry.TABLE_NAME, null, values);
+        values = new ContentValues();
+        values.put(CompetitorContract.CompetitorEntry._ID, 100);
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "Igrači");
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_PERSON, 0);
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 1);
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED, 0);
+        test = db.insert(CompetitorContract.CompetitorEntry.TABLE_NAME, null, values);
+
+        values = new ContentValues();
+        values.put(StageContract.StageEntry._ID, 0);
+        values.put(StageContract.StageEntry.COLUMN_NAME_NAME, "---");
+        test = db.insert(StageContract.StageEntry.TABLE_NAME, null, values);
+        values = new ContentValues();
+        values.put(StageContract.StageEntry._ID, 1);
+        values.put(StageContract.StageEntry.COLUMN_NAME_NAME, "Finale");
+        test = db.insert(StageContract.StageEntry.TABLE_NAME, null, values);
+        values = new ContentValues();
+        values.put(StageContract.StageEntry._ID, 2);
+        values.put(StageContract.StageEntry.COLUMN_NAME_NAME, "Polufinale");
+        test = db.insert(StageContract.StageEntry.TABLE_NAME, null, values);
+        values = new ContentValues();
+        values.put(StageContract.StageEntry._ID, 3);
+        values.put(StageContract.StageEntry.COLUMN_NAME_NAME, "Četvrtfinale");
+        test = db.insert(StageContract.StageEntry.TABLE_NAME, null, values);
+
         db.close();
     }
 

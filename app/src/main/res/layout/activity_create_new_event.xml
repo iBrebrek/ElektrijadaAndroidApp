@@ -45,7 +45,16 @@
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown" />
 
-        <!-- biranje tima, ako sport -->
+        <!-- biranje faze, ako duel -->
+        <Spinner
+            android:id="@+id/spinnerCreateEventPickStage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
+
+        <!-- biranje tima, ako duel -->
         <LinearLayout
             android:id="@+id/createEventPickTeams"
             android:layout_width="match_parent"

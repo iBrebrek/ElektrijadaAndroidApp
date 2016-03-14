@@ -19,8 +19,17 @@
         <activity
             android:name=".activities.events.CreateNewEventActivity"
             android:label="Novi događaj"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activities.events.EditEventActivity"
+            android:label="Uredi događaj"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activities.events.ViewEventActivity"
+            android:label="Događaj"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".activities.news.NewsFeedActivity"
