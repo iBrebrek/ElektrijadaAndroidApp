@@ -36,7 +36,7 @@ public class SqlDuelScoreRepository {
                     "SELECT " + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_1 + ", "
                             + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_2
                             + " FROM " + DuelScoreContract.DuelScoreEntry.TABLE_NAME
-                            + " WHERE " + DuelScoreContract.DuelScoreEntry._ID +" = " + duelId,
+                            + " WHERE " + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_DUEL_ID +" = " + duelId,
                     null);
 
             if (cursor != null) {

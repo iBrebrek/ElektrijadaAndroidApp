@@ -266,7 +266,7 @@ public class SqlGetEventsInfo {
         return listOfSportEvents;
     }
 
-    private void setResultMap(DuelEvent event) {
+    public void setResultMap(DuelEvent event) {
         SQLiteDatabase db = null;
         try {
             db = dbHelper.getReadableDatabase();

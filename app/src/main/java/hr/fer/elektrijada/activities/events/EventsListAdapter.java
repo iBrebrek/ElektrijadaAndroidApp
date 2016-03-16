@@ -129,7 +129,7 @@ public class EventsListAdapter extends BaseAdapter {
             name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(activity.getApplicationContext(), EditEventActivity.class);
+                    Intent intent = new Intent(activity.getApplicationContext(), ViewEventActivity.class);
                     intent.putExtra("isDuel", false);
                     intent.putExtra("event_id", event.getId());
                     activity.startActivity(intent);
@@ -176,7 +176,7 @@ public class EventsListAdapter extends BaseAdapter {
             textLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(activity.getApplicationContext(), EditEventActivity.class);
+                    Intent intent = new Intent(activity.getApplicationContext(), ViewEventActivity.class);
                     intent.putExtra("isDuel", true);
                     intent.putExtra("event_id", event.getId());
                     activity.startActivity(intent);

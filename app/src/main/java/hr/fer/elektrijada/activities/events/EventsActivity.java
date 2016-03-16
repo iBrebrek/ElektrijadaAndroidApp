@@ -66,11 +66,12 @@ public class EventsActivity extends BaseMenuActivity{
 
     @Override
     protected void onResume() {
+        //npr, kada se doda novi dogadaj zbog ovoga se odma vidi
         super.onResume();
-        filter(); //npr, kada se doda novi dogadaj zbog ovoga se odma vidi
+        filter();
     }
 
-    private void setStartingScrollPostition(){
+    private void setStartingScrollPosition(){
         int position = 0;
         for(Event date:listOfEvents) {
             if (date instanceof DateStamp) {
@@ -96,20 +97,18 @@ public class EventsActivity extends BaseMenuActivity{
             insertSportNames(listOfEvents);
             if(shouldAddDateStamps) {
                 insertDateStampsAfterLabels(listOfEvents);
-                //setScrollPosition();
             }
             eventsListAdapter = new SportEventsListAdapter(this, listOfEvents);
         } else {
             Collections.sort(listOfEvents);
             if(shouldAddDateStamps) {
                 insertDateStamps(listOfEvents);
-                //setScrollPosition();
             }
             eventsListAdapter = new EventsListAdapter(this, listOfEvents);
         }
         listView.setAdapter(eventsListAdapter);
        // eventsListAdapter.notifyDataSetChanged();
-        setStartingScrollPostition();
+        setStartingScrollPosition();
     }
 
     private void insertSportNames(List<Event> list) {

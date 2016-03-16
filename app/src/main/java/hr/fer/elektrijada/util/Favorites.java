@@ -24,13 +24,33 @@ public class Favorites {
     public static final String FAVORITE_DUELS = "favoriteDuels";
     public static final String FAVORITE_COMPETITIONS = "favoriteCompetitions";
 
-    public static void addFavorite(Context context, Event event) {
+    public static boolean isFavorite(Context context, String eventId, String favoritesName) {
+        SharedPreferences settings = context.getSharedPreferences(APP_SHARED_PREERENCES, Context.MODE_PRIVATE);
+
+        if(favoritesName.equals(FAVORITE_DUELS)) {
+            if (settings.contains(FAVORITE_DUELS)) {
+                Set<String> setOfDuelIds = settings.getStringSet(FAVORITE_DUELS, new HashSet<String>());
+                if (setOfDuelIds.contains(eventId)) {
+                    return true;
+                }
+            }
+        } else {
+            if (settings.contains(FAVORITE_COMPETITIONS)) {
+                Set<String> setOfCompIds = settings.getStringSet(FAVORITE_COMPETITIONS, new HashSet<String>());
+                if (setOfCompIds.contains(eventId)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void addFavorite(Context context, String eventId, String addTo) {
         SharedPreferences settings = context
                 .getSharedPreferences(APP_SHARED_PREERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
 
-        String stringId = Integer.toString(event.getId());
-        if(event instanceof CompetitionEvent) {
+        if(addTo.equals(FAVORITE_COMPETITIONS)) {
             Set<String> setOfCompIds = settings.getStringSet(FAVORITE_COMPETITIONS, null);
             /*
             ne smije se modificirati izvorni set,
@@ -39,19 +59,28 @@ public class Favorites {
             iz tog razloga radim novi set koji je jednak izvornom
              */
             setOfCompIds = setOfCompIds == null
-                            ? new HashSet<String>()
-                            : new HashSet<>(setOfCompIds);
-            setOfCompIds.add(stringId);
+                    ? new HashSet<String>()
+                    : new HashSet<>(setOfCompIds);
+            setOfCompIds.add(eventId);
             editor.putStringSet(FAVORITE_COMPETITIONS, setOfCompIds);
         } else {
             Set<String> setOfDuelIds = settings.getStringSet(FAVORITE_DUELS, null);
             setOfDuelIds = setOfDuelIds == null
-                            ? new HashSet<String>()
-                            : new HashSet<>(setOfDuelIds);
-            setOfDuelIds.add(stringId);
+                    ? new HashSet<String>()
+                    : new HashSet<>(setOfDuelIds);
+            setOfDuelIds.add(eventId);
             editor.putStringSet(FAVORITE_DUELS, setOfDuelIds);
         }
         editor.apply();
+    }
+
+    public static void addFavorite(Context context, Event event) {
+        String id = Integer.toString(event.getId());
+        if(event instanceof CompetitionEvent) {
+            addFavorite(context, id, FAVORITE_COMPETITIONS);
+        } else {
+            addFavorite(context, id, FAVORITE_DUELS);
+        }
     }
 
     public static void removeFavorite(Context context, Event event) {

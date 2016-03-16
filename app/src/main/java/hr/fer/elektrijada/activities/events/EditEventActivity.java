@@ -18,7 +18,7 @@ public class EditEventActivity extends CreateNewEventActivity {
         boolean isDuel = getIntent().getBooleanExtra("isDuel", false);
         int eventId = getIntent().getIntExtra("event_id", -1);
 
-        if(eventId == -1) {
+        if(eventId == -1) { //nebi se trebalo nikad dogoditi
             Toast.makeText(getApplicationContext(), "Greška prilikom otvaranja događaja.", Toast.LENGTH_SHORT).show();
             finish();
         }
