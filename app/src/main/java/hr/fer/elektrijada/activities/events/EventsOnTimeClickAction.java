@@ -13,15 +13,21 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import hr.fer.elektrijada.R;
+import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
+import hr.fer.elektrijada.dal.sql.duel.DuelFromDb;
 import hr.fer.elektrijada.dal.sql.duel.SqlDuelRepository;
-import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.events.CompetitionEvent;
 import hr.fer.elektrijada.model.events.DuelEvent;
+import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.util.DatePicker;
 import hr.fer.elektrijada.util.TimePicker;
 
 /**
+ * Razred koji omogucuje otvaranje dijaloga za uredivanje vremena
+ * (taj dijalog se otvara klikom na vrijeme u listi/popisu svih dogadaja)
+ * Pozivanje ovoga razreda se trenutno nalazi u oba adaptera (EventsListAdapter i SportEventsListAdapter)
+ *
  * Created by Ivica Brebrek
  */
 public class EventsOnTimeClickAction {
@@ -144,14 +150,14 @@ public class EventsOnTimeClickAction {
     private static void updateEvent() {
         if(event instanceof DuelEvent) {
             SqlDuelRepository repoDuel = new SqlDuelRepository(activity);
-            SqlDuelRepository.DuelFromDb duel = repoDuel.getDuel(event.getId());
+            DuelFromDb duel = repoDuel.getDuel(event.getId());
             duel.setTimeFrom(event.getStartYMDHM());
             duel.setTimeTo(event.getEndYMDHM());
             repoDuel.updateDuel(duel);
             repoDuel.close();
         } else if(event instanceof CompetitionEvent) {
             SqlCompetitionRepository repoComp = new SqlCompetitionRepository(activity);
-            SqlCompetitionRepository.CompetitionFromDb competition = repoComp.getCompetition(event.getId());
+            CompetitionFromDb competition = repoComp.getCompetition(event.getId());
             competition.setTimeFrom(event.getStartYMDHM());
             competition.setTimeTo(event.getEndYMDHM());
             repoComp.updateCompetition(competition);

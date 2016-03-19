@@ -3,10 +3,14 @@ package hr.fer.elektrijada.activities.events;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
+import hr.fer.elektrijada.dal.sql.duel.DuelFromDb;
 import hr.fer.elektrijada.dal.sql.duel.SqlDuelRepository;
 
 /**
+ * Uredivanje vec postojeceg eventa
+ *
  * Created by Ivica Brebrek
  */
 public class EditEventActivity extends CreateNewEventActivity {
@@ -25,13 +29,13 @@ public class EditEventActivity extends CreateNewEventActivity {
 
         if(isDuel) {
             SqlDuelRepository duelRepo = new SqlDuelRepository(this);
-            SqlDuelRepository.DuelFromDb duel = duelRepo.getDuel(eventId);
+            DuelFromDb duel = duelRepo.getDuel(eventId);
             duelRepo.close();
             setEvent(duel.getCategoryId(), duel.getStageId(), duel.getFirstId(),
                     duel.getSecondId(), duel.getLocation(), duel.getTimeFrom(), duel.getTimeTo());
         } else {
             SqlCompetitionRepository compRepo = new SqlCompetitionRepository(this);
-            SqlCompetitionRepository.CompetitionFromDb comp = compRepo.getCompetition(eventId);
+            CompetitionFromDb comp = compRepo.getCompetition(eventId);
             compRepo.close();
             setEvent(comp.getCategoryId(), -1, -1, -1, comp.getLocation(), comp.getTimeFrom(), comp.getTimeTo());
         }

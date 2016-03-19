@@ -20,6 +20,10 @@ import hr.fer.elektrijada.model.events.DuelEvent;
 import static hr.fer.elektrijada.activities.events.EventsOnTimeClickAction.openTimeDialog;
 
 /**
+ * Adapter koji se koristi u listi svih dogadaja (EventsActivity),
+ * ovaj adapter se NE koristi kada je filtracija dogadaja postavljena na SPORT,
+ * u svim ostalim filtriranjima (svi, znanje, favoriti) se koristi OVAJ adapter
+ *
  * Created by Ivica Brebrek
  */
 public class EventsListAdapter extends BaseAdapter {

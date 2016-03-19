@@ -19,16 +19,22 @@ import java.util.HashMap;
 import hr.fer.elektrijada.MenuHandler;
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.activities.SaveBeforeExitActivity;
+import hr.fer.elektrijada.dal.sql.category.CategoryFromDb;
 import hr.fer.elektrijada.dal.sql.category.SqlCategoryRepository;
+import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
 import hr.fer.elektrijada.dal.sql.competitor.SqlCompetitorRepository;
+import hr.fer.elektrijada.dal.sql.duel.DuelFromDb;
 import hr.fer.elektrijada.dal.sql.duel.SqlDuelRepository;
 import hr.fer.elektrijada.dal.sql.stage.SqlStageRepository;
+import hr.fer.elektrijada.dal.sql.stage.StageFromDb;
 import hr.fer.elektrijada.util.DateParserUtil;
 import hr.fer.elektrijada.util.DatePicker;
 import hr.fer.elektrijada.util.TimePicker;
 
 /**
+ * Aktivnost u kojoj se radi novi event
+ *
  * Created by Ivica Brebrek
  */
 public class CreateNewEventActivity extends SaveBeforeExitActivity {
@@ -91,10 +97,10 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
 
     private void initCategorySpinner() {
         SqlCategoryRepository repo = new SqlCategoryRepository(this);
-        final ArrayList<SqlCategoryRepository.CategoryFromDb> categories = repo.getAllCategories();
+        final ArrayList<CategoryFromDb> categories = repo.getAllCategories();
         repo.close();
         ArrayList<String> names = new ArrayList<>();
-        for(SqlCategoryRepository.CategoryFromDb category:categories) {
+        for(CategoryFromDb category:categories) {
             names.add(category.toString());
         }
 
@@ -103,7 +109,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SqlCategoryRepository.CategoryFromDb category = categories.get(position);
+                CategoryFromDb category = categories.get(position);
                 RememberPickedDetails.categoryId = category.getId();
                 if (category.isDuel()) {
                     teams.setVisibility(View.VISIBLE);
@@ -123,10 +129,10 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
 
     private void initStageSpinner() {
         SqlStageRepository repo = new SqlStageRepository(this);
-        final ArrayList<SqlStageRepository.StageFromDb> stages = repo.getAllStages();
+        final ArrayList<StageFromDb> stages = repo.getAllStages();
         repo.close();
         ArrayList<String> names = new ArrayList<>();
-        for(SqlStageRepository.StageFromDb stage:stages) {
+        for(StageFromDb stage:stages) {
             names.add(stage.toString());
         }
 
@@ -136,7 +142,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
         dropdownCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SqlStageRepository.StageFromDb stage = stages.get(position);
+                StageFromDb stage = stages.get(position);
                 RememberPickedDetails.stageId = stage.getId();
             }
             @Override
@@ -216,7 +222,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
         try {
             //koristi se try jer se nesmije dozvoliti da je kraj prije pocetka
             if (isDuel) {
-                SqlDuelRepository.DuelFromDb duel = RememberPickedDetails.getDuel();
+                DuelFromDb duel = RememberPickedDetails.getDuel();
                 SqlDuelRepository repoDuel = new SqlDuelRepository(getApplicationContext());
                 if(isUpdate) {
                     duel.setId(getIntent().getIntExtra("event_id", -1));
@@ -226,7 +232,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
                 }
                 repoDuel.close();
             } else {
-                SqlCompetitionRepository.CompetitionFromDb competition = RememberPickedDetails.getCompetition();
+                CompetitionFromDb competition = RememberPickedDetails.getCompetition();
                 SqlCompetitionRepository repoComp = new SqlCompetitionRepository(getApplicationContext());
                 if(isUpdate) {
                     competition.setId(getIntent().getIntExtra("event_id", -1));
@@ -255,7 +261,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
         private static TimePicker endTime;
         //private static CheckBox isAssumption;
 
-        private static SqlDuelRepository.DuelFromDb getDuel() {
+        private static DuelFromDb getDuel() {
             String startTime = RememberPickedDetails.startDate.toStringYearFirst() + " "
                     + RememberPickedDetails.startTime.toString()+":00"; //00 su sekunde
             String endTime = RememberPickedDetails.hasEnd.isChecked()
@@ -264,7 +270,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
                     : null;
             String location = RememberPickedDetails.location!=null ? RememberPickedDetails.location.getText().toString() : null;
 
-            return new SqlDuelRepository.DuelFromDb(
+            return new DuelFromDb(
                     startTime,
                     endTime,
                     RememberPickedDetails.categoryId,
@@ -276,7 +282,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
             );
         }
 
-        private static SqlCompetitionRepository.CompetitionFromDb getCompetition() {
+        private static CompetitionFromDb getCompetition() {
             String startTime = RememberPickedDetails.startDate.toStringYearFirst() + " "
                     + RememberPickedDetails.startTime.toString()+":00"; //00 su sekunde
             String endTime = RememberPickedDetails.hasEnd.isChecked()
@@ -285,7 +291,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
                     : null;
             String location = RememberPickedDetails.location!=null ? RememberPickedDetails.location.getText().toString() : null;
 
-            return new SqlCompetitionRepository.CompetitionFromDb(
+            return new CompetitionFromDb(
                     startTime,
                     endTime,
                     RememberPickedDetails.categoryId,

@@ -21,6 +21,9 @@ import hr.fer.elektrijada.model.events.SportNameLabel;
 import static hr.fer.elektrijada.activities.events.EventsOnTimeClickAction.openTimeDialog;
 
 /**
+ * Ovaj adapter je jako slican adapteru EventsListAdapter, ali ima i labelu s nazivom sporta.
+ * Ovaj adapter se koristi SAMO kada je filtracija dogadaj postavljena na SPORT.
+ *
  * Created by Ivica Brebrek
  */
 public class SportEventsListAdapter extends BaseAdapter {

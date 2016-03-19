@@ -29,6 +29,8 @@ import hr.fer.elektrijada.model.events.SportNameLabel;
 import hr.fer.elektrijada.util.Favorites;
 
 /**
+ * Pregled svih eventa (to je trenutno pocetna aktivnost)
+ *
  * Created by Ivica Brebrek
  */
 public class EventsActivity extends BaseMenuActivity{

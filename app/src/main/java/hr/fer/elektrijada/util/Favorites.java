@@ -8,8 +8,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import hr.fer.elektrijada.dal.sql.category.SqlCategoryRepository;
+import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
 import hr.fer.elektrijada.dal.sql.competitor.SqlCompetitorRepository;
+import hr.fer.elektrijada.dal.sql.duel.DuelFromDb;
 import hr.fer.elektrijada.dal.sql.duel.SqlDuelRepository;
 import hr.fer.elektrijada.dal.sql.duelscore.SqlDuelScoreRepository;
 import hr.fer.elektrijada.model.events.CompetitionEvent;
@@ -154,7 +156,7 @@ public class Favorites {
         try {
             int id = Integer.parseInt(stringId);
             compRepo = new SqlCompetitionRepository(context);
-            SqlCompetitionRepository.CompetitionFromDb eventFromDb = compRepo.getCompetition(id);
+            CompetitionFromDb eventFromDb = compRepo.getCompetition(id);
             if(eventFromDb == null) {
                 return null;
             }
@@ -186,7 +188,7 @@ public class Favorites {
         try {
             int id = Integer.parseInt(stringId);
             repoDuel = new SqlDuelRepository(context);
-            SqlDuelRepository.DuelFromDb eventFromDb = repoDuel.getDuel(id);
+            DuelFromDb eventFromDb = repoDuel.getDuel(id);
             if(eventFromDb == null) {
                 return null;
             }
