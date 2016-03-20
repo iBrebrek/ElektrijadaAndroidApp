@@ -33,7 +33,13 @@ import hr.fer.elektrijada.util.DatePicker;
 import hr.fer.elektrijada.util.TimePicker;
 
 /**
- * Aktivnost u kojoj se radi novi event
+ * Aktivnost u kojoj se radi novi event,
+ *
+ * Trenuta realizacija ovog razreda nije bas lijepa jer sam dodavao neke stvari
+ * koje nemaju veze s novim vec s editom postojeceg
+ * (jer EditEventActivity nasljeduje ovaj razred)
+ * Jednom kad cu imat vise vremena cu izdvojit zajednicki kostur u novi apstraktni razred
+ * kojeg ce onda naslijedit CreateNewEventActivity i EditEventActivity, tad ce ovo bit puno preglednije
  *
  * Created by Ivica Brebrek
  */
@@ -305,6 +311,13 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
 
     protected void setEvent (int categoryId, int stageId, int firstId, int secondId, String location, String from, String to) {
         isUpdate = true;
+
+        categorySpinner.setEnabled(false); //TODO:
+        /*
+        mozda maknuti ovo kad nadem dobro rjesenje.
+        Trenutno je zeznuto mjenjati kategoriju jer su to skzor druge tablice,
+        a stubView zeza kad se vrati iz edita u pregled ako smo presli s duela na znanje, il obrnuto
+         */
 
         //namjesti category spinner
         SqlCategoryRepository catRepo = new SqlCategoryRepository(this);

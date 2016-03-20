@@ -1,5 +1,11 @@
 package hr.fer.elektrijada.dal.sql.duel;
 
+import android.content.Context;
+
+import hr.fer.elektrijada.dal.sql.competitor.SqlCompetitorRepository;
+import hr.fer.elektrijada.dal.sql.duelscore.SqlDuelScoreRepository;
+import hr.fer.elektrijada.dal.sql.stage.SqlStageRepository;
+import hr.fer.elektrijada.model.score.DuelScore;
 import hr.fer.elektrijada.util.DateParserUtil;
 
 /**
@@ -16,6 +22,17 @@ public class DuelFromDb {
     private String location;
     private boolean isAssumption;
     private String section;
+
+    /*
+    za ovih 5 varijabli uvijek su postavljene defaultne vrijednosti null tj. -1 (ovo promijeniti ako će nekad -1 postat valjan score)
+
+    ove varijable će biti inicijalizirane prvi put kada se pozove njihov geter,
+    jer ih nema smisla odma inicilajizirat posto se treba trazit pot drugim tablicama baze
+     */
+    private String stageName = null;
+    private String firstCompetitorName = null;
+    private String secondCompetitorName = null;
+    private DuelScore duelScore = null;
 
     /*
     bez id, stageId, section
@@ -131,6 +148,68 @@ public class DuelFromDb {
 
     public void setSection(String section) {
         this.section = section;
+    }
+
+    /*
+    za ovih 5 sljedecih getera je potrebno predati kontekst jer pristupaju bazi,
+    ako se nade nacin da se iz ovoga razreda dobi kontekst onda prepraviti
+     */
+
+    public String getStageName(Context context) {
+        if(stageName == null) {
+            SqlStageRepository stageRepo = new SqlStageRepository(context);
+            stageName = stageRepo.getStage(stageId).getName();
+            stageRepo.close();
+        }
+        return stageName;
+    }
+
+    public String getFirstCompetitorName(Context context) {
+        if(firstCompetitorName == null) {
+            SqlCompetitorRepository competitorRepository = new SqlCompetitorRepository(context);
+            firstCompetitorName = competitorRepository.getCompetitorName(firstId);
+            competitorRepository.close();
+        }
+        return firstCompetitorName;
+    }
+
+    public String getSecondCompetitorName(Context context) {
+        if(secondCompetitorName == null) {
+            SqlCompetitorRepository competitorRepository = new SqlCompetitorRepository(context);
+            secondCompetitorName = competitorRepository.getCompetitorName(secondId);
+            competitorRepository.close();
+        }
+        return secondCompetitorName;
+    }
+
+    /*
+    za score se vraca String jer je moguce da rezultat nema,
+    u tom slucaju se vraca " - "
+     */
+    public String getFirstComptetitorScore(Context context) {
+        if(duelScore == null) {
+            SqlDuelScoreRepository duelScoreRepository = new SqlDuelScoreRepository(context);
+            duelScore = duelScoreRepository.getScore(id);
+            duelScoreRepository.close();
+        }
+        if(duelScore.isSet()) {
+            return String.valueOf(duelScore.getFirstScore());
+        } else {
+            return " - ";
+        }
+    }
+
+    public String getSecondComptetitorScore(Context context) {
+        if(duelScore == null) {
+            SqlDuelScoreRepository duelScoreRepository = new SqlDuelScoreRepository(context);
+            duelScore = duelScoreRepository.getScore(id);
+            duelScoreRepository.close();
+        }
+        if(duelScore.isSet()) {
+            return String.valueOf(duelScore.getSecondScore());
+        } else {
+            return " - ";
+        }
     }
 
     @Override

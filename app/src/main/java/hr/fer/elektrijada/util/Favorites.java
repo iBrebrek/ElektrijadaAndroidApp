@@ -17,6 +17,7 @@ import hr.fer.elektrijada.dal.sql.duelscore.SqlDuelScoreRepository;
 import hr.fer.elektrijada.model.events.CompetitionEvent;
 import hr.fer.elektrijada.model.events.DuelEvent;
 import hr.fer.elektrijada.model.events.Event;
+import hr.fer.elektrijada.model.score.DuelScore;
 
 /**
  * Created by Ivica Brebrek
@@ -201,7 +202,7 @@ public class Favorites {
             String secondCompetitor = repoCompetitor.getCompetitorName(eventFromDb.getSecondId());
 
             repoScore = new SqlDuelScoreRepository(context);
-            DuelEvent.Score score = repoScore.getScoreFromDuel(eventFromDb.getId());
+            DuelScore score = repoScore.getScore(eventFromDb.getId());
 
             DuelEvent event = new DuelEvent(
                     eventFromDb.getId(),

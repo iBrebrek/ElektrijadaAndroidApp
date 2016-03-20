@@ -15,6 +15,7 @@ import hr.fer.elektrijada.dal.sql.competitionscore.CompetitionScoreContract;
 import hr.fer.elektrijada.dal.sql.competitor.CompetitorContract;
 import hr.fer.elektrijada.dal.sql.duel.DuelContract;
 import hr.fer.elektrijada.dal.sql.duelscore.DuelScoreContract;
+import hr.fer.elektrijada.dal.sql.duelscore.SqlDuelScoreRepository;
 import hr.fer.elektrijada.dal.sql.stage.StageContract;
 import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.events.CompetitionEvent;
@@ -27,9 +28,11 @@ import hr.fer.elektrijada.util.Logger;
  */
 public class SqlGetEventsInfo {
     SQLiteOpenHelper dbHelper;
+    private Context context;
 
     public SqlGetEventsInfo(Context context) {
         dbHelper = new DbHelper(context);
+        this.context = context;
     }
 
     public void close() {
@@ -59,6 +62,12 @@ public class SqlGetEventsInfo {
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NICK, "Muški");
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, 5);
         values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_DUEL, 5);
+        test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
+        values = new ContentValues();
+        values.put(CategoryContract.CategoryEntry._ID, 444);
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_NAME, "Košarka");
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_SPORT, 1);
+        values.put(CategoryContract.CategoryEntry.COLUMN_NAME_IS_DUEL, 1);
         test = db.insert(CategoryContract.CategoryEntry.TABLE_NAME, null, values);
         values = new ContentValues();
         values.put(CategoryContract.CategoryEntry._ID, 55);
@@ -98,16 +107,38 @@ public class SqlGetEventsInfo {
         values.put(DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID, 3);
         values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_1_ID, 1);
         values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID, 2);
+        values.put(DuelContract.DuelEntry.COLUMN_NAME_STAGE_ID, 2);
+        values.put(DuelContract.DuelEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
+        test = db.insert(DuelContract.DuelEntry.TABLE_NAME, null, values);
+        values = new ContentValues();
+        values.put(DuelContract.DuelEntry._ID, 33);
+        values.put(DuelContract.DuelEntry.COLUMN_NAME_TIME_FROM, "2016.2.16. 20:59:00");
+        values.put(DuelContract.DuelEntry.COLUMN_NAME_TIME_TO, "2016.2.16. 22:33:00");
+        values.put(DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID, 444);
+        values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_1_ID, 2);
+        values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID, 100);
+        values.put(DuelContract.DuelEntry.COLUMN_NAME_STAGE_ID, 1);
         values.put(DuelContract.DuelEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
         test = db.insert(DuelContract.DuelEntry.TABLE_NAME, null, values);
 
+        //ima ih tolko da bi testirali el uzima onog koj se najvise pojavljuje
+        for (int i = 200; i < 204; i++) {
+            values = new ContentValues();
+            values.put(DuelScoreContract.DuelScoreEntry._ID, i);
+            values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_1, 3);
+            values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_2, 2);
+            values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_DUEL_ID, 85);
+            values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_USER_ID, 1+i);
+            values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
+            test = db.insert(DuelScoreContract.DuelScoreEntry.TABLE_NAME, null, values);
+        }
         for (int i = 100; i < 103; i++) {
             values = new ContentValues();
             values.put(DuelScoreContract.DuelScoreEntry._ID, i);
             values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_1, 5);
             values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_2, 7);
             values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_DUEL_ID, 85);
-            values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_USER_ID, 1);
+            values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_USER_ID, 1+i);
             values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
             test = db.insert(DuelScoreContract.DuelScoreEntry.TABLE_NAME, null, values);
         }
@@ -121,6 +152,15 @@ public class SqlGetEventsInfo {
         test = db.insert(DuelScoreContract.DuelScoreEntry.TABLE_NAME, null, values);
 
         values = new ContentValues();
+        values.put(DuelScoreContract.DuelScoreEntry._ID, 3);
+        values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_1, 101);
+        values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_2, 85);
+        values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_DUEL_ID, 33);
+        values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_USER_ID, 1);
+        values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
+        test = db.insert(DuelScoreContract.DuelScoreEntry.TABLE_NAME, null, values);
+
+        values = new ContentValues();
         values.put(CompetitorContract.CompetitorEntry._ID, 1);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "Ime");
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME, "Prezime");
@@ -128,7 +168,6 @@ public class SqlGetEventsInfo {
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 1);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED, 0);
         test = db.insert(CompetitorContract.CompetitorEntry.TABLE_NAME, null, values);
-
         values = new ContentValues();
         values.put(CompetitorContract.CompetitorEntry._ID, 2);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "Tim");
@@ -220,7 +259,7 @@ public class SqlGetEventsInfo {
                             cursor.getString(5)
                     );
                     listOfSportEvents.add(event);
-                    setResultMap(event);
+                    setResult(event);
                 } while (cursor.moveToNext());
             }
 
@@ -266,36 +305,10 @@ public class SqlGetEventsInfo {
         return listOfSportEvents;
     }
 
-    public void setResultMap(DuelEvent event) {
-        SQLiteDatabase db = null;
-        try {
-            db = dbHelper.getReadableDatabase();
-            Cursor cursor = db.rawQuery(
-                    "SELECT " + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_1 + ", "
-                            + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_2 + ", "
-                            + "COUNT(*) " +
-                            "FROM " + DuelScoreContract.DuelScoreEntry.TABLE_NAME +
-                            " WHERE " + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_DUEL_ID + " = " + event.getId() +
-                            " GROUP BY "
-                            + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_1 + ", "
-                            + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_2,
-                    null);
-            if (cursor.moveToFirst()) {
-                do {
-                    event.addPossibleResult(
-                            cursor.getInt(0),
-                            cursor.getInt(1),
-                            cursor.getInt(2)
-                    );
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        } catch (Exception exc) {
-            Logger.LogException(exc);
-        } finally {
-            if (db != null)
-                db.close();
-        }
+    public void setResult(DuelEvent event) {
+        SqlDuelScoreRepository duelScoreRepo = new SqlDuelScoreRepository(context);
+        event.setResult(duelScoreRepo.getScore(event.getId()));
+        duelScoreRepo.close();
     }
 
     public ArrayList<Event> getAllKnowledgeEvents() {

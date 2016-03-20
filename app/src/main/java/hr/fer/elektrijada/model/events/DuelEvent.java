@@ -1,86 +1,51 @@
 package hr.fer.elektrijada.model.events;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
+import hr.fer.elektrijada.model.score.DuelScore;
 
 /**
  * Created by Ivica Brebrek
  */
 public class DuelEvent extends Event {
-    private Score myResult;
-    private Score result;
-    private boolean hasResult = false;
+    private DuelScore result;
     private String teamHome;
     private String teamAway;
-    private HashMap<Score, Integer> allResults;
 
-    public static class Score {
-        private int homeScore;
-        private int awayScore;
-
-        public Score(int homeScore, int awayScore) {
-            this.homeScore = homeScore;
-            this.awayScore = awayScore;
-        }
-
-        @Override
-        public boolean equals(Object other) {
-            if (other == null) return false;
-            if (other == this) return true;
-            if (!(other instanceof Score)) return false;
-            Score otherScore = (Score) other;
-            return otherScore.homeScore == this.homeScore
-                    && otherScore.awayScore == this.awayScore;
-        }
-        @Override
-        public int hashCode() {
-            int result = homeScore;
-            result = 31 * result + awayScore;
-            return result;
-        }
-    }
-
-    /**
-     *
-     * @param homeScore
-     * @param awayScore
-     * @param frequencyOfThisResult     koliko puta se taj rezutat pojavljuje, obicno se koristi za unos iz baze,
-     *                                  npr., ako se u bazi taj rezultat pojavi 143 puta ovaj broj ce biti 143
-     *                               !  ako ne unosis iz baze pisi 1
-     */
-    public void addPossibleResult (int homeScore, int awayScore, int frequencyOfThisResult){
-        if (allResults == null) {
-            allResults = new HashMap<>();
-        }
-        Score score = new Score(homeScore, awayScore);
-        Integer numberOfScore = allResults.get(score);
-        allResults.put(score, numberOfScore == null? frequencyOfThisResult : numberOfScore+frequencyOfThisResult);
-    }
-
-    public Score getMostFrequentResult () {
-        Score score = null;
-        if(allResults != null) {
-            int max = 0;
-            for (Map.Entry<Score, Integer> entry : allResults.entrySet()) {
-                int current = entry.getValue();
-                if (current > max) {
-                    max = current;
-                    score = entry.getKey();
-                }
-            }
-        }
-        return score;
-    }
-
-    public void setMyResult(int homeScore, int awayScore) {
-        myResult = new Score(homeScore, awayScore);
-    }
-
-    public Score getMyResult() {
-        return result;
-    }
-
+    //ovo je nepotrebno u ovom razredu, no zal mi brisat
+//    private HashMap<DuelScore, Integer> allResults;
+//
+//    *
+//     *
+//     * @param homeScore
+//     * @param awayScore
+//     * @param frequencyOfThisResult     koliko puta se taj rezutat pojavljuje, obicno se koristi za unos iz baze,
+//     *                                  npr., ako se u bazi taj rezultat pojavi 143 puta ovaj broj ce biti 143
+//     *                               !  ako ne unosis iz baze pisi 1
+//
+//    public void addPossibleResult (int homeScore, int awayScore, int frequencyOfThisResult){
+//        if (allResults == null) {
+//            allResults = new HashMap<>();
+//        }
+//        DuelScore score = new DuelScore(homeScore, awayScore);
+//        Integer numberOfScore = allResults.get(score);
+//        allResults.put(score, numberOfScore == null? frequencyOfThisResult : numberOfScore+frequencyOfThisResult);
+//    }
+//
+//    public DuelScore getMostFrequentResult () {
+//        DuelScore score = null;
+//        if(allResults != null) {
+//            int max = 0;
+//            for (Map.Entry<DuelScore, Integer> entry : allResults.entrySet()) {
+//                int current = entry.getValue();
+//                if (current > max) {
+//                    max = current;
+//                    score = entry.getKey();
+//                }
+//            }
+//        }
+//        return score;
+//    }
 
     /**
      *
@@ -128,12 +93,10 @@ public class DuelEvent extends Event {
     }
 
     public void setResult(int homeScore, int awayScore) {
-        hasResult = true;
-        result = new Score(homeScore, awayScore);
+        result = new DuelScore(homeScore, awayScore);
     }
 
-    public void setResult(Score score) {
-        hasResult = true;
+    public void setResult(DuelScore score) {
         result = score;
     }
 
@@ -150,8 +113,8 @@ public class DuelEvent extends Event {
      * @return String je homeScore:awayScore ili -
      */
     public String getResult() {
-        if(hasResult) {
-            return result.homeScore + ":" + result.awayScore;
+        if(result.isSet()) {
+            return result.getFirstScore() + ":" + result.getSecondScore();
         } else {
             return "  -  ";
         }

@@ -270,7 +270,6 @@ public class EventsActivity extends BaseMenuActivity{
 
     private void filterByType() {
         SqlGetEventsInfo repo = new SqlGetEventsInfo(getApplicationContext());
-        repo.addFakeEvents();
         String typeName = typeButton.getText().toString();
         shouldAddSportNameLabel = false;
         switch (typeName) {
@@ -318,25 +317,24 @@ public class EventsActivity extends BaseMenuActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_start, menu);
         menu.add(ADD_NEW_EVENT);
-        menu.add("-");//TODO: maknuti ovo
-        menu.add("+");
+        menu.add("addFakeEvents"); //TODO: ovo maknut
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         String name = item.getTitle().toString();
-        if (name.equals(ADD_NEW_EVENT)) {
-            Intent intent = new Intent(getApplicationContext(), CreateNewEventActivity.class);
-            startActivity(intent);
-        } else if(name.equals("-")) {
-            for(Event event:listOfEvents) {
-                Favorites.removeFavorite(getApplicationContext(), event);
-            }
-        } else if(name.equals("+")) {
-            for(Event event:listOfEvents) {
-                Favorites.addFavorite(getApplicationContext(), event);
-            }
+        switch (name) {
+            case ADD_NEW_EVENT:
+                Intent intent = new Intent(getApplicationContext(), CreateNewEventActivity.class);
+                startActivity(intent);
+                break;
+
+            case "addFakeEvents": //TODO: i ovo maknut
+                SqlGetEventsInfo repo = new SqlGetEventsInfo(this);
+                repo.addFakeEvents();
+                repo.close();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

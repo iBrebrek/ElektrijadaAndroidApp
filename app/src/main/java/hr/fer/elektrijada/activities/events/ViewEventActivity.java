@@ -87,11 +87,11 @@ public class ViewEventActivity extends BaseMenuActivity {
         boolean isFavorite;
 
         if(isDuel) { //jedina razlika su prve 4 i zadnje 2 linije; i u jednom je varijabla duel u drugom comp
-            duelStub();
-
             SqlDuelRepository duelRepo = new SqlDuelRepository(this);
             DuelFromDb duel = duelRepo.getDuel(eventId);
             duelRepo.close();
+
+            duelStub(duel);
 
             category.setText(getCategoryName(duel.getCategoryId()));
             String loc = duel.getLocation();
@@ -177,7 +177,7 @@ public class ViewEventActivity extends BaseMenuActivity {
         }
     }
 
-    private void duelStub() {
+    private void duelStub(DuelFromDb duel) {
         TextView stage = (TextView) findViewById(R.id.event_view_stub_duel_stage);
         TextView firstTeam = (TextView) findViewById(R.id.event_view_stub_duel_left_team);
         TextView firstScore = (TextView) findViewById(R.id.event_view_stub_duel_left_score);
@@ -186,12 +186,11 @@ public class ViewEventActivity extends BaseMenuActivity {
 
         //TODO: Uzmi timove i rezultat (Duel+DuelScore), i stage!
 
-        firstTeam.setText("FER");
-        secondScore.setText("0");
-        secondTeam.setText("Malo duže ime tima");
-        firstScore.setText("101");
-        stage.setText("Četvrtfinale");
-
+        stage.setText(duel.getStageName(this));
+        firstTeam.setText(duel.getFirstCompetitorName(this));
+        firstScore.setText(duel.getFirstComptetitorScore(this));
+        secondTeam.setText(duel.getSecondCompetitorName(this));
+        secondScore.setText(duel.getSecondComptetitorScore(this));
 
         findViewById(R.id.event_view_stub_duel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,6 +285,7 @@ public class ViewEventActivity extends BaseMenuActivity {
                 builder.setMessage("Jeste li sigurni da želite izbrisati ovaj događaj?")
                         .setPositiveButton("Da", deleteEventAndExit())
                         .setNegativeButton("Ne", null).show();
+                break;
 
         }
         return super.onOptionsItemSelected(item);
@@ -306,8 +306,6 @@ public class ViewEventActivity extends BaseMenuActivity {
                         compRepo.close();
                     }
                     finish();
-                } else {
-                    //nista
                 }
             }
         };
