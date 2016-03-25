@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -35,16 +33,16 @@ import hr.fer.elektrijada.util.Favorites;
  */
 public class EventsActivity extends BaseMenuActivity{
 
-    /**
-     * lista u kojoj su filtirani (ili svi) dogadaji
-     */
+    /** lista u kojoj su filtirani (ili svi) dogadaji */
     private ArrayList<Event> listOfEvents;
     private BaseAdapter eventsListAdapter;
-    private Button typeButton;
-    private Button dateButton;
     private ListView listView;
     private boolean shouldAddDateStamps = true;
     private boolean shouldAddSportNameLabel = false;
+
+    //kasnije mozda dodat enumeraciju, za sad samo pazi da je string pravilan
+    private static String currentType = "Svi događaji"; //pamti filter za vrste, na pocetku svi
+    private static String currentDate = "Svi datumi"; //pamti filter za datume, na pocetku svi
 
     @Override
     protected int getContentLayoutId() {
@@ -59,11 +57,11 @@ public class EventsActivity extends BaseMenuActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Događanja");
+        changeTitle();
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.sharedLayout);
         layout.setPadding(0, 16, 0, 0); //da bi donje tipke mogle biti uz rub
         listView = (ListView) findViewById(R.id.listViewEvents);
-        initFilterButtons();
+//        initFilterButtons();
     }
 
     @Override
@@ -186,22 +184,23 @@ public class EventsActivity extends BaseMenuActivity{
         }
     }
 
-    private void initFilterButtons() {
-        dateButton = (Button) findViewById(R.id.eventsFilterTime);
-        dateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initFilterDate();
-            }
-        });
-        typeButton = (Button) findViewById(R.id.eventsFilterType);
-        typeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initFilterType();
-            }
-        });
-    }
+    //prije je filtracija bila preko 2 gumba
+//    private void initFilterButtons() {
+//        dateButton = (Button) findViewById(R.id.eventsFilterTime);
+//        dateButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                initFilterDate();
+//            }
+//        });
+//        typeButton = (Button) findViewById(R.id.eventsFilterType);
+//        typeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                initFilterType();
+//            }
+//        });
+//    }
 
     private void initFilterType() {
         AlertDialog.Builder dialogBuilder;
@@ -215,13 +214,13 @@ public class EventsActivity extends BaseMenuActivity{
         dialogBuilder.setTitle("Odaberi prikazane događaje");
         dialogBuilder.setSingleChoiceItems(
                 listOfTypes,
-                eventTypes.indexOf(typeButton.getText().toString()),
+                eventTypes.indexOf(currentType),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String typeName = eventTypes.get(which);
-                        typeButton.setText(typeName);
+                        currentType = eventTypes.get(which);
                         filter();
+                        changeTitle();
                         dialog.cancel();
                     }
                 }
@@ -246,13 +245,13 @@ public class EventsActivity extends BaseMenuActivity{
         dialogBuilder.setTitle("Odaberi datum");
         dialogBuilder.setSingleChoiceItems(
                 allDates.toArray(new String[allDates.size()]),
-                allDates.indexOf(dateButton.getText().toString()),
+                allDates.indexOf(currentDate),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String dateName = allDates.get(which);
-                        dateButton.setText(dateName);
+                        currentDate = allDates.get(which);
                         filter();
+                        changeTitle();
                         dialog.cancel();
                     }
                 }
@@ -270,9 +269,8 @@ public class EventsActivity extends BaseMenuActivity{
 
     private void filterByType() {
         SqlGetEventsInfo repo = new SqlGetEventsInfo(getApplicationContext());
-        String typeName = typeButton.getText().toString();
         shouldAddSportNameLabel = false;
-        switch (typeName) {
+        switch (currentType) {
             case "Svi događaji":
                 listOfEvents = repo.getAllEvents();
                 break;
@@ -298,25 +296,28 @@ public class EventsActivity extends BaseMenuActivity{
     }
 
     private void filterByDate() {
-        String date = dateButton.getText().toString();
-        if (!date.contains(".")) {
+        if (!currentDate.contains(".")) {
             shouldAddDateStamps = true;
             return;
         }
         shouldAddDateStamps = false;
         for (Iterator<Event> iterator = listOfEvents.iterator(); iterator.hasNext();) {
             Event event = iterator.next();
-            if(event.getStartDate().equals(date)) continue;
+            if(event.getStartDate().equals(currentDate)) continue;
             iterator.remove();
         }
     }
 
     private final static String ADD_NEW_EVENT = "Dodaj događaj";
+    private final static String FILTER_TYPE = "Filtriraj vrste";
+    private final static String FILTER_DATE = "Filtriraj datume";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_start, menu);
         menu.add(ADD_NEW_EVENT);
+        menu.add(FILTER_TYPE);
+        menu.add(FILTER_DATE);
         menu.add("addFakeEvents"); //TODO: ovo maknut
         return true;
     }
@@ -330,6 +331,14 @@ public class EventsActivity extends BaseMenuActivity{
                 startActivity(intent);
                 break;
 
+            case FILTER_TYPE:
+                initFilterType();
+                break;
+
+            case FILTER_DATE:
+                initFilterDate();
+                break;
+
             case "addFakeEvents": //TODO: i ovo maknut
                 SqlGetEventsInfo repo = new SqlGetEventsInfo(this);
                 repo.addFakeEvents();
@@ -337,5 +346,14 @@ public class EventsActivity extends BaseMenuActivity{
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void changeTitle() {
+        if(currentDate.contains(".")) {
+            String noYear = currentDate.substring(0, currentDate.substring(0, currentDate.length()-1).lastIndexOf(".")+1);
+            setTitle(currentType + " - " + noYear);
+        } else {
+            setTitle(currentType);
+        }
     }
 }

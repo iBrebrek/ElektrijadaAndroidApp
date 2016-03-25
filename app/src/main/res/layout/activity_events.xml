@@ -8,32 +8,31 @@
         android:layout_alignParentTop="true"
         android:listSelector="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
-        android:layout_above="@+id/eventsFilterButtons"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:id="@+id/eventsFilterButtons"
-        android:background="#000000"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-        <Button
-            android:id="@+id/eventsFilterTime"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Datumi"/>
-        <Button
-            android:id="@+id/eventsFilterType"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vrste"/>
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:id="@+id/eventsFilterButtons"-->
+        <!--android:background="#000000"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:weightSum="2">-->
+        <!--<Button-->
+            <!--android:id="@+id/eventsFilterTime"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Datumi"/>-->
+        <!--<Button-->
+            <!--android:id="@+id/eventsFilterType"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Vrste"/>-->
+    <!--</LinearLayout>-->
 
 </RelativeLayout>
