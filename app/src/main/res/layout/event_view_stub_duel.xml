@@ -12,32 +12,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:text=" vs "
-        android:textSize="21sp"
-        android:id="@+id/stub_vs"
-        android:layout_centerHorizontal="true"
+    <RelativeLayout
+        android:id="@+id/event_view_stub_duel_teams"
         android:layout_below="@id/event_view_stub_duel_stage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/event_view_stub_duel_left_team"
-        android:textSize="21sp"
-        android:textColor="#000099"
-        android:textStyle="bold"
-        android:layout_toLeftOf="@id/stub_vs"
-        android:layout_alignBaseline="@id/stub_vs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/event_view_stub_duel__right_team"
-        android:textSize="21sp"
-        android:textColor="#000099"
-        android:textStyle="bold"
-        android:layout_toRightOf="@id/stub_vs"
-        android:layout_alignBaseline="@id/stub_vs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text=" vs "
+            android:layout_margin="9dp"
+            android:textSize="21sp"
+            android:id="@+id/stub_vs"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/event_view_stub_duel_left_team"
+            android:textSize="21sp"
+            android:textColor="#000099"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/stub_vs"
+            android:layout_alignBaseline="@id/stub_vs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/event_view_stub_duel__right_team"
+            android:textSize="21sp"
+            android:textColor="#000099"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/stub_vs"
+            android:layout_alignBaseline="@id/stub_vs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
 
 
     <TextView
@@ -46,7 +55,7 @@
         android:textStyle="bold"
         android:id="@+id/stub_dash"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/stub_vs"
+        android:layout_below="@id/event_view_stub_duel_teams"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
@@ -54,7 +63,7 @@
         android:textSize="35sp"
         android:textStyle="bold"
         android:layout_toLeftOf="@id/stub_dash"
-        android:layout_below="@id/stub_vs"
+        android:layout_below="@id/event_view_stub_duel_teams"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
@@ -62,7 +71,7 @@
         android:textSize="35sp"
         android:textStyle="bold"
         android:layout_toRightOf="@id/stub_dash"
-        android:layout_below="@id/stub_vs"
+        android:layout_below="@id/event_view_stub_duel_teams"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

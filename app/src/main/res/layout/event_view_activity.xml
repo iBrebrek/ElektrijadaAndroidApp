@@ -37,65 +37,104 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
+        <TableLayout
             android:layout_marginTop="16dp"
-            android:padding="9dp"
-            android:orientation="horizontal"
+            android:shrinkColumns="1"
+            android:stretchColumns="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <!-- ovo su labele -->
-            <LinearLayout
-                android:layout_weight="2"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <TableRow>
                 <TextView
                     android:text="Lokacija:"
                     android:padding="9dp"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:text="Početak:"
-                    android:padding="9dp"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:text="Kraj:"
-                    android:padding="9dp"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <!-- ovo su podatci -->>
-            <LinearLayout
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    android:textSize="16sp" />
                 <TextView
                     android:id="@+id/event_view_location"
                     android:padding="9dp"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:text="Početak:"
+                    android:padding="9dp"
+                    android:textSize="16sp" />
                 <TextView
                     android:id="@+id/event_view_start"
                     android:padding="9dp"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:text="Kraj:"
+                    android:padding="9dp"
+                    android:textSize="16sp" />
                 <TextView
                     android:id="@+id/event_view_end"
                     android:padding="9dp"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                    android:textSize="16sp" />
+            </TableRow>
+        </TableLayout>
 
-        </LinearLayout>
+
+        <!--<LinearLayout-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:padding="9dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--&lt;!&ndash; ovo su labele &ndash;&gt;-->
+            <!--<LinearLayout-->
+                <!--android:layout_weight="2"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<TextView-->
+                    <!--android:text="Lokacija:"-->
+                    <!--android:padding="9dp"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+                <!--<TextView-->
+                    <!--android:text="Početak:"-->
+                    <!--android:padding="9dp"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+                <!--<TextView-->
+                    <!--android:text="Kraj:"-->
+                    <!--android:padding="9dp"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
+
+            <!--&lt;!&ndash; ovo su podatci &ndash;&gt;>-->
+            <!--<LinearLayout-->
+                <!--android:layout_weight="1"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<TextView-->
+                    <!--android:id="@+id/event_view_location"-->
+                    <!--android:padding="9dp"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+                <!--<TextView-->
+                    <!--android:id="@+id/event_view_start"-->
+                    <!--android:padding="9dp"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+                <!--<TextView-->
+                    <!--android:id="@+id/event_view_end"-->
+                    <!--android:padding="9dp"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
+
+        <!--</LinearLayout>-->
 
     </LinearLayout>
 </ScrollView>
