@@ -28,6 +28,7 @@ import hr.fer.elektrijada.util.Logger;
  */
 public class SqlNewsRepository implements NewsRepository {
     private SQLiteOpenHelper dbHelper;
+    private final Context context;
 
     //TO DO: Provjeriti u Android dokumentaciji smije li biti više helpera ili mora biti singleton i što sa zatvaranjem
     /*
@@ -44,6 +45,7 @@ public class SqlNewsRepository implements NewsRepository {
 
     public SqlNewsRepository(Context context) {
         dbHelper = new DbHelper(context);
+        this.context = context;
     }
 
     public void close() {

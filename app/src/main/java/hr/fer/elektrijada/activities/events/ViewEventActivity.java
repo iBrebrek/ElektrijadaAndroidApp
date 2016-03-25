@@ -18,7 +18,6 @@ import java.util.GregorianCalendar;
 import hr.fer.elektrijada.MenuHandler;
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.activities.BaseMenuActivity;
-import hr.fer.elektrijada.dal.sql.category.SqlCategoryRepository;
 import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
 import hr.fer.elektrijada.dal.sql.duel.DuelFromDb;
@@ -93,7 +92,7 @@ public class ViewEventActivity extends BaseMenuActivity {
 
             duelStub(duel);
 
-            category.setText(getCategoryName(duel.getCategoryId()));
+            category.setText(duel.getCategory().getName());
             String loc = duel.getLocation();
             if(loc!=null && !loc.isEmpty()) {
                 location.setText(duel.getLocation());
@@ -123,7 +122,7 @@ public class ViewEventActivity extends BaseMenuActivity {
             CompetitionFromDb comp = compRepo.getCompetition(eventId);
             compRepo.close();
 
-            category.setText(getCategoryName(comp.getCategoryId()));
+            category.setText(comp.getCategory().getName());
             String loc = comp.getLocation();
             if(loc!=null && !loc.isEmpty()) {
                 location.setText(comp.getLocation());
@@ -186,10 +185,10 @@ public class ViewEventActivity extends BaseMenuActivity {
 
         //TODO: Uzmi timove i rezultat (Duel+DuelScore), i stage!
 
-        stage.setText(duel.getStageName(this));
-        firstTeam.setText(duel.getFirstCompetitorName(this));
+        stage.setText(duel.getStage().getName());
+        firstTeam.setText(duel.getFirstCompetitor().getName());
         firstScore.setText(duel.getFirstComptetitorScore(this));
-        secondTeam.setText(duel.getSecondCompetitorName(this));
+        secondTeam.setText(duel.getSecondCompetitor().getName());
         secondScore.setText(duel.getSecondComptetitorScore(this));
 
         findViewById(R.id.event_view_stub_duel).setOnClickListener(new View.OnClickListener() {
@@ -248,14 +247,6 @@ public class ViewEventActivity extends BaseMenuActivity {
 //        toast.setDuration(Toast.LENGTH_SHORT);
 //        toast.show();
 //    }
-
-    private String getCategoryName(int categoryId) {
-        SqlCategoryRepository catRepo = new SqlCategoryRepository(this);
-        String name = catRepo.getCategoryName(categoryId);
-        catRepo.close();
-        return name;
-    }
-
 
     private final static String EDIT_EVENT = "Uredi događaj";
     private final static String DELETE_EVENT = "Obriši događaj";

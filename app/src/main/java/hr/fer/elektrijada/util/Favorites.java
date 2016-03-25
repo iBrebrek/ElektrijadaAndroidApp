@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import hr.fer.elektrijada.dal.sql.category.SqlCategoryRepository;
 import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
-import hr.fer.elektrijada.dal.sql.competitor.SqlCompetitorRepository;
 import hr.fer.elektrijada.dal.sql.duel.DuelFromDb;
 import hr.fer.elektrijada.dal.sql.duel.SqlDuelRepository;
 import hr.fer.elektrijada.dal.sql.duelscore.SqlDuelScoreRepository;
@@ -153,7 +151,6 @@ public class Favorites {
 
     private static CompetitionEvent stringIdToCompetitionEvent(Context context, String stringId) {
         SqlCompetitionRepository compRepo = null;
-        SqlCategoryRepository repoCategory = null;
         try {
             int id = Integer.parseInt(stringId);
             compRepo = new SqlCompetitionRepository(context);
@@ -162,12 +159,9 @@ public class Favorites {
                 return null;
             }
 
-            repoCategory = new SqlCategoryRepository(context);
-            String categoryName = repoCategory.getCategoryName(eventFromDb.getCategoryId());
-
             CompetitionEvent event = new CompetitionEvent(
                     eventFromDb.getId(),
-                    categoryName,
+                    eventFromDb.getCategory().getName(),
                     DateParserUtil.stringToDate(eventFromDb.getTimeFrom()),
                     DateParserUtil.stringToDate(eventFromDb.getTimeTo()),
                     compRepo.hasScore(id)
@@ -177,14 +171,11 @@ public class Favorites {
             return null;
         } finally {
             if (compRepo != null) compRepo.close();
-            if (repoCategory != null) repoCategory.close();
         }
     }
 
     private static DuelEvent stringIdToDuelEvent(Context context, String stringId) {
         SqlDuelRepository repoDuel = null;
-        SqlCategoryRepository repoCategory = null;
-        SqlCompetitorRepository repoCompetitor = null;
         SqlDuelScoreRepository repoScore = null;
         try {
             int id = Integer.parseInt(stringId);
@@ -194,23 +185,16 @@ public class Favorites {
                 return null;
             }
 
-            repoCategory = new SqlCategoryRepository(context);
-            String categoryName = repoCategory.getCategoryName(eventFromDb.getCategoryId());
-
-            repoCompetitor = new SqlCompetitorRepository(context);
-            String firstCompetitor = repoCompetitor.getCompetitorName(eventFromDb.getFirstId());
-            String secondCompetitor = repoCompetitor.getCompetitorName(eventFromDb.getSecondId());
-
             repoScore = new SqlDuelScoreRepository(context);
             DuelScore score = repoScore.getScore(eventFromDb.getId());
 
             DuelEvent event = new DuelEvent(
                     eventFromDb.getId(),
-                    categoryName,
+                    eventFromDb.getCategory().getName(),
                     DateParserUtil.stringToDate(eventFromDb.getTimeFrom()),
                     DateParserUtil.stringToDate(eventFromDb.getTimeTo()),
-                    firstCompetitor,
-                    secondCompetitor
+                    eventFromDb.getFirstCompetitor().getName(),
+                    eventFromDb.getSecondCompetitor().getName()
             );
             if(score != null) {
                 event.setResult(score);
@@ -220,8 +204,6 @@ public class Favorites {
             return null;
         } finally {
             if (repoDuel != null) repoDuel.close();
-            if (repoCategory != null) repoCategory.close();
-            if (repoCompetitor != null) repoCompetitor.close();
             if (repoScore != null) repoScore.close();
         }
     }

@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import hr.fer.elektrijada.dal.sql.DbHelper;
+import hr.fer.elektrijada.dal.sql.category.CategoryFromDb;
+import hr.fer.elektrijada.dal.sql.category.SqlCategoryRepository;
 import hr.fer.elektrijada.dal.sql.competitionscore.CompetitionScoreContract;
 
 /**
@@ -14,9 +16,11 @@ import hr.fer.elektrijada.dal.sql.competitionscore.CompetitionScoreContract;
  */
 public class SqlCompetitionRepository {
     private SQLiteOpenHelper dbHelper;
+    private final Context context;
 
     public SqlCompetitionRepository(Context context) {
         dbHelper = new DbHelper(context);
+        this.context = context;
     }
 
     public void close() {
@@ -82,7 +86,7 @@ public class SqlCompetitionRepository {
                         cursor.getInt(CompetitionContract.getColumnPos(CompetitionContract.CompetitionEntry._ID)),
                         cursor.getString(CompetitionContract.getColumnPos(CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_FROM)),
                         cursor.getString(CompetitionContract.getColumnPos(CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_TO)),
-                        cursor.getInt(CompetitionContract.getColumnPos(CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID)),
+                        getCategory(cursor.getInt(CompetitionContract.getColumnPos(CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID))),
                         cursor.getString(CompetitionContract.getColumnPos(CompetitionContract.CompetitionEntry.COLUMN_NAME_LOCATION)),
                         cursor.getInt(CompetitionContract.getColumnPos(CompetitionContract.CompetitionEntry.COLUMN_NAME_IS_ASSUMPTION)) > 0
                 );
@@ -107,7 +111,7 @@ public class SqlCompetitionRepository {
             if(endingTime != null) {
                 values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_TO, endingTime);
             }
-            values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID, competition.getCategoryId());
+            values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID, competition.getCategory().getId());
             String location = competition.getLocation();
             if (location != null) {
                 values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_LOCATION, location);
@@ -132,7 +136,7 @@ public class SqlCompetitionRepository {
             ContentValues values = new ContentValues();
             values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_FROM, competition.getTimeFrom());
             values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_TO, competition.getTimeTo());
-            values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID, competition.getCategoryId());
+            values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID, competition.getCategory().getId());
             values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_LOCATION, competition.getLocation());
             values.put(CompetitionContract.CompetitionEntry.COLUMN_NAME_IS_ASSUMPTION, competition.isAssumption());
             db.update(CompetitionContract.CompetitionEntry.TABLE_NAME,
@@ -164,5 +168,12 @@ public class SqlCompetitionRepository {
 
     public void deleteCompetition(CompetitionFromDb competition) {
         deleteCompetition(competition.getId());
+    }
+
+    private CategoryFromDb getCategory(int id) {
+        SqlCategoryRepository categoryRepository = new SqlCategoryRepository(context);
+        CategoryFromDb category = categoryRepository.getCategory(id);
+        categoryRepository.close();
+        return category;
     }
 }

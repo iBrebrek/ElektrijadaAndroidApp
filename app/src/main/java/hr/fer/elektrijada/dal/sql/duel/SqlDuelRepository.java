@@ -7,15 +7,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import hr.fer.elektrijada.dal.sql.DbHelper;
+import hr.fer.elektrijada.dal.sql.category.CategoryFromDb;
+import hr.fer.elektrijada.dal.sql.category.SqlCategoryRepository;
+import hr.fer.elektrijada.dal.sql.competitor.CompetitorFromDb;
+import hr.fer.elektrijada.dal.sql.competitor.SqlCompetitorRepository;
+import hr.fer.elektrijada.dal.sql.stage.SqlStageRepository;
+import hr.fer.elektrijada.dal.sql.stage.StageFromDb;
 
 /**
  * Created by Ivica Brebrek
  */
 public class SqlDuelRepository {
     private SQLiteOpenHelper dbHelper;
+    private final Context context;
 
     public SqlDuelRepository(Context context) {
         dbHelper = new DbHelper(context);
+        this.context = context;
     }
 
     public void close() {
@@ -61,10 +69,10 @@ public class SqlDuelRepository {
                         cursor.getInt(DuelContract.getColumnPos(DuelContract.DuelEntry._ID)),
                         cursor.getString(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_TIME_FROM)),
                         cursor.getString(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_TIME_TO)),
-                        cursor.getInt(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID)),
-                        cursor.getInt(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_1_ID)),
-                        cursor.getInt(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID)),
-                        cursor.getInt(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_STAGE_ID)),
+                        getCategory(cursor.getInt(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID))),
+                        getCompetitor(cursor.getInt(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_1_ID))),
+                        getCompetitor(cursor.getInt(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID))),
+                        getStage(cursor.getInt(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_STAGE_ID))),
                         cursor.getString(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_LOCATION)),
                         cursor.getInt(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_IS_ASSUMPTION)) > 0,
                         cursor.getString(DuelContract.getColumnPos(DuelContract.DuelEntry.COLUMN_NAME_SECTION))
@@ -85,19 +93,19 @@ public class SqlDuelRepository {
         try {
             db = dbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_1_ID, duel.getFirstId());
-            values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID, duel.getSecondId());
+            values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_1_ID, duel.getFirstCompetitor().getId());
+            values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID, duel.getSecondCompetitor().getId());
             values.put(DuelContract.DuelEntry.COLUMN_NAME_TIME_FROM, duel.getTimeFrom());
             String endingTime = duel.getTimeTo();
             if(endingTime != null) {
                 values.put(DuelContract.DuelEntry.COLUMN_NAME_TIME_TO, endingTime);
             }
-            values.put(DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID, duel.getCategoryId());
+            values.put(DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID, duel.getCategory().getId());
             String location = duel.getLocation();
             if (location != null) {
                 values.put(DuelContract.DuelEntry.COLUMN_NAME_LOCATION, location);
             }
-            values.put(DuelContract.DuelEntry.COLUMN_NAME_STAGE_ID, duel.getStageId());
+            values.put(DuelContract.DuelEntry.COLUMN_NAME_STAGE_ID, duel.getStage().getId());
             values.put(DuelContract.DuelEntry.COLUMN_NAME_IS_ASSUMPTION, duel.isAssumption());
 
             long rowId = db.insert(DuelContract.DuelEntry.TABLE_NAME, null, values);
@@ -118,10 +126,10 @@ public class SqlDuelRepository {
             ContentValues values = new ContentValues();
             values.put(DuelContract.DuelEntry.COLUMN_NAME_TIME_FROM, duel.getTimeFrom());
             values.put(DuelContract.DuelEntry.COLUMN_NAME_TIME_TO, duel.getTimeTo());
-            values.put(DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID, duel.getCategoryId());
-            values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_1_ID, duel.getFirstId());
-            values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID, duel.getSecondId());
-            values.put(DuelContract.DuelEntry.COLUMN_NAME_STAGE_ID, duel.getStageId());
+            values.put(DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID, duel.getCategory().getId());
+            values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_1_ID, duel.getFirstCompetitor().getId());
+            values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID, duel.getSecondCompetitor().getId());
+            values.put(DuelContract.DuelEntry.COLUMN_NAME_STAGE_ID, duel.getStage().getId());
             values.put(DuelContract.DuelEntry.COLUMN_NAME_LOCATION, duel.getLocation());
             values.put(DuelContract.DuelEntry.COLUMN_NAME_IS_ASSUMPTION, duel.isAssumption());
             values.put(DuelContract.DuelEntry.COLUMN_NAME_SECTION, duel.getSection());
@@ -153,5 +161,26 @@ public class SqlDuelRepository {
             if (db != null)
                 db.close();
         }
+    }
+
+    private CompetitorFromDb getCompetitor(int id) {
+        SqlCompetitorRepository repo = new SqlCompetitorRepository(context);
+        CompetitorFromDb competitor = repo.getCompetitor(id);
+        repo.close();
+        return competitor;
+    }
+
+    private StageFromDb getStage(int id) {
+        SqlStageRepository repo = new SqlStageRepository(context);
+        StageFromDb stage = repo.getStage(id);
+        repo.close();
+        return stage;
+    }
+
+    private CategoryFromDb getCategory(int id) {
+        SqlCategoryRepository repo = new SqlCategoryRepository(context);
+        CategoryFromDb category = repo.getCategory(id);
+        repo.close();
+        return category;
     }
 }

@@ -13,9 +13,11 @@ import hr.fer.elektrijada.model.score.DuelScore;
  */
 public class SqlDuelScoreRepository {
     private SQLiteOpenHelper dbHelper;
+    private final Context context;
 
     public SqlDuelScoreRepository(Context context) {
         dbHelper = new DbHelper(context);
+        this.context = context;
     }
 
     public void close() {

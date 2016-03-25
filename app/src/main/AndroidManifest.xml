@@ -46,31 +46,7 @@
             android:label="Uređivanje vijesti"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity
-            android:name=".activities.teams.TeamsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="Ekipe"
-            >
-        </activity>
-        <activity
-            android:name=".activities.teams.NewTeamActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="Dodavanje ekipe"
-            >
-        </activity>
-        <activity
-            android:name=".activities.competitions.CompetitionsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="Natjecanja"
-            >
-        </activity>
         <activity android:name=".activities.settings.SettingsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
-        </activity>
-        <activity
-            android:name=".activities.competitions.NewCompetitionActivity"
-            android:label="Novo natjecanje"
             android:theme="@style/AppTheme.NoActionBar"
             >
         </activity>

@@ -23,6 +23,7 @@ import hr.fer.elektrijada.dal.sql.category.CategoryFromDb;
 import hr.fer.elektrijada.dal.sql.category.SqlCategoryRepository;
 import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
+import hr.fer.elektrijada.dal.sql.competitor.CompetitorFromDb;
 import hr.fer.elektrijada.dal.sql.competitor.SqlCompetitorRepository;
 import hr.fer.elektrijada.dal.sql.duel.DuelFromDb;
 import hr.fer.elektrijada.dal.sql.duel.SqlDuelRepository;
@@ -52,6 +53,8 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
     Spinner firstCompSpinner;
     Spinner secondCompSpinner;
 
+    RememberPickedDetails rememberPickedDetails = new RememberPickedDetails();
+
     @Override
     protected int getContentLayoutId() {
         return R.layout.activity_create_new_event;
@@ -76,7 +79,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
         initCategorySpinner();
         initStageSpinner();
         initTeamSpinners();
-        RememberPickedDetails.location = (EditText) findViewById(R.id.editTextCreateEventLocation);
+        rememberPickedDetails.location = (EditText) findViewById(R.id.editTextCreateEventLocation);
         initTimeAndDate();
         //RememberPickedDetails.isAssumption = (CheckBox) findViewById(R.id.createEventIsAssumption);
     }
@@ -116,7 +119,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 CategoryFromDb category = categories.get(position);
-                RememberPickedDetails.categoryId = category.getId();
+                rememberPickedDetails.categoryId = category.getId();
                 if (category.isDuel()) {
                     teams.setVisibility(View.VISIBLE);
                     stageSpinner.setVisibility(View.VISIBLE);
@@ -149,7 +152,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 StageFromDb stage = stages.get(position);
-                RememberPickedDetails.stageId = stage.getId();
+                rememberPickedDetails.stageId = stage.getId();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -171,7 +174,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String name = listOfNames.get(position);
-                RememberPickedDetails.firstId = allCompetitors.get(name);
+                rememberPickedDetails.firstId = allCompetitors.get(name);
             }
 
             @Override
@@ -182,7 +185,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String name = listOfNames.get(position);
-                RememberPickedDetails.secondId = allCompetitors.get(name);
+                rememberPickedDetails.secondId = allCompetitors.get(name);
             }
 
             @Override
@@ -192,27 +195,27 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
     }
 
     private void initTimeAndDate(){
-        RememberPickedDetails.startDate = new DatePicker<>(
+        rememberPickedDetails.startDate = new DatePicker<>(
                 getFragmentManager(),
                 (Button) findViewById(R.id.btnCreateEventStartDate)
         );
-        RememberPickedDetails.startTime = new TimePicker<>(
+        rememberPickedDetails.startTime = new TimePicker<>(
                 getFragmentManager(),
                 (Button) findViewById(R.id.btnCreateEventStartTime)
         );
-        RememberPickedDetails.endDate = new DatePicker<>(
+        rememberPickedDetails.endDate = new DatePicker<>(
                 getFragmentManager(),
                 (Button) findViewById(R.id.btnCreateEventEndDate)
         );
-        RememberPickedDetails.endTime = new TimePicker<>(
+        rememberPickedDetails.endTime = new TimePicker<>(
                 getFragmentManager(),
                 (Button) findViewById(R.id.btnCreateEventEndTime)
         );
-        RememberPickedDetails.hasEnd = (CheckBox) findViewById(R.id.createEventHasEnd);
-        RememberPickedDetails.hasEnd.setOnClickListener(new View.OnClickListener() {
+        rememberPickedDetails.hasEnd = (CheckBox) findViewById(R.id.createEventHasEnd);
+        rememberPickedDetails.hasEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(RememberPickedDetails.hasEnd.isChecked()) {
+                if(rememberPickedDetails.hasEnd.isChecked()) {
                     findViewById(R.id.btnCreateEventEndDate).setVisibility(View.VISIBLE);
                     findViewById(R.id.btnCreateEventEndTime).setVisibility(View.VISIBLE);
                 } else {
@@ -228,7 +231,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
         try {
             //koristi se try jer se nesmije dozvoliti da je kraj prije pocetka
             if (isDuel) {
-                DuelFromDb duel = RememberPickedDetails.getDuel();
+                DuelFromDb duel = rememberPickedDetails.getDuel();
                 SqlDuelRepository repoDuel = new SqlDuelRepository(getApplicationContext());
                 if(isUpdate) {
                     duel.setId(getIntent().getIntExtra("event_id", -1));
@@ -238,7 +241,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
                 }
                 repoDuel.close();
             } else {
-                CompetitionFromDb competition = RememberPickedDetails.getCompetition();
+                CompetitionFromDb competition = rememberPickedDetails.getCompetition();
                 SqlCompetitionRepository repoComp = new SqlCompetitionRepository(getApplicationContext());
                 if(isUpdate) {
                     competition.setId(getIntent().getIntExtra("event_id", -1));
@@ -254,55 +257,55 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
         }
     }
 
-    private static class RememberPickedDetails{
-        private static int categoryId;
-        private static int firstId;
-        private static int secondId;
-        private static int stageId;
-        private static EditText location;
-        private static CheckBox hasEnd;
-        private static DatePicker startDate;
-        private static DatePicker endDate;
-        private static TimePicker startTime;
-        private static TimePicker endTime;
-        //private static CheckBox isAssumption;
+    private class RememberPickedDetails{
+        private int categoryId;
+        private int firstId;
+        private int secondId;
+        private int stageId;
+        private EditText location;
+        private CheckBox hasEnd;
+        private DatePicker startDate;
+        private DatePicker endDate;
+        private TimePicker startTime;
+        private TimePicker endTime;
+        //private CheckBox isAssumption;
 
-        private static DuelFromDb getDuel() {
-            String startTime = RememberPickedDetails.startDate.toStringYearFirst() + " "
-                    + RememberPickedDetails.startTime.toString()+":00"; //00 su sekunde
-            String endTime = RememberPickedDetails.hasEnd.isChecked()
-                    ? RememberPickedDetails.endDate.toStringYearFirst() + " "
-                    + RememberPickedDetails.endTime.toString()+":00"
+        private DuelFromDb getDuel() {
+            String startTime = startDate.toStringYearFirst() + " "
+                    + this.startTime.toString()+":00"; //00 su sekunde
+            String endTime = hasEnd.isChecked()
+                    ? endDate.toStringYearFirst() + " "
+                    + this.endTime.toString()+":00"
                     : null;
-            String location = RememberPickedDetails.location!=null ? RememberPickedDetails.location.getText().toString() : null;
+            String location = this.location!=null ? this.location.getText().toString() : null;
 
             return new DuelFromDb(
                     startTime,
                     endTime,
-                    RememberPickedDetails.categoryId,
-                    RememberPickedDetails.firstId,
-                    RememberPickedDetails.secondId,
-                    RememberPickedDetails.stageId,
+                    getCategory(categoryId),
+                    getCompetitor(firstId),
+                    getCompetitor(secondId),
+                    getStage(stageId),
                     location,
-                    false  //RememberPickedDetails.isAssumption.isChecked()
+                    false  //isAssumption.isChecked()
             );
         }
 
-        private static CompetitionFromDb getCompetition() {
-            String startTime = RememberPickedDetails.startDate.toStringYearFirst() + " "
-                    + RememberPickedDetails.startTime.toString()+":00"; //00 su sekunde
-            String endTime = RememberPickedDetails.hasEnd.isChecked()
-                    ? RememberPickedDetails.endDate.toStringYearFirst() + " "
-                    + RememberPickedDetails.endTime.toString()+":00"
+        private CompetitionFromDb getCompetition() {
+            String startTime = startDate.toStringYearFirst() + " "
+                    + this.startTime.toString()+":00"; //00 su sekunde
+            String endTime = hasEnd.isChecked()
+                    ? endDate.toStringYearFirst() + " "
+                    + this.endTime.toString()+":00"
                     : null;
-            String location = RememberPickedDetails.location!=null ? RememberPickedDetails.location.getText().toString() : null;
+            String location = this.location!=null ? this.location.getText().toString() : null;
 
             return new CompetitionFromDb(
                     startTime,
                     endTime,
-                    RememberPickedDetails.categoryId,
+                    getCategory(categoryId),
                     location,
-                    false  //RememberPickedDetails.isAssumption.isChecked()
+                    false  //isAssumption.isChecked()
             );
         }
     }
@@ -343,24 +346,45 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
         }
 
         //lokacija...
-        RememberPickedDetails.location.setText(location);
+        rememberPickedDetails.location.setText(location);
 
         //pocetak dogadaja
         Calendar start = new GregorianCalendar();
         start.setTime(DateParserUtil.stringToDate(from));
-        RememberPickedDetails.startDate.setDate(start.get(Calendar.DAY_OF_MONTH), start.get(Calendar.MONTH)+1, start.get(Calendar.YEAR));
-        RememberPickedDetails.startTime.setTime(start.get(Calendar.HOUR_OF_DAY), start.get(Calendar.MINUTE));
+        rememberPickedDetails.startDate.setDate(start.get(Calendar.DAY_OF_MONTH), start.get(Calendar.MONTH)+1, start.get(Calendar.YEAR));
+        rememberPickedDetails.startTime.setTime(start.get(Calendar.HOUR_OF_DAY), start.get(Calendar.MINUTE));
 
         //kraj dogadaja
         if(to != null) {
             Calendar end = new GregorianCalendar();
             end.setTime(DateParserUtil.stringToDate(to));
-            RememberPickedDetails.endDate.setDate(end.get(Calendar.DAY_OF_MONTH), end.get(Calendar.MONTH)+1, end.get(Calendar.YEAR));
-            RememberPickedDetails.endTime.setTime(end.get(Calendar.HOUR_OF_DAY), end.get(Calendar.MINUTE));
+            rememberPickedDetails.endDate.setDate(end.get(Calendar.DAY_OF_MONTH), end.get(Calendar.MONTH)+1, end.get(Calendar.YEAR));
+            rememberPickedDetails.endTime.setTime(end.get(Calendar.HOUR_OF_DAY), end.get(Calendar.MINUTE));
         } else {
-            RememberPickedDetails.hasEnd.setChecked(false);
+            rememberPickedDetails.hasEnd.setChecked(false);
             findViewById(R.id.btnCreateEventEndDate).setVisibility(View.INVISIBLE);
             findViewById(R.id.btnCreateEventEndTime).setVisibility(View.INVISIBLE);
         }
+    }
+
+    private CategoryFromDb getCategory(int id) {
+        SqlCategoryRepository repo = new SqlCategoryRepository(this);
+        CategoryFromDb categoryFromDb = repo.getCategory(id);
+        repo.close();
+        return categoryFromDb;
+    }
+
+    private CompetitorFromDb getCompetitor(int id) {
+        SqlCompetitorRepository repo = new SqlCompetitorRepository(this);
+        CompetitorFromDb competitorFromDb = repo.getCompetitor(id);
+        repo.close();
+        return competitorFromDb;
+    }
+
+    private StageFromDb getStage(int id) {
+        SqlStageRepository repo = new SqlStageRepository(this);
+        StageFromDb stageFromDb = repo.getStage(id);
+        repo.close();
+        return stageFromDb;
     }
 }

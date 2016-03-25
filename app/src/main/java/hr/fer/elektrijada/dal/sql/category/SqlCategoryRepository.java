@@ -15,9 +15,11 @@ import hr.fer.elektrijada.util.Logger;
  */
 public class SqlCategoryRepository {
     private SQLiteOpenHelper dbHelper;
+    private final Context context;
 
     public SqlCategoryRepository(Context context) {
         dbHelper = new DbHelper(context);
+        this.context = context;
     }
 
     public void close() {

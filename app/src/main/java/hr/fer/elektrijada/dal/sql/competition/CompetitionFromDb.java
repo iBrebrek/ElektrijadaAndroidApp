@@ -1,5 +1,6 @@
 package hr.fer.elektrijada.dal.sql.competition;
 
+import hr.fer.elektrijada.dal.sql.category.CategoryFromDb;
 import hr.fer.elektrijada.util.DateParserUtil;
 
 /**
@@ -9,21 +10,21 @@ public class CompetitionFromDb {
     private int id;
     private String timeFrom;
     private String timeTo;
-    private int categoryId;
+    private CategoryFromDb category;
     private String location;
     private boolean isAssumption;
 
     /*
     bez id-a
      */
-    public CompetitionFromDb(String timeFrom, String timeTo, int categoryId, String location, boolean isAssumption) {
+    public CompetitionFromDb(String timeFrom, String timeTo, CategoryFromDb category, String location, boolean isAssumption) {
         if(timeTo != null && DateParserUtil.stringToDate(timeFrom)
                 .compareTo(DateParserUtil.stringToDate(timeTo)) == 1) {
             throw new IllegalArgumentException("Kraj mora biti nakon početka!");
         }
         this.timeFrom = timeFrom;
         this.timeTo = timeTo;
-        this.categoryId = categoryId;
+        this.category = category;
         this.location = location;
         this.isAssumption = isAssumption;
     }
@@ -31,8 +32,8 @@ public class CompetitionFromDb {
     /*
     konstruktor sa svim podatcima
      */
-    public CompetitionFromDb(int id, String timeFrom, String timeTo, int categoryId, String location, boolean isAssumption) {
-        this(timeFrom, timeTo, categoryId, location, isAssumption);
+    public CompetitionFromDb(int id, String timeFrom, String timeTo, CategoryFromDb category, String location, boolean isAssumption) {
+        this(timeFrom, timeTo, category, location, isAssumption);
         this.id = id;
     }
 
@@ -60,12 +61,12 @@ public class CompetitionFromDb {
         this.timeTo = timeTo;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public CategoryFromDb getCategory() {
+        return category;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(CategoryFromDb category) {
+        this.category = category;
     }
 
     public String getLocation() {

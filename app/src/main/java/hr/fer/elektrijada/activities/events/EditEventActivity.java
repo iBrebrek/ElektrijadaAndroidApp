@@ -31,13 +31,13 @@ public class EditEventActivity extends CreateNewEventActivity {
             SqlDuelRepository duelRepo = new SqlDuelRepository(this);
             DuelFromDb duel = duelRepo.getDuel(eventId);
             duelRepo.close();
-            setEvent(duel.getCategoryId(), duel.getStageId(), duel.getFirstId(),
-                    duel.getSecondId(), duel.getLocation(), duel.getTimeFrom(), duel.getTimeTo());
+            setEvent(duel.getCategory().getId(), duel.getStage().getId(), duel.getFirstCompetitor().getId(),
+                    duel.getSecondCompetitor().getId(), duel.getLocation(), duel.getTimeFrom(), duel.getTimeTo());
         } else {
             SqlCompetitionRepository compRepo = new SqlCompetitionRepository(this);
             CompetitionFromDb comp = compRepo.getCompetition(eventId);
             compRepo.close();
-            setEvent(comp.getCategoryId(), -1, -1, -1, comp.getLocation(), comp.getTimeFrom(), comp.getTimeTo());
+            setEvent(comp.getCategory().getId(), -1, -1, -1, comp.getLocation(), comp.getTimeFrom(), comp.getTimeTo());
         }
     }
 }

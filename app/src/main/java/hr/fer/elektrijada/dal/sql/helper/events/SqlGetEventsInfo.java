@@ -16,6 +16,7 @@ import hr.fer.elektrijada.dal.sql.competitor.CompetitorContract;
 import hr.fer.elektrijada.dal.sql.duel.DuelContract;
 import hr.fer.elektrijada.dal.sql.duelscore.DuelScoreContract;
 import hr.fer.elektrijada.dal.sql.duelscore.SqlDuelScoreRepository;
+import hr.fer.elektrijada.dal.sql.faculty.FacultyContract;
 import hr.fer.elektrijada.dal.sql.stage.StageContract;
 import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.events.CompetitionEvent;
@@ -28,7 +29,7 @@ import hr.fer.elektrijada.util.Logger;
  */
 public class SqlGetEventsInfo {
     SQLiteOpenHelper dbHelper;
-    private Context context;
+    private final Context context;
 
     public SqlGetEventsInfo(Context context) {
         dbHelper = new DbHelper(context);
@@ -182,6 +183,12 @@ public class SqlGetEventsInfo {
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 1);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED, 0);
         test = db.insert(CompetitorContract.CompetitorEntry.TABLE_NAME, null, values);
+
+        values = new ContentValues();
+        values.put(FacultyContract.FacultyEntry._ID, 1);
+        values.put(FacultyContract.FacultyEntry.COLUMN_NAME_NAME, "FER");
+        values.put(FacultyContract.FacultyEntry.COLUMN_NAME_NICK, "nadimak");
+        test = db.insert(FacultyContract.FacultyEntry.TABLE_NAME, null, values);
 
         values = new ContentValues();
         values.put(StageContract.StageEntry._ID, 0);
