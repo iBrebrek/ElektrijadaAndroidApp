@@ -19,10 +19,12 @@ import hr.fer.elektrijada.model.news.NewsEntry;
 public class NewsFeedListAdapter extends BaseAdapter {
     private ArrayList<NewsEntry> listData;
     private LayoutInflater layoutInflater;
+    private Context context;
 
-    public NewsFeedListAdapter(Context aContext, ArrayList<NewsEntry> listData) {
+    public NewsFeedListAdapter(Context context, ArrayList<NewsEntry> listData) {
+        this.context = context;
         this.listData = listData;
-        layoutInflater = LayoutInflater.from(aContext);
+        layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -54,7 +56,7 @@ public class NewsFeedListAdapter extends BaseAdapter {
         }
 
         holder.headlineView.setText(listData.get(position).getTitle());
-        holder.reporterNameView.setText("Autor: " + listData.get(position).getAuthorId()); //TODO: getAuthorName umjesto getAuthorId
+        holder.reporterNameView.setText("Autor: " + listData.get(position).getAuthor(context));
         holder.reportedDateView.setText(listData.get(position).getTimeToString());
         return convertView;
     }

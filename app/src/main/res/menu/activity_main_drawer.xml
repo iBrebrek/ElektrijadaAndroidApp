@@ -26,10 +26,10 @@
                     android:id="@+id/nav_postavke"
                     android:icon="@android:drawable/ic_menu_manage"
                     android:title="Postavke" />
-                <item
+               <!-- <item
                     android:id="@+id/nav_sign_out"
                     android:icon="@android:drawable/ic_menu_share"
-                    android:title="Sign out" />
+                    android:title="Sign out" />-->
             </menu>
         </item>
     </group>

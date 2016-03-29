@@ -13,12 +13,12 @@ public class UserContract {
     }
 
     private static final String TEXT_TYPE = " TEXT";
-    private static final String COMMA_SEP = ",";
+    private static final String COMMA_SEP = ", ";
 
     //SQL za stvaranje i brisanje tablice user
     public static final String SQL_CREATE_USER =
             "CREATE TABLE " + UserEntry.TABLE_NAME + " (" +
-                    UserEntry._ID + " INTEGER PRIMARY KEY," +
+                    UserEntry._ID + " INTEGER PRIMARY KEY, " +
                     UserEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     UserEntry.COLUMN_NAME_SURNAME + TEXT_TYPE + COMMA_SEP +
                     UserEntry.COLUMN_NAME_LOGINTYPE + TEXT_TYPE +

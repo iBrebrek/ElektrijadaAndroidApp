@@ -1,4 +1,4 @@
-package hr.fer.elektrijada.util;
+package hr.fer.elektrijada.extras;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,6 +16,7 @@ import hr.fer.elektrijada.model.events.CompetitionEvent;
 import hr.fer.elektrijada.model.events.DuelEvent;
 import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.score.DuelScore;
+import hr.fer.elektrijada.util.DateParserUtil;
 
 /**
  * Created by Ivica Brebrek

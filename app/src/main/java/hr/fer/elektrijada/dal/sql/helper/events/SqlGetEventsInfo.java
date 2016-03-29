@@ -18,6 +18,7 @@ import hr.fer.elektrijada.dal.sql.duelscore.DuelScoreContract;
 import hr.fer.elektrijada.dal.sql.duelscore.SqlDuelScoreRepository;
 import hr.fer.elektrijada.dal.sql.faculty.FacultyContract;
 import hr.fer.elektrijada.dal.sql.stage.StageContract;
+import hr.fer.elektrijada.dal.sql.user.UserContract;
 import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.events.CompetitionEvent;
 import hr.fer.elektrijada.model.events.DuelEvent;
@@ -132,6 +133,11 @@ public class SqlGetEventsInfo {
             values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_USER_ID, 1+i);
             values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
             test = db.insert(DuelScoreContract.DuelScoreEntry.TABLE_NAME, null, values);
+            values = new ContentValues();
+            values.put(UserContract.UserEntry._ID, 1+i);
+            values.put(UserContract.UserEntry.COLUMN_NAME_NAME, "Name" + (i+1));
+            values.put(UserContract.UserEntry.COLUMN_NAME_SURNAME, "Lastname" + (i+1));
+            test = db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
         }
         for (int i = 100; i < 103; i++) {
             values = new ContentValues();
@@ -142,6 +148,11 @@ public class SqlGetEventsInfo {
             values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_USER_ID, 1+i);
             values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
             test = db.insert(DuelScoreContract.DuelScoreEntry.TABLE_NAME, null, values);
+            values = new ContentValues();
+            values.put(UserContract.UserEntry._ID, 1+i);
+            values.put(UserContract.UserEntry.COLUMN_NAME_NAME, "Name" + (i+1));
+            values.put(UserContract.UserEntry.COLUMN_NAME_SURNAME, "Lastname" + (i+1));
+            test = db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
         }
         values = new ContentValues();
         values.put(DuelScoreContract.DuelScoreEntry._ID, 99);
@@ -151,6 +162,11 @@ public class SqlGetEventsInfo {
         values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_USER_ID, 1);
         values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
         test = db.insert(DuelScoreContract.DuelScoreEntry.TABLE_NAME, null, values);
+        values = new ContentValues();
+        values.put(UserContract.UserEntry._ID, 1);
+        values.put(UserContract.UserEntry.COLUMN_NAME_NAME, "Name " + 1);
+        values.put(UserContract.UserEntry.COLUMN_NAME_SURNAME, "Lastname  " + 1);
+        test = db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
 
         values = new ContentValues();
         values.put(DuelScoreContract.DuelScoreEntry._ID, 3);

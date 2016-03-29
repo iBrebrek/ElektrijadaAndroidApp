@@ -9,18 +9,4 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior" tools:showIn="@layout/app_bar_main"
     tools:context=".StartActivity">
 
-    <!--ovo obrisite kada cete raditi Settings, samo sam nesto testirao...-->
-    <TextView android:text="Postavke..." android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/testDateTextView"/>
-
-    <!--ovo obrisite kada cete raditi Settings, samo sam nesto testirao...-->
-    <Button
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/testDateTextView"
-        android:text="Postavke..."
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/testTimeButton"/>
-
 </RelativeLayout>

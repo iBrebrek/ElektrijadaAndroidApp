@@ -21,10 +21,11 @@ import hr.fer.elektrijada.MenuHandler;
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.activities.BaseMenuActivity;
 import hr.fer.elektrijada.dal.sql.helper.events.SqlGetEventsInfo;
+import hr.fer.elektrijada.extras.MyInfo;
 import hr.fer.elektrijada.model.events.DateStamp;
 import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.events.SportNameLabel;
-import hr.fer.elektrijada.util.Favorites;
+import hr.fer.elektrijada.extras.Favorites;
 
 /**
  * Pregled svih eventa (to je trenutno pocetna aktivnost)
@@ -62,6 +63,14 @@ public class EventsActivity extends BaseMenuActivity{
         layout.setPadding(0, 16, 0, 0); //da bi donje tipke mogle biti uz rub
         listView = (ListView) findViewById(R.id.listViewEvents);
 //        initFilterButtons();
+        if(MyInfo.isUnregistered(this)) {
+            MyInfo.pickUsername(this);
+
+            //TODO: maknut ova 3 reda ispod todo:
+            SqlGetEventsInfo repo = new SqlGetEventsInfo(this);
+            repo.addFakeEvents();
+            repo.close();
+        }
     }
 
     @Override
@@ -69,19 +78,31 @@ public class EventsActivity extends BaseMenuActivity{
         //npr, kada se doda novi dogadaj zbog ovoga se odma vidi
         super.onResume();
         filter();
+        setStartingScrollPosition();
     }
 
     private void setStartingScrollPosition(){
-        int position = 0;
-        for(Event date:listOfEvents) {
-            if (date instanceof DateStamp) {
-                if(date.getTimeFrom().after(new Date())) {
-                    break;
+
+        listView.post(new Runnable() {
+            /*
+                kada ne stavim u novu dretvu onda se cudno pozicionira,
+                a kada stavim onda opce ne izvede ovo ako odaberem dogadaje u lijevom meniu :S
+            */
+            @Override
+            public void run() {
+                int position = 0;
+                for(Event date:listOfEvents) {
+                    if (date instanceof DateStamp) {
+                        if(date.getTimeFrom().after(new Date())) {
+                            break;
+                        }
+                        position = listOfEvents.indexOf(date);
+                    }
                 }
-                position = listOfEvents.indexOf(date);
+
+                listView.setSelection(position);
             }
-        }
-        listView.setSelection(position);
+        });
     }
 
     private void adjustList() {
@@ -108,7 +129,6 @@ public class EventsActivity extends BaseMenuActivity{
         }
         listView.setAdapter(eventsListAdapter);
        // eventsListAdapter.notifyDataSetChanged();
-        setStartingScrollPosition();
     }
 
     private void insertSportNames(List<Event> list) {
@@ -318,7 +338,6 @@ public class EventsActivity extends BaseMenuActivity{
         menu.add(ADD_NEW_EVENT);
         menu.add(FILTER_TYPE);
         menu.add(FILTER_DATE);
-        menu.add("addFakeEvents"); //TODO: ovo maknut
         return true;
     }
 
@@ -337,12 +356,6 @@ public class EventsActivity extends BaseMenuActivity{
 
             case FILTER_DATE:
                 initFilterDate();
-                break;
-
-            case "addFakeEvents": //TODO: i ovo maknut
-                SqlGetEventsInfo repo = new SqlGetEventsInfo(this);
-                repo.addFakeEvents();
-                repo.close();
                 break;
         }
         return super.onOptionsItemSelected(item);

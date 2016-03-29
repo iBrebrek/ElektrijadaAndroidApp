@@ -85,7 +85,7 @@ public class NewsActivity extends BaseMenuActivity {
         TextView txtText = (TextView) findViewById(R.id.textNewsText);
 
         txtTitle.setText(news.getTitle());
-        txtAuthor.setText(String.format("Autor: %s", news.getAuthorId())); //TODO: getAuthorName umjesto getAuthorId
+        txtAuthor.setText(String.format("Autor: %s", news.getAuthor(this)));
         txtDate.setText(String.format("Objavljeno: %s", news.getTimeToString()));
         txtText.setText(news.getText());
     }

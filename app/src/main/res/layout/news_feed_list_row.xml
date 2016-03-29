@@ -18,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
+        android:layout_toLeftOf="@+id/date"
         android:layout_marginTop="5dip"
         android:textColor="#343434"
         android:textSize="12sp" />

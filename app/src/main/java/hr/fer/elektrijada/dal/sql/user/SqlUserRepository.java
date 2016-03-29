@@ -1,6 +1,9 @@
 package hr.fer.elektrijada.dal.sql.user;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import hr.fer.elektrijada.dal.sql.DbHelper;
@@ -23,8 +26,64 @@ public class SqlUserRepository {
         }
     }
 
-    //TODO: popravi kad ce se raditi korisnici
-    public UserFromDb getUser(int id) {
-        return new UserFromDb(1, "Test", "Testić");
+    public UserFromDb getUser(long id) {
+        UserFromDb user = null;
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+
+            String[] projection = {
+                    UserContract.UserEntry._ID,
+                    UserContract.UserEntry.COLUMN_NAME_NAME,
+                    UserContract.UserEntry.COLUMN_NAME_SURNAME
+            };
+
+            Cursor cursor = db.query(
+                    UserContract.UserEntry.TABLE_NAME,
+                    projection,
+                    UserContract.UserEntry._ID + "=?",
+                    new String[]{String.valueOf(id)},
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                user = new UserFromDb(
+                        cursor.getInt(UserContract.getColumnPos(UserContract.UserEntry._ID)),
+                        cursor.getString(UserContract.getColumnPos(UserContract.UserEntry.COLUMN_NAME_NAME)),
+                        cursor.getString(UserContract.getColumnPos(UserContract.UserEntry.COLUMN_NAME_SURNAME))
+                );
+                cursor.close();
+            }
+
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
+        }
+        return user;
+    }
+
+    //returns created user's id (this new user is in db under that id)
+    public long createUser(UserFromDb user) {
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(UserContract.UserEntry.COLUMN_NAME_NAME, user.getName());
+            values.put(UserContract.UserEntry.COLUMN_NAME_SURNAME, user.getSureName());
+
+            long rowId = db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
+            return rowId;
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+            return -2;
+        } finally {
+            if (db != null)
+                db.close();
+        }
     }
 }

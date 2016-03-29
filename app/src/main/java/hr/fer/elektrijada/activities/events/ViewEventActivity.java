@@ -23,7 +23,7 @@ import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
 import hr.fer.elektrijada.dal.sql.duel.DuelFromDb;
 import hr.fer.elektrijada.dal.sql.duel.SqlDuelRepository;
 import hr.fer.elektrijada.util.DateParserUtil;
-import hr.fer.elektrijada.util.Favorites;
+import hr.fer.elektrijada.extras.Favorites;
 
 /**
  * Aktivnost koja prikazuje jedan od dogadaja.
@@ -162,7 +162,7 @@ public class ViewEventActivity extends BaseMenuActivity {
         sb.append(twoDigits(calendar.get(Calendar.HOUR_OF_DAY))).append(":")
                 .append(twoDigits(calendar.get(Calendar.MINUTE))).append("  ")
                 .append(calendar.get(Calendar.DAY_OF_MONTH)).append(".")
-                .append(calendar.get(Calendar.MONTH)).append(".")
+                .append(calendar.get(Calendar.MONTH)+1).append(".")
                 .append(calendar.get(Calendar.YEAR)).append(".");
 
         return sb.toString();

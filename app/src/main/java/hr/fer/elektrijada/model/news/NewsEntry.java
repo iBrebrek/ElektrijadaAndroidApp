@@ -1,9 +1,14 @@
 package hr.fer.elektrijada.model.news;
 
+import android.content.Context;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import hr.fer.elektrijada.dal.sql.user.SqlUserRepository;
+import hr.fer.elektrijada.dal.sql.user.UserFromDb;
 
 /**
  * ovaj razred sluzi za JEDNU vijesti;
@@ -64,6 +69,14 @@ public class NewsEntry {
         this(title, text, Calendar.getInstance().getTime(), authorId);
     }
 
+    public String getAuthor(Context context) {
+        SqlUserRepository userRepo = new SqlUserRepository(context);
+        UserFromDb user = userRepo.getUser(authorId);
+        userRepo.close();
+
+        return user.getName() + " " + user.getSureName();
+    }
+
     public int getAuthorId() {
         return authorId;
     }
@@ -91,8 +104,6 @@ public class NewsEntry {
     public int getId() {
         return id;
     }
-
-    //TODO: dodaj:  public String getAuthor(); treba nam popis userId-a
 
     /**
      * vraca string "Objavljeno: prije [br_sati]sati i [br_minuta]minuta" ako isti dan;

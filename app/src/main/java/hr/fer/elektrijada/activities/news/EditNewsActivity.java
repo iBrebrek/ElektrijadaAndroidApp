@@ -11,6 +11,7 @@ import hr.fer.elektrijada.MenuHandler;
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.activities.SaveBeforeExitActivity;
 import hr.fer.elektrijada.dal.sql.news.SqlNewsRepository;
+import hr.fer.elektrijada.extras.MyInfo;
 import hr.fer.elektrijada.model.news.NewsEntry;
 
 /**
@@ -123,8 +124,7 @@ public class EditNewsActivity extends SaveBeforeExitActivity {
      */
     private void fillObjectNews() {
         if (adding) {
-            //TODO: na prvo mjesto ovog konstruktora (umjesto 1) stavi id korisnika koji trenutno koristi app
-            news = new NewsEntry("", "", 1);
+            news = new NewsEntry("", "", MyInfo.getMyUsername(this).getId());
         }
         news.setTitle(txtTitle.getText().toString());
         news.setText(txtText.getText().toString());
@@ -136,7 +136,7 @@ public class EditNewsActivity extends SaveBeforeExitActivity {
         if (!isReadyToSave()) {
             return;
         }
-        //TODO: provijeriti gdje se treba spremiti, lokalno ili online
+
         SqlNewsRepository repo = new SqlNewsRepository(getApplicationContext());
         if (adding) {
             repo.createNewsEntry(news);
