@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="50dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/duel_scores_list_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#000099"
+        android:textSize="21sp" />
+
+    <TextView
+        android:id="@+id/duel_scores_list_triangleL"
+        android:text="▼"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/duel_scores_list_score"
+        android:textSize="21sp"
+        android:textColor="#78d4d4d4"
+        android:layout_marginRight="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/duel_scores_list_triangleR"
+        android:text="▼"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/duel_scores_list_score"
+        android:textSize="21sp"
+        android:textColor="#78d4d4d4"
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/duel_scores_list_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:textColor="#000000"
+        android:textSize="21sp" />
+
+
+
+
+    <!--<ListView-->
+        <!--android:id="@+id/duel_scores_list_user_list"-->
+        <!--android:listSelector="@android:color/transparent"-->
+        <!--android:cacheColorHint="@android:color/transparent"-->
+        <!--android:layout_below="@id/duel_scores_list_score"-->
+        <!--android:paddingLeft="32dp"-->
+        <!--android:paddingRight="32dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
+
+</RelativeLayout>

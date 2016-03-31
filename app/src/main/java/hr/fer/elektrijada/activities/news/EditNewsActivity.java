@@ -131,10 +131,10 @@ public class EditNewsActivity extends SaveBeforeExitActivity {
     }
 
     @Override
-    protected void save() {
+    protected boolean save() {
         fillObjectNews();
         if (!isReadyToSave()) {
-            return;
+            return false;
         }
 
         SqlNewsRepository repo = new SqlNewsRepository(getApplicationContext());
@@ -144,5 +144,7 @@ public class EditNewsActivity extends SaveBeforeExitActivity {
             repo.updateNews(news);
         }
         repo.close();
+
+        return true;
     }
 }

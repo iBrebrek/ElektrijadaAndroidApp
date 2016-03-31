@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import hr.fer.elektrijada.R;
+import hr.fer.elektrijada.activities.scores.duels.DuelScoresActivity;
 import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.events.CompetitionEvent;
 import hr.fer.elektrijada.model.events.DuelEvent;
@@ -190,9 +191,13 @@ public class EventsListAdapter extends BaseAdapter {
             result.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showToast("sport-rezultat");
+                    Intent intent = new Intent(activity.getApplicationContext(), DuelScoresActivity.class);
+                    intent.putExtra("duelId", event.getId());
+                    activity.startActivity(intent);
                 }
             });
         }
+
+
     }
 }

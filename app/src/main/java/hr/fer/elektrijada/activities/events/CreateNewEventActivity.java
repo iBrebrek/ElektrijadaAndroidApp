@@ -227,7 +227,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
     }
 
     @Override
-    protected void save() {
+    protected boolean save() {
         try {
             //koristi se try jer se nesmije dozvoliti da je kraj prije pocetka
             if (isDuel) {
@@ -253,8 +253,9 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
             }
         } catch (IllegalArgumentException exc) {
             Toast.makeText(getApplicationContext(), exc.getMessage(), Toast.LENGTH_LONG).show();
-            return;
+            return false;
         }
+        return true;
     }
 
     private class RememberPickedDetails{

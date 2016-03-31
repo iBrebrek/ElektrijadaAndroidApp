@@ -5,30 +5,48 @@ package hr.fer.elektrijada.model.score;
  */
 public class DuelScore {
     private boolean isSet;
-    private int firstScore;
-    private int secondScore;
+    private double firstScore;
+    private double secondScore;
 
     //konstruktor u slucaju ako rezultat ne postoji
     public DuelScore() {
         isSet = false;
     }
 
-    public DuelScore(int firstScore, int secondScore) {
+    public DuelScore(double firstScore, double secondScore) {
         isSet = true;
         this.firstScore = firstScore;
         this.secondScore = secondScore;
     }
 
-    public int getFirstScore() {
+    public double getFirstScore() {
         return firstScore;
     }
 
-    public int getSecondScore() {
+    public double getSecondScore() {
         return secondScore;
     }
 
     public boolean isSet() {
         return isSet;
+    }
+
+    @Override
+    public String toString() {
+        if(isSet()) {
+            return roundIt(getFirstScore()) + " : " + roundIt(getSecondScore());
+        } else {
+            return " - : -";
+        }
+    }
+
+    //bez decimalnih ako je rezultat cijeli broj, 4.0->4, ali 4.5->4.5 (max jedna decimala)
+    private String roundIt(double number) {
+        if(number % 1 == 0) {
+            return String.format("%.0f", number);
+        } else {
+            return String.format("%.1f", number);
+        }
     }
 
     @Override
@@ -43,8 +61,8 @@ public class DuelScore {
 
     @Override
     public int hashCode() {
-        int result = firstScore;
+        double result = firstScore;
         result = 31 * result + secondScore;
-        return result;
+        return (int)result;
     }
 }

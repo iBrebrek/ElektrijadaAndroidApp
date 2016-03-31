@@ -113,10 +113,6 @@ public class DuelEvent extends Event {
      * @return String je homeScore:awayScore ili -
      */
     public String getResult() {
-        if(result.isSet()) {
-            return result.getFirstScore() + ":" + result.getSecondScore();
-        } else {
-            return "  -  ";
-        }
+        return result.toString();
     }
 }

@@ -160,7 +160,7 @@ public class DuelFromDb {
             duelScoreRepository.close();
         }
         if(duelScore.isSet()) {
-            return String.valueOf(duelScore.getFirstScore());
+            return roundIt(duelScore.getFirstScore());
         } else {
             return " - ";
         }
@@ -173,9 +173,18 @@ public class DuelFromDb {
             duelScoreRepository.close();
         }
         if(duelScore.isSet()) {
-            return String.valueOf(duelScore.getSecondScore());
+            return roundIt(duelScore.getSecondScore());
         } else {
             return " - ";
+        }
+    }
+
+    //bez decimalnih ako je rezultat cijeli broj, 4.0->4, ali 4.5->4.5 (max jedna decimala)
+    private String roundIt(double number) {
+        if(number % 1 == 0) {
+            return String.format("%.0f", number);
+        } else {
+            return String.format("%.1f", number);
         }
     }
 

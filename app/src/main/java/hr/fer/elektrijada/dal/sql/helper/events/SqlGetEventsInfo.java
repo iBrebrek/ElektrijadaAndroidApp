@@ -160,7 +160,7 @@ public class SqlGetEventsInfo {
         values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_2, 5);
         values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_DUEL_ID, 85);
         values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_USER_ID, 1);
-        values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
+        values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_IS_OFFICIAL, 1);
         test = db.insert(DuelScoreContract.DuelScoreEntry.TABLE_NAME, null, values);
         values = new ContentValues();
         values.put(UserContract.UserEntry._ID, 1);

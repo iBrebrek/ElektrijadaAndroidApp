@@ -40,4 +40,25 @@ public class UserFromDb {
     public void setSureName(String sureName) {
         this.sureName = sureName;
     }
+
+    @Override
+    public String toString() {
+        return name + " " + sureName;
+    }
+
+    @Override
+    public boolean equals(Object o) { //TODO: uredi kad ce bit sinkronizacija
+        if (this == o) return true;
+        if (!(o instanceof UserFromDb)) return false;
+
+        UserFromDb that = (UserFromDb) o;
+
+        return id == that.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

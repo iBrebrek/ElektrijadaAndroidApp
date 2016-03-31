@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_duel_score_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/acitivity_duel_score_teams_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/teams_dots"
+            android:text=" : "
+            android:textSize="21sp"
+            android:textColor="#000099"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/acitivity_duel_score_first_team"
+            android:textSize="21sp"
+            android:textColor="#000099"
+            android:textStyle="bold"
+            android:layout_toLeftOf="@id/teams_dots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/acitivity_duel_score_second_team"
+            android:textSize="21sp"
+            android:textColor="#000099"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/teams_dots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/acitivity_duel_score_official_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="21sp"
+            android:textColor="#e21c7600"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:text="Službeni: " />
+
+        <TextView
+            android:id="@+id/acitivity_duel_score_official_score"
+            android:layout_centerInParent="true"
+            android:textSize="21sp"
+            android:textColor="#e21c7600"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/acitivity_duel_score_my_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="21sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:text="Moj: " />
+
+        <TextView
+            android:id="@+id/my_dots"
+            android:layout_centerInParent="true"
+            android:text=" : "
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:textSize="21sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/acitivity_duel_score_my_score_first"
+            android:layout_toLeftOf="@id/my_dots"
+            android:inputType="numberDecimal"
+            android:gravity="end"
+            android:background="@android:color/transparent"
+            android:maxLength="4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="21sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:hint=" - " />
+
+        <EditText
+            android:id="@+id/acitivity_duel_score_my_score_second"
+            android:layout_toRightOf="@id/my_dots"
+            android:inputType="numberDecimal"
+            android:gravity="start"
+            android:background="@android:color/transparent"
+            android:maxLength="4"
+            android:textSize="21sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint=" - " />
+
+        <TextView
+            android:id="@+id/duel_scores_edit_my_score"
+            android:text="[EDIT]"
+            android:textSize="21sp"
+            android:textColor="#85000000"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/list_duel_scores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" />
+
+</LinearLayout>

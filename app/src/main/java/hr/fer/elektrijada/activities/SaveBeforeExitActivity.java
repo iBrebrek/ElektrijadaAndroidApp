@@ -14,7 +14,15 @@ import hr.fer.elektrijada.R;
  */
 public abstract class SaveBeforeExitActivity extends BaseMenuActivity {
 
-    protected abstract void save();
+    /*
+    vrati true ako je spremanje obavljeno, inace false
+
+    kada se otvori dialog na back pressed, i klikne se na "da" za spremi,
+    onda ce se activity ugasiti ako ova metoda vrati true, inace ce activity ostati upaljen,
+
+    zato u toj metodi treba javiti korisniku zasto nije uspio spremit da moze prepravit
+     */
+    protected abstract boolean save();
 
     @Override
     public void onBackPressed() {
@@ -29,8 +37,9 @@ public abstract class SaveBeforeExitActivity extends BaseMenuActivity {
                     .setPositiveButton(R.string.dialog_onbackpressed_postive, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            save();
-                            goBack();
+                            if(save()) {
+                                goBack();
+                            }
                         }
                     })
                     .setNegativeButton(R.string.dialog_onbackpressed_negative, new DialogInterface.OnClickListener() {

@@ -18,6 +18,7 @@ import java.util.GregorianCalendar;
 import hr.fer.elektrijada.MenuHandler;
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.activities.BaseMenuActivity;
+import hr.fer.elektrijada.activities.scores.duels.DuelScoresActivity;
 import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
 import hr.fer.elektrijada.dal.sql.duel.DuelFromDb;
@@ -194,8 +195,9 @@ public class ViewEventActivity extends BaseMenuActivity {
         findViewById(R.id.event_view_stub_duel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO:
-                Toast.makeText(getApplicationContext(), "Otvori tablicu rezultata duela" + eventId, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), DuelScoresActivity.class);
+                intent.putExtra("duelId", eventId);
+                startActivity(intent);
             }
         });
     }
