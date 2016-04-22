@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import hr.fer.elektrijada.R;
+import hr.fer.elektrijada.activities.scores.competitions.CompetitionResultsActivity;
 import hr.fer.elektrijada.activities.scores.duels.DuelScoresActivity;
 import hr.fer.elektrijada.model.events.Event;
 import hr.fer.elektrijada.model.events.CompetitionEvent;
@@ -142,21 +143,17 @@ public class EventsListAdapter extends BaseAdapter {
             });
             if (event.hasResults()) {
                 result.setText("[R]");
-                result.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showToast("znanje-rezultati");
-                    }
-                });
             } else {
                 result.setText(" - ");
-                result.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(android.view.View v) {
-                        showToast("znanje-rezultati (nema ih)");
-                    }
-                });
             }
+            result.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(android.view.View v) {
+                    Intent intent = new Intent(activity.getApplicationContext(), CompetitionResultsActivity.class);
+                    intent.putExtra("competitionId", event.getId());
+                    activity.startActivity(intent);
+                }
+            });
         }
     }
 

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import hr.fer.elektrijada.dal.sql.user.SqlUserRepository;
 import hr.fer.elektrijada.dal.sql.user.UserFromDb;
+import hr.fer.elektrijada.util.UniqueAndroidID;
 
 /**
  * Created by Ivica Brebrek
@@ -75,7 +76,7 @@ public class MyInfo {
 
                         if (isCorrect) {
                             SqlUserRepository userRepo = new SqlUserRepository(activity);
-                            long idRow = userRepo.createUser(new UserFromDb(-1, myName, mySurename));
+                            long idRow = userRepo.createUser(new UserFromDb(-1, myName, mySurename, UniqueAndroidID.getMyID(activity)));
                             userRepo.close();
                             rememberMyUsername(activity, idRow);
                             myDialog.dismiss();

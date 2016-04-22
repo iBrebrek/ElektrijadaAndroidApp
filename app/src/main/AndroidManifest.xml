@@ -1,60 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="hr.fer.elektrijada" >
+    package="hr.fer.elektrijada">
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".activities.events.EventsActivity"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".activities.events.EventsActivity"
             android:label="Elektrijada"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activities.events.CreateNewEventActivity"
             android:label="Novi događaj"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.events.EditEventActivity"
             android:label="Uredi događaj"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.events.ViewEventActivity"
             android:label="Događaj"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.scores.duels.DuelScoresActivity"
             android:label="Rezultati dvoboja"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.news.NewsFeedActivity"
             android:label="Vijesti"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.news.NewsActivity"
             android:label="Vijest"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.news.EditNewsActivity"
             android:label="Uređivanje vijesti"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".activities.settings.SettingsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.scores.competitions.CompetitionResultsActivity"
+            android:label="Rezultati"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.scores.competitions.TeamResultActivity"
+            android:label="Team"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.scores.competitions.modifications.AddTeamActivity"
+            android:label="Dodaj tim"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.scores.competitions.modifications.AddIndividualActivity"
+            android:label="Dodaj u tim"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.scores.competitions.modifications.AddIndividualFixedTeamActivity"
+            android:label="Dodaj u tim"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.scores.competitions.modifications.ViewIndividualActivity"
+            android:label="Dodaj u tim"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.settings.SettingsActivity"
+            android:label="Postavke"></activity>
     </application>
 
 </manifest>

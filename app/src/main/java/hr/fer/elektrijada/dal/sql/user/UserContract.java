@@ -21,7 +21,8 @@ public class UserContract {
                     UserEntry._ID + " INTEGER PRIMARY KEY, " +
                     UserEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     UserEntry.COLUMN_NAME_SURNAME + TEXT_TYPE + COMMA_SEP +
-                    UserEntry.COLUMN_NAME_LOGINTYPE + TEXT_TYPE +
+                    UserEntry.COLUMN_NAME_LOGINTYPE + TEXT_TYPE + COMMA_SEP +
+                    UserEntry.COLUMN_NAME_UNIQUE_ID + TEXT_TYPE +
                     " )";
 
     public static final String SQL_DELETE_USER =
@@ -38,6 +39,8 @@ public class UserContract {
                 return 2;
             case UserEntry.COLUMN_NAME_LOGINTYPE:
                 return 3;
+            case UserEntry.COLUMN_NAME_UNIQUE_ID:
+                return 4;
             default:
                 throw new RuntimeException(String.format("Invalid column:%s for table %s",
                         columnName, UserEntry.TABLE_NAME));
@@ -50,6 +53,6 @@ public class UserContract {
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_SURNAME = "surname";
         public static final String COLUMN_NAME_LOGINTYPE = "logintype";
-
+        public static final String COLUMN_NAME_UNIQUE_ID = "uniqueId";
     }
 }

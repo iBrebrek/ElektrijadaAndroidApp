@@ -334,11 +334,11 @@ public class EventsActivity extends BaseMenuActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_start, menu);
+        getMenuInflater().inflate(R.menu.menu_template, menu);
         menu.add(ADD_NEW_EVENT);
         menu.add(FILTER_TYPE);
         menu.add(FILTER_DATE);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

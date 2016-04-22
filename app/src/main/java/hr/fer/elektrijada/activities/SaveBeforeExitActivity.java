@@ -63,10 +63,10 @@ public abstract class SaveBeforeExitActivity extends BaseMenuActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_start, menu);
+        getMenuInflater().inflate(R.menu.menu_template, menu);
         menu.add(SAVE);
         menu.add(CANCEL);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

@@ -35,25 +35,20 @@ public class SqlUserRepository {
             String[] projection = {
                     UserContract.UserEntry._ID,
                     UserContract.UserEntry.COLUMN_NAME_NAME,
-                    UserContract.UserEntry.COLUMN_NAME_SURNAME
+                    UserContract.UserEntry.COLUMN_NAME_SURNAME,
+                    UserContract.UserEntry.COLUMN_NAME_UNIQUE_ID
             };
 
-            Cursor cursor = db.query(
-                    UserContract.UserEntry.TABLE_NAME,
-                    projection,
-                    UserContract.UserEntry._ID + "=?",
-                    new String[]{String.valueOf(id)},
-                    null,
-                    null,
-                    null
-            );
+            Cursor cursor = db.rawQuery("SELECT * FROM " + UserContract.UserEntry.TABLE_NAME
+                    + " WHERE " + UserContract.UserEntry._ID +"="+id, null);
 
             if (cursor != null) {
                 cursor.moveToFirst();
                 user = new UserFromDb(
                         cursor.getInt(UserContract.getColumnPos(UserContract.UserEntry._ID)),
                         cursor.getString(UserContract.getColumnPos(UserContract.UserEntry.COLUMN_NAME_NAME)),
-                        cursor.getString(UserContract.getColumnPos(UserContract.UserEntry.COLUMN_NAME_SURNAME))
+                        cursor.getString(UserContract.getColumnPos(UserContract.UserEntry.COLUMN_NAME_SURNAME)),
+                        cursor.getString(UserContract.getColumnPos(UserContract.UserEntry.COLUMN_NAME_UNIQUE_ID))
                 );
                 cursor.close();
             }

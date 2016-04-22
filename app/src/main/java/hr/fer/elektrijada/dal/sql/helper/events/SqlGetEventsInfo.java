@@ -108,7 +108,7 @@ public class SqlGetEventsInfo {
         values.put(DuelContract.DuelEntry.COLUMN_NAME_TIME_TO, "2015.12.16. 22:33:00");
         values.put(DuelContract.DuelEntry.COLUMN_NAME_CATEGORY_ID, 3);
         values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_1_ID, 1);
-        values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID, 2);
+        values.put(DuelContract.DuelEntry.COLUMN_NAME_COMPETITOR_2_ID, 101);
         values.put(DuelContract.DuelEntry.COLUMN_NAME_STAGE_ID, 2);
         values.put(DuelContract.DuelEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
         test = db.insert(DuelContract.DuelEntry.TABLE_NAME, null, values);
@@ -137,6 +137,7 @@ public class SqlGetEventsInfo {
             values.put(UserContract.UserEntry._ID, 1+i);
             values.put(UserContract.UserEntry.COLUMN_NAME_NAME, "Name" + (i+1));
             values.put(UserContract.UserEntry.COLUMN_NAME_SURNAME, "Lastname" + (i+1));
+            values.put(UserContract.UserEntry.COLUMN_NAME_UNIQUE_ID, "abc"+i);
             test = db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
         }
         for (int i = 100; i < 103; i++) {
@@ -152,6 +153,7 @@ public class SqlGetEventsInfo {
             values.put(UserContract.UserEntry._ID, 1+i);
             values.put(UserContract.UserEntry.COLUMN_NAME_NAME, "Name" + (i+1));
             values.put(UserContract.UserEntry.COLUMN_NAME_SURNAME, "Lastname" + (i+1));
+            values.put(UserContract.UserEntry.COLUMN_NAME_UNIQUE_ID, "ggg"+i);
             test = db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
         }
         values = new ContentValues();
@@ -166,6 +168,7 @@ public class SqlGetEventsInfo {
         values.put(UserContract.UserEntry._ID, 1);
         values.put(UserContract.UserEntry.COLUMN_NAME_NAME, "Name " + 1);
         values.put(UserContract.UserEntry.COLUMN_NAME_SURNAME, "Lastname  " + 1);
+        values.put(UserContract.UserEntry.COLUMN_NAME_UNIQUE_ID, "Unique");
         test = db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
 
         values = new ContentValues();
@@ -177,32 +180,95 @@ public class SqlGetEventsInfo {
         values.put(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_IS_ASSUMPTION, 0);
         test = db.insert(DuelScoreContract.DuelScoreEntry.TABLE_NAME, null, values);
 
+        for (int i = 10; i < 20; i++) {
+            values = new ContentValues();
+            values.put(CompetitorContract.CompetitorEntry._ID, i);
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "Ferovac" + (i-9));
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME, "Prezime" + (i-9));
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_PERSON, 1);
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_GROUP_COMPETITOR_ID, i/15+1);
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_COMPETITION_ID, 7);
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 1);
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED, 0);
+            test = db.insert(CompetitorContract.CompetitorEntry.TABLE_NAME, null, values);
+        }
+        for (int i = 20; i < 29; i++) {
+            values = new ContentValues();
+            values.put(CompetitorContract.CompetitorEntry._ID, i);
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "Fesbovac" + (i-19));
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME, "Prezime" + (i-19));
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_PERSON, 1);
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_GROUP_COMPETITOR_ID, i/25+100);
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_COMPETITION_ID, 7);
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 2);
+            values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED, 0);
+            test = db.insert(CompetitorContract.CompetitorEntry.TABLE_NAME, null, values);
+        }
         values = new ContentValues();
         values.put(CompetitorContract.CompetitorEntry._ID, 1);
-        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "Ime");
-        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME, "Prezime");
-        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_PERSON, 1);
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "FER 1");
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_COMPETITION_ID, 7);
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_PERSON, 0);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 1);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED, 0);
         test = db.insert(CompetitorContract.CompetitorEntry.TABLE_NAME, null, values);
         values = new ContentValues();
         values.put(CompetitorContract.CompetitorEntry._ID, 2);
-        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "Tim");
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "FER 2");
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_COMPETITION_ID, 7);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_PERSON, 0);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 1);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED, 0);
         test = db.insert(CompetitorContract.CompetitorEntry.TABLE_NAME, null, values);
         values = new ContentValues();
         values.put(CompetitorContract.CompetitorEntry._ID, 100);
-        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "Igrači");
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "FESB 1");
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_COMPETITION_ID, 7);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_PERSON, 0);
-        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 1);
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 2);
         values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED, 0);
         test = db.insert(CompetitorContract.CompetitorEntry.TABLE_NAME, null, values);
+        values.put(CompetitorContract.CompetitorEntry._ID, 101);
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME, "FESB 2");
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_COMPETITION_ID, 7);
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_PERSON, 0);
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID, 2);
+        values.put(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED, 0);
+        test = db.insert(CompetitorContract.CompetitorEntry.TABLE_NAME, null, values);
+
+        for (int i = 10; i < 29; i++) {
+            values = new ContentValues();
+            values.put(CompetitionScoreContract.CompetitionScoreEntry._ID, i);
+            values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_RESULT, i*2);
+            values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITION_ID, 7);
+            values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_USER_ID, 1);
+            values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITOR_ID, i);
+            test = db.insert(CompetitionScoreContract.CompetitionScoreEntry.TABLE_NAME, null, values);
+        }
+        values = new ContentValues();
+        values.put(CompetitionScoreContract.CompetitionScoreEntry._ID, 1);
+        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_RESULT, 100);
+        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITION_ID, 7);
+        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_USER_ID, 1);
+        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITOR_ID, 1);
+        test = db.insert(CompetitionScoreContract.CompetitionScoreEntry.TABLE_NAME, null, values);
+        values = new ContentValues();
+        values.put(CompetitionScoreContract.CompetitionScoreEntry._ID, 2);
+        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_RESULT, 100);
+        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITION_ID, 7);
+        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_USER_ID, 1);
+        values.put(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITOR_ID, 100);
+        test = db.insert(CompetitionScoreContract.CompetitionScoreEntry.TABLE_NAME, null, values);
+
 
         values = new ContentValues();
         values.put(FacultyContract.FacultyEntry._ID, 1);
         values.put(FacultyContract.FacultyEntry.COLUMN_NAME_NAME, "FER");
+        values.put(FacultyContract.FacultyEntry.COLUMN_NAME_NICK, "nadimak");
+        test = db.insert(FacultyContract.FacultyEntry.TABLE_NAME, null, values);
+        values = new ContentValues();
+        values.put(FacultyContract.FacultyEntry._ID, 2);
+        values.put(FacultyContract.FacultyEntry.COLUMN_NAME_NAME, "FESB");
         values.put(FacultyContract.FacultyEntry.COLUMN_NAME_NICK, "nadimak");
         test = db.insert(FacultyContract.FacultyEntry.TABLE_NAME, null, values);
 

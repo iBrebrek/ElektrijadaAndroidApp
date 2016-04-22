@@ -18,6 +18,7 @@ import java.util.GregorianCalendar;
 import hr.fer.elektrijada.MenuHandler;
 import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.activities.BaseMenuActivity;
+import hr.fer.elektrijada.activities.scores.competitions.CompetitionResultsActivity;
 import hr.fer.elektrijada.activities.scores.duels.DuelScoresActivity;
 import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
@@ -206,8 +207,9 @@ public class ViewEventActivity extends BaseMenuActivity {
         findViewById(R.id.event_view_stub_competition).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO:
-                Toast.makeText(getApplicationContext(), "Otvori tablicu rezultata natijecanja" + eventId, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), CompetitionResultsActivity.class);
+                intent.putExtra("competitionId", eventId);
+                startActivity(intent);
             }
         });
     }
@@ -255,10 +257,10 @@ public class ViewEventActivity extends BaseMenuActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_start, menu);
+        getMenuInflater().inflate(R.menu.menu_template, menu);
         menu.add(EDIT_EVENT);
         menu.add(DELETE_EVENT);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

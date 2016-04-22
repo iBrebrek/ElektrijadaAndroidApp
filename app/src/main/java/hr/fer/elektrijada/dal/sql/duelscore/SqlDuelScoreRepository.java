@@ -2,9 +2,11 @@ package hr.fer.elektrijada.dal.sql.duelscore;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
 
@@ -38,15 +40,23 @@ public class SqlDuelScoreRepository {
 
     //dodati ostale metode ako zatrebaju...
 
-    /**
-     * ovo ce biti metoda koja ce odluciti koju metodu treba pozvati,
-     * bit ce moguce mostFrequent(koj je sad),
-     * sluzben rezultat, i moj rezultat
-     *
-     * ili mozda nac bolje mjesto koje za to odlucuje, posto i competitionScore mora imat te 3 mogucnosti
-     */
+
     public DuelScore getScore(int duelId) {
-        return getMostFrequentScore(duelId);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String showResults = sp.getString("showResults", "");
+
+        DuelScore score = null;
+
+        if(showResults.equals("0")) {
+            score = getMyScore(duelId);
+        }
+
+        if(score == null || !score.isSet()) {
+            score = getMostFrequentScore(duelId);
+        }
+
+        return score;
     }
 
     /**
@@ -339,7 +349,8 @@ public class SqlDuelScoreRepository {
             Cursor cursor = db.rawQuery(
                     "SELECT " + UserContract.UserEntry.TABLE_NAME + "." + UserContract.UserEntry._ID + ", " +
                             UserContract.UserEntry.COLUMN_NAME_NAME + ", " +
-                            UserContract.UserEntry.COLUMN_NAME_SURNAME +
+                            UserContract.UserEntry.COLUMN_NAME_SURNAME + ", " +
+                            UserContract.UserEntry.COLUMN_NAME_UNIQUE_ID +
                             " FROM " + DuelScoreContract.DuelScoreEntry.TABLE_NAME +
                             " INNER JOIN " + UserContract.UserEntry.TABLE_NAME +
                             " ON " + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_USER_ID +
@@ -355,7 +366,8 @@ public class SqlDuelScoreRepository {
                     list.add(new UserFromDb(
                             cursor.getInt(0),
                             cursor.getString(1),
-                            cursor.getString(2)
+                            cursor.getString(2),
+                            cursor.getString(3)
                     ));
                 } while (cursor.moveToNext());
             }

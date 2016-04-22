@@ -108,4 +108,30 @@ public class CompetitorFromDb {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CompetitorFromDb)) return false;
+
+        CompetitorFromDb that = (CompetitorFromDb) o;
+
+        if (!name.equals(that.name)) return false;
+        if (sureName != null ? !sureName.equals(that.sureName) : that.sureName != null)
+            return false;
+        return faculty.equals(that.faculty);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + (sureName != null ? sureName.hashCode() : 0);
+        result = 31 * result + faculty.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        if(sureName == null) return name;
+        else return name + " " + sureName;
+    }
 }

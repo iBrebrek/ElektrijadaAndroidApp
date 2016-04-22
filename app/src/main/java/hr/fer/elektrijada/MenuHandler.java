@@ -17,19 +17,27 @@ public class MenuHandler {
     /**
      * konstanta koja oznacava da niti jedan od menia ne bi trebao biti oznacen
      */
-    public static int NO_MENU_SELECTED = -1;
+    public static final int NO_MENU_SELECTED = -1;
     /**
      * konstanta koja oznacava id Vijesti u meniu
      */
-    public static int NEWS_ID = 0;
+    public static final int NEWS_ID = 0;
+    /**
+     * konstanta koja oznacava id Rezultata u meniu
+     */
+    public static final int RESULTS_ID = 1;
     /**
      * konstanta koja oznacava id Dogadaja u meniu
      */
-    public static int EVENTS_ID = 2;
+    public static final int EVENTS_ID = 2;
+    /**
+     * konstanta koja oznacava id Ukupnog plasmana u meniu
+     */
+    public static final int RANKINGS_ID = 4;
     /**
      * konstanta koja oznacava id Postavke u meniu
      */
-    public static int SETTINGS_ID = 4;
+    public static final int SETTINGS_ID = 4;
     /**
      * id za Korisnicke Postavke
      */

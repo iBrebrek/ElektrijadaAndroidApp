@@ -41,7 +41,7 @@ public class DuelScoresActivity extends BaseMenuActivity{
 
     @Override
     protected int belongingToMenuItemId() {
-        return MenuHandler.NO_MENU_SELECTED; //TODO: dogadanja ili rezultati
+        return MenuHandler.RESULTS_ID;
     }
 
     @Override

@@ -63,7 +63,7 @@ public abstract class TeamsActivity extends BaseMenuActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_start, menu);
+        getMenuInflater().inflate(R.menu.menu_template, menu);
         menu.add(NEW_TEAM);
         return true;
     }

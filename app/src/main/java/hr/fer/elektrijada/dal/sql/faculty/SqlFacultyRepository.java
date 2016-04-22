@@ -5,7 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import hr.fer.elektrijada.dal.sql.DbHelper;
+import hr.fer.elektrijada.util.Logger;
 
 /**
  * Created by Ivica Brebrek
@@ -62,5 +68,38 @@ public class SqlFacultyRepository {
                 db.close();
         }
         return facultyFromDb;
+    }
+
+
+    public List<FacultyFromDb> getFaculties() {
+        List<FacultyFromDb> allFaculties = new ArrayList<>();
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + FacultyContract.FacultyEntry.TABLE_NAME, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    FacultyFromDb faculty = new FacultyFromDb(
+                            cursor.getInt(FacultyContract.getColumnPos(FacultyContract.FacultyEntry._ID)),
+                            cursor.getString(FacultyContract.getColumnPos(FacultyContract.FacultyEntry.COLUMN_NAME_NAME)),
+                            cursor.getString(FacultyContract.getColumnPos(FacultyContract.FacultyEntry.COLUMN_NAME_NICK))
+                    );
+                    allFaculties.add(faculty);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception exc) {
+            Logger.LogException(exc);
+        } finally {
+            if (db != null)
+                db.close();
+        }
+        Collections.sort(allFaculties, new Comparator<FacultyFromDb>() {
+            @Override
+            public int compare(FacultyFromDb f1, FacultyFromDb f2) {
+                return f2.getName().compareTo(f1.getName());
+            }
+        });
+        return allFaculties;
     }
 }

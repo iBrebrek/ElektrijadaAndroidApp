@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="*ako ste već dodavali bodove za ovaj tim u ovome natjecanju, samo će broj bodova biti promijenjen*"
+            android:textStyle="italic" />
+
+        <Spinner
+            android:id="@+id/add_team_spinner_faculties"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:gravity="center_horizontal"
+            android:spinnerMode="dropdown" />
+
+        <RadioGroup
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/add_team_first_team"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="prvi tim" />
+
+            <RadioButton
+                android:id="@+id/add_team_second_team"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="drugi tim" />
+        </RadioGroup>
+
+        <EditText
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/add_team_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_horizontal"
+            android:hint="broj bodova..."
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/add_team_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Spremi" />
+
+    </LinearLayout>
+
+</ScrollView>
