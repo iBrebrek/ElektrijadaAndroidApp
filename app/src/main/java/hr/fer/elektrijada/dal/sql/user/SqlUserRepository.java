@@ -32,13 +32,6 @@ public class SqlUserRepository {
         try {
             db = dbHelper.getReadableDatabase();
 
-            String[] projection = {
-                    UserContract.UserEntry._ID,
-                    UserContract.UserEntry.COLUMN_NAME_NAME,
-                    UserContract.UserEntry.COLUMN_NAME_SURNAME,
-                    UserContract.UserEntry.COLUMN_NAME_UNIQUE_ID
-            };
-
             Cursor cursor = db.rawQuery("SELECT * FROM " + UserContract.UserEntry.TABLE_NAME
                     + " WHERE " + UserContract.UserEntry._ID +"="+id, null);
 
@@ -70,6 +63,7 @@ public class SqlUserRepository {
             ContentValues values = new ContentValues();
             values.put(UserContract.UserEntry.COLUMN_NAME_NAME, user.getName());
             values.put(UserContract.UserEntry.COLUMN_NAME_SURNAME, user.getSureName());
+            values.put(UserContract.UserEntry.COLUMN_NAME_UNIQUE_ID, user.getUniqueId());
 
             long rowId = db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
             return rowId;

@@ -27,6 +27,10 @@ public class UserFromDb {
         this.id = id;
     }
 
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
     public String getName() {
         return name;
     }
