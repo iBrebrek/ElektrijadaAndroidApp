@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import hr.fer.elektrijada.MenuHandler;
@@ -77,6 +79,12 @@ public class AddIndividualActivity extends SaveBeforeExitActivity {
                 SqlCompetitorRepository repo = new SqlCompetitorRepository(AddIndividualActivity.this);
                 List<CompetitorFromDb> individuals = repo.getStudents(((CompetitorFromDb)teamSpinner.getSelectedItem()).getFaculty().getId());
                 repo.close();
+                Collections.sort(individuals, new Comparator<CompetitorFromDb>() {
+                    @Override
+                    public int compare(CompetitorFromDb lhs, CompetitorFromDb rhs) {
+                        return lhs.getName().compareTo(rhs.getName());
+                    }
+                });
 
                 personSpinner = (Spinner) findViewById(R.id.add_individual_spinner_person);
 

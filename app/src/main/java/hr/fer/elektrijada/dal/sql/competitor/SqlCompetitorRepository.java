@@ -15,6 +15,8 @@ import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
 import hr.fer.elektrijada.dal.sql.faculty.FacultyFromDb;
 import hr.fer.elektrijada.dal.sql.faculty.SqlFacultyRepository;
+import hr.fer.elektrijada.dal.sql.stage.StageContract;
+import hr.fer.elektrijada.dal.sql.stage.StageFromDb;
 import hr.fer.elektrijada.util.Logger;
 
 /**
@@ -35,7 +37,65 @@ public class SqlCompetitorRepository {
         }
     }
 
-    //dodati ostale metode ako zatrebaju...
+    public void fixId(CompetitorFromDb competitor) {
+        if(competitor == null) return;
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+
+            Cursor cursor;
+            if(competitor.getSureName() == null) {
+                cursor = db.rawQuery("SELECT "+ CompetitorContract.CompetitorEntry._ID+" FROM " + CompetitorContract.CompetitorEntry.TABLE_NAME
+                        + " WHERE " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME +"='"+competitor.getName()+"'", null);
+            } else {
+                cursor = db.rawQuery("SELECT "+ CompetitorContract.CompetitorEntry._ID+" FROM " + CompetitorContract.CompetitorEntry.TABLE_NAME
+                        + " WHERE " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME +"='"+competitor.getName()+"'"
+                        + " AND " + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME +"='"+competitor.getSureName()+"'", null);
+            }
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                competitor.setId(cursor.getInt(0));
+                cursor.close();
+            }
+
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
+        }
+    }
+
+    public ArrayList<CompetitorFromDb> getAllCompetitors(){
+        ArrayList<CompetitorFromDb> list = new ArrayList<>();
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + CompetitorContract.CompetitorEntry.TABLE_NAME, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    list.add(new CompetitorFromDb(
+                            cursor.getInt(CompetitorContract.getColumnPos(CompetitorContract.CompetitorEntry._ID)),
+                            cursor.getString(CompetitorContract.getColumnPos(CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME)),
+                            cursor.getString(CompetitorContract.getColumnPos(CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME)),
+                            cursor.getInt(CompetitorContract.getColumnPos(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_PERSON)) > 0,
+                            getCompetitor(cursor.getInt(CompetitorContract.getColumnPos(CompetitorContract.CompetitorEntry.COLUMN_NAME_GROUP_COMPETITOR_ID))),
+                            getFaculty(cursor.getInt(CompetitorContract.getColumnPos(CompetitorContract.CompetitorEntry.COLUMN_NAME_FACULTY_ID))),
+                            getCompetition(cursor.getInt(CompetitorContract.getColumnPos(CompetitorContract.CompetitorEntry.COLUMN_NAME_COMPETITION_ID))),
+                            -1, false
+                    ));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception exc) {
+            Logger.LogException(exc);
+        } finally {
+            if (db != null)
+                db.close();
+        }
+        return list;
+    }
 
     public CompetitorFromDb getCompetitor(int id) {
         SQLiteDatabase db = null;
@@ -77,6 +137,9 @@ public class SqlCompetitorRepository {
                         cursor.getInt(CompetitorContract.getColumnPos(CompetitorContract.CompetitorEntry.COLUMN_NAME_ORDINAL_NUM)),
                         cursor.getInt(CompetitorContract.getColumnPos(CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_DISQUALIFIED)) > 0
                 );
+            }
+            if(cursor != null) {
+                cursor.close();
             }
         } catch (Exception exc) {
             //TO DO: Call Logger.ShowError;

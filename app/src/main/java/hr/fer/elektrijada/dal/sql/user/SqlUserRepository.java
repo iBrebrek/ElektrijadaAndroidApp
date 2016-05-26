@@ -6,7 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hr.fer.elektrijada.dal.sql.DbHelper;
+import hr.fer.elektrijada.util.Logger;
 
 /**
  * Created by Ivica Brebrek
@@ -23,6 +27,56 @@ public class SqlUserRepository {
     public void close() {
         if (dbHelper != null) {
             dbHelper.close();
+        }
+    }
+
+    public List<UserFromDb> getAllUsers() {
+        List<UserFromDb> list = new ArrayList<>();
+        SQLiteDatabase db = null;
+        SqlUserRepository users = new SqlUserRepository(context);
+        try {
+            db = dbHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + UserContract.UserEntry.TABLE_NAME, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    list.add(new UserFromDb(
+                            cursor.getInt(UserContract.getColumnPos(UserContract.UserEntry._ID)),
+                            cursor.getString(UserContract.getColumnPos(UserContract.UserEntry.COLUMN_NAME_NAME)),
+                            cursor.getString(UserContract.getColumnPos(UserContract.UserEntry.COLUMN_NAME_SURNAME)),
+                            cursor.getString(UserContract.getColumnPos(UserContract.UserEntry.COLUMN_NAME_UNIQUE_ID))
+                    ));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception exc) {
+            Logger.LogException(exc);
+        } finally {
+            users.close();
+            if (db != null)
+                db.close();
+        }
+        return list;
+    }
+
+    public void fixId(UserFromDb user) {
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery("SELECT "+ UserContract.UserEntry._ID+" FROM " + UserContract.UserEntry.TABLE_NAME
+                    + " WHERE " + UserContract.UserEntry.COLUMN_NAME_UNIQUE_ID +"='"+user.getUniqueId()+"'", null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                user.setId(cursor.getInt(0));
+                cursor.close();
+            }
+
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
         }
     }
 
@@ -65,8 +119,7 @@ public class SqlUserRepository {
             values.put(UserContract.UserEntry.COLUMN_NAME_SURNAME, user.getSureName());
             values.put(UserContract.UserEntry.COLUMN_NAME_UNIQUE_ID, user.getUniqueId());
 
-            long rowId = db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
-            return rowId;
+            return db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
         } catch (Exception exc) {
             //TO DO: Call Logger.ShowError;
             return -2;

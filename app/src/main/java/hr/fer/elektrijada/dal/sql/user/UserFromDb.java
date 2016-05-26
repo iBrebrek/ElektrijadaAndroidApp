@@ -1,9 +1,15 @@
 package hr.fer.elektrijada.dal.sql.user;
 
+import java.io.Serializable;
+
+import hr.fer.elektrijada.activities.bluetooth.IComparable;
+
 /**
  * Created by Ivica Brebrek
  */
-public class UserFromDb {
+public class UserFromDb implements Serializable, IComparable<UserFromDb> {
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private String name;
     private String sureName;
@@ -66,5 +72,10 @@ public class UserFromDb {
     @Override
     public int hashCode() {
         return uniqueId.hashCode();
+    }
+
+    @Override
+    public boolean detailsSame(UserFromDb other) {
+        return name.equals(other.name) && sureName.equals(other.sureName);
     }
 }

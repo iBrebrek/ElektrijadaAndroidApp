@@ -1,12 +1,17 @@
 package hr.fer.elektrijada.dal.sql.competition;
 
+import java.io.Serializable;
+
+import hr.fer.elektrijada.activities.bluetooth.IComparable;
+import hr.fer.elektrijada.activities.bluetooth.IDetails;
 import hr.fer.elektrijada.dal.sql.category.CategoryFromDb;
 import hr.fer.elektrijada.util.DateParserUtil;
 
 /**
  * Created by Ivica Brebrek
  */
-public class CompetitionFromDb {
+public class CompetitionFromDb implements Serializable, IComparable<CompetitionFromDb>, IDetails {
+    private static final long serialVersionUID = 1L;
     private int id;
     private String timeFrom;
     private String timeTo;
@@ -87,9 +92,37 @@ public class CompetitionFromDb {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof CompetitionFromDb && ((CompetitionFromDb) o).id == id) {
-            return true;
+        if (o instanceof CompetitionFromDb) {
+            CompetitionFromDb other = (CompetitionFromDb) o;
+             return category.equals(other.category);
         }
         return false;
+    }
+
+    @Override
+    public boolean detailsSame(CompetitionFromDb other) {
+        if(timeFrom == null) {
+            if(other.timeFrom != null) return false;
+        } else if(!timeFrom.equals(other.timeFrom)) return false;
+        if(timeTo == null) {
+            if(other.timeTo != null) return false;
+        }else if(!timeTo.equals(other.timeTo)) return false;
+        if(location == null) {
+            if(other.location != null) return false;
+        }else if(!location.equals(other.location)) return false;
+        return true;
+    }
+
+    @Override
+    public String info() {
+        return "Kategorija: " + category.getName();
+    }
+
+    @Override
+    public String details() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("lokacija: ").append(location).append("\n")
+                .append(timeFrom).append(" - ").append(timeTo);
+        return sb.toString();
     }
 }

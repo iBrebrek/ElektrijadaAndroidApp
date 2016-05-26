@@ -2,6 +2,10 @@ package hr.fer.elektrijada.dal.sql.duel;
 
 import android.content.Context;
 
+import java.io.Serializable;
+
+import hr.fer.elektrijada.activities.bluetooth.IComparable;
+import hr.fer.elektrijada.activities.bluetooth.IDetails;
 import hr.fer.elektrijada.dal.sql.category.CategoryFromDb;
 import hr.fer.elektrijada.dal.sql.competitor.CompetitorFromDb;
 import hr.fer.elektrijada.dal.sql.duelscore.SqlDuelScoreRepository;
@@ -12,7 +16,8 @@ import hr.fer.elektrijada.util.DateParserUtil;
 /**
  * Created by Ivica Brebrek
  */
-public class DuelFromDb {
+public class DuelFromDb implements Serializable, IComparable<DuelFromDb>, IDetails {
+    private static final long serialVersionUID = 1L;
     private int id;
     private String timeFrom;
     private String timeTo;
@@ -190,9 +195,50 @@ public class DuelFromDb {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof DuelFromDb && ((DuelFromDb) o).id == id) {
+        if (o instanceof DuelFromDb) {
+            DuelFromDb other = (DuelFromDb) o;
+            if(category == null) {
+                if(other.category != null) return false;
+            } else if(!category.equals(other.category)) return false;
+            if(firstCompetitor == null) {
+                if(other.firstCompetitor != null) return false;
+            } else if(!firstCompetitor.equals(other.firstCompetitor)) return false;
+            if(secondCompetitor == null) {
+                if(other.secondCompetitor != null) return false;
+            } else if(!secondCompetitor.equals(other.secondCompetitor)) return false;
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean detailsSame(DuelFromDb other) {
+        if(timeFrom == null) {
+            if(other.timeFrom != null) return false;
+        } else if(!timeFrom.equals(other.timeFrom)) return false;
+        if(timeTo == null) {
+            if(other.timeTo != null) return false;
+        } else if(!timeTo.equals(other.timeTo)) return false;
+        if(location == null) {
+            if(other.location != null) return false;
+        } else if(!location.equals(other.location)) return false;
+        if(stage == null) {
+            if(other.stage != null) return false;
+        } else if(!stage.equals(other.stage)) return false;
+        return true;
+    }
+
+    @Override
+    public String info() {
+        return category.getName() + ": " + firstCompetitor.getName() + " vs " + secondCompetitor.getName();
+    }
+
+    @Override
+    public String details() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("faza: ").append(stage.getName()).append("\n")
+                .append("lokacija: ").append(location).append("\n")
+                .append(timeFrom).append(" - ").append(timeTo);
+        return sb.toString();
     }
 }

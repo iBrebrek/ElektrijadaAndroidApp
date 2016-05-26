@@ -91,7 +91,7 @@ public class AddTeamActivity extends SaveBeforeExitActivity {
                                 .getFaculties()
                                 .get((int)((Spinner) findViewById(R.id.add_team_spinner_faculties)).getSelectedItemId());
         repoFaculty.close();
-        String teamName = faculty.getName() + (((RadioButton)findViewById(R.id.add_team_first_team)).isChecked() ? " 1" : " 2");
+        String teamName = faculty.getName() + (((RadioButton)findViewById(R.id.add_team_first_team)).isChecked() ? " (1)" : " (2)");
 
         CompetitorFromDb thisTeam;
         {//koristim blok da se ne bi pamtila ova lista kroz cijelu metodu

@@ -67,9 +67,9 @@ public class EventsActivity extends BaseMenuActivity{
             MyInfo.pickUsername(this);
 
             //TODO: maknut ova 3 reda ispod todo:
-            SqlGetEventsInfo repo = new SqlGetEventsInfo(this);
-            repo.addFakeEvents();
-            repo.close();
+//            SqlGetEventsInfo repo = new SqlGetEventsInfo(this);
+//            repo.addData();
+//            repo.close();
         }
     }
 

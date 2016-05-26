@@ -1,5 +1,6 @@
 package hr.fer.elektrijada.dal.sql.stage;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 
 import hr.fer.elektrijada.dal.sql.DbHelper;
 import hr.fer.elektrijada.dal.sql.category.CategoryContract;
+import hr.fer.elektrijada.dal.sql.user.UserContract;
+import hr.fer.elektrijada.dal.sql.user.UserFromDb;
 import hr.fer.elektrijada.util.Logger;
 
 /**
@@ -27,6 +30,28 @@ public class SqlStageRepository {
     public void close() {
         if (dbHelper != null) {
             dbHelper.close();
+        }
+    }
+
+    public void fixId(StageFromDb stage) {
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery("SELECT "+ StageContract.StageEntry._ID+" FROM " + StageContract.StageEntry.TABLE_NAME
+                    + " WHERE " + StageContract.StageEntry.COLUMN_NAME_NAME +"='"+stage.getName()+"'", null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                stage.setId(cursor.getInt(0));
+                cursor.close();
+            }
+
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
         }
     }
 
@@ -81,5 +106,21 @@ public class SqlStageRepository {
                 db.close();
         }
         return listOfAllStages;
+    }
+
+    public void createStage(StageFromDb stage) {
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(StageContract.StageEntry.COLUMN_NAME_NAME, stage.getName());
+
+            db.insert(StageContract.StageEntry.TABLE_NAME, null, values);
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
+        }
     }
 }

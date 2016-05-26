@@ -19,6 +19,7 @@ import hr.fer.elektrijada.dal.sql.competitor.CompetitorFromDb;
 import hr.fer.elektrijada.dal.sql.competitor.SqlCompetitorRepository;
 import hr.fer.elektrijada.dal.sql.user.SqlUserRepository;
 import hr.fer.elektrijada.extras.MyInfo;
+import hr.fer.elektrijada.util.Logger;
 
 /**
  * Created by Ivica Brebrek
@@ -36,6 +37,41 @@ public class SqlCompetitionScoreRepository {
         if (dbHelper != null) {
             dbHelper.close();
         }
+    }
+
+    public List<CompetitionScoreFromDb> getAllScores() {
+        ArrayList<CompetitionScoreFromDb> list = new ArrayList<>();
+        SQLiteDatabase db = null;
+        SqlCompetitionRepository competition = new SqlCompetitionRepository(context);
+        SqlUserRepository user = new SqlUserRepository(context);
+        SqlCompetitorRepository someone = new SqlCompetitorRepository(context);
+        try {
+            db = dbHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + CompetitionScoreContract.CompetitionScoreEntry.TABLE_NAME, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    list.add(new CompetitionScoreFromDb(
+                            cursor.getInt(CompetitionScoreContract.getColumnPos(CompetitionScoreContract.CompetitionScoreEntry._ID)),
+                            cursor.getDouble(CompetitionScoreContract.getColumnPos(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_RESULT)),
+                            null,
+                            competition.getCompetition(cursor.getInt(CompetitionScoreContract.getColumnPos(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITION_ID))),
+                            user.getUser(cursor.getInt(CompetitionScoreContract.getColumnPos(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_USER_ID))),
+                            someone.getCompetitor(cursor.getInt(CompetitionScoreContract.getColumnPos(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_COMPETITOR_ID))),
+                            cursor.getInt(CompetitionScoreContract.getColumnPos(CompetitionScoreContract.CompetitionScoreEntry.COLUMN_NAME_IS_OFFICIAL)) > 0
+                    ));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception exc) {
+            Logger.LogException(exc);
+        } finally {
+            competition.close();
+            user.close();
+            someone.close();
+            if (db != null)
+                db.close();
+        }
+        return list;
     }
 
     public Double getScore(int competitorId, int competitionId) {

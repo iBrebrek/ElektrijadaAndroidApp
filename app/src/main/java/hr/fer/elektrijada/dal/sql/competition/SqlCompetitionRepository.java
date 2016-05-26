@@ -6,10 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 import hr.fer.elektrijada.dal.sql.DbHelper;
 import hr.fer.elektrijada.dal.sql.category.CategoryFromDb;
 import hr.fer.elektrijada.dal.sql.category.SqlCategoryRepository;
 import hr.fer.elektrijada.dal.sql.competitionscore.CompetitionScoreContract;
+import hr.fer.elektrijada.dal.sql.competitor.CompetitorContract;
+import hr.fer.elektrijada.dal.sql.competitor.CompetitorFromDb;
+import hr.fer.elektrijada.util.Logger;
 
 /**
  * Created by Ivica Brebrek
@@ -29,7 +34,55 @@ public class SqlCompetitionRepository {
         }
     }
 
-    //napisati ostale metode, ako zatreba
+    public void fixId(CompetitionFromDb competition) {
+        if(competition == null) return;
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery("SELECT "+ CompetitionContract.CompetitionEntry._ID+" FROM " + CompetitionContract.CompetitionEntry.TABLE_NAME
+                    + " WHERE " + CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID +"='"+competition.getCategory().getId()+"'", null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                competition.setId(cursor.getInt(0));
+                cursor.close();
+            }
+
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
+        }
+    }
+
+    public ArrayList<CompetitionFromDb> getAllCompetitions(){
+        ArrayList<CompetitionFromDb> list = new ArrayList<>();
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + CompetitionContract.CompetitionEntry.TABLE_NAME, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    list.add(new CompetitionFromDb(
+                            cursor.getInt(CompetitionContract.getColumnPos(CompetitionContract.CompetitionEntry._ID)),
+                            cursor.getString(CompetitionContract.getColumnPos(CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_FROM)),
+                            cursor.getString(CompetitionContract.getColumnPos(CompetitionContract.CompetitionEntry.COLUMN_NAME_TIME_TO)),
+                            getCategory(cursor.getInt(CompetitionContract.getColumnPos(CompetitionContract.CompetitionEntry.COLUMN_NAME_CATEGORY_ID))),
+                            cursor.getString(CompetitionContract.getColumnPos(CompetitionContract.CompetitionEntry.COLUMN_NAME_LOCATION)), false
+                    ));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception exc) {
+            Logger.LogException(exc);
+        } finally {
+            if (db != null)
+                db.close();
+        }
+        return list;
+    }
 
     public boolean hasScore(int id) {
         boolean hasScore = false;
@@ -45,6 +98,9 @@ public class SqlCompetitionRepository {
 
             if (cursor != null && cursor.getCount()>0) {
                 hasScore = true;
+            }
+            if(cursor != null) {
+                cursor.close();
             }
         } catch (Exception exc) {
             //TO DO: Call Logger.ShowError;

@@ -1,9 +1,14 @@
 package hr.fer.elektrijada.dal.sql.faculty;
 
+import java.io.Serializable;
+
+import hr.fer.elektrijada.activities.bluetooth.IComparable;
+
 /**
  * Created by Ivica Brebrek
  */
-public class FacultyFromDb {
+public class FacultyFromDb implements Serializable, IComparable<FacultyFromDb> {
+    private static final long serialVersionUID = 1L;
     private int id;
     private String name;
     private String nick;
@@ -52,5 +57,13 @@ public class FacultyFromDb {
     @Override
     public int hashCode() {
         return name.hashCode();
+    }
+
+    @Override
+    public boolean detailsSame(FacultyFromDb other) {
+        if(nick == null) {
+            if(other.nick != null) return false;
+        } else if(!nick.equals(other.nick)) return false;
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 package hr.fer.elektrijada.dal.sql.faculty;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +12,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import hr.fer.elektrijada.dal.sql.DbHelper;
+import hr.fer.elektrijada.dal.sql.user.UserContract;
+import hr.fer.elektrijada.dal.sql.user.UserFromDb;
 import hr.fer.elektrijada.util.Logger;
 
 /**
@@ -28,6 +31,28 @@ public class SqlFacultyRepository {
     public void close() {
         if (dbHelper != null) {
             dbHelper.close();
+        }
+    }
+
+    public void fixId(FacultyFromDb faculty) {
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery("SELECT "+ FacultyContract.FacultyEntry._ID+" FROM " + FacultyContract.FacultyEntry.TABLE_NAME
+                    + " WHERE " + FacultyContract.FacultyEntry.COLUMN_NAME_NAME +"='"+faculty.getName()+"'", null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                faculty.setId(cursor.getInt(0));
+                cursor.close();
+            }
+
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
         }
     }
 
@@ -76,7 +101,8 @@ public class SqlFacultyRepository {
         SQLiteDatabase db = null;
         try {
             db = dbHelper.getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM " + FacultyContract.FacultyEntry.TABLE_NAME, null);
+            Cursor cursor = db.rawQuery("SELECT * FROM " + FacultyContract.FacultyEntry.TABLE_NAME +
+                    "  ORDER BY " + FacultyContract.FacultyEntry.COLUMN_NAME_NAME, null);
             if (cursor.moveToFirst()) {
                 do {
                     FacultyFromDb faculty = new FacultyFromDb(
@@ -101,5 +127,22 @@ public class SqlFacultyRepository {
             }
         });
         return allFaculties;
+    }
+
+    public void createFaculty(FacultyFromDb faculty) {
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(FacultyContract.FacultyEntry.COLUMN_NAME_NAME, faculty.getName());
+            values.put(FacultyContract.FacultyEntry.COLUMN_NAME_NICK, faculty.getNick());
+
+            db.insert(FacultyContract.FacultyEntry.TABLE_NAME, null, values);
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
+        }
     }
 }

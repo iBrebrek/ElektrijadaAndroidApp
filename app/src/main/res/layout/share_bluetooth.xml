@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:padding="16dp"
+        android:id="@+id/bluetooth_send"
+        android:text="Pošalji"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+   <!-- <Button
+        android:padding="16dp"
+        android:id="@+id/bluetooth_pair"
+        android:text="Upari se s uređajem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:padding="16dp"
+        android:id="@+id/bluetooth_discoverable"
+        android:text="Učini me vidljivim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />-->
+
+</LinearLayout>

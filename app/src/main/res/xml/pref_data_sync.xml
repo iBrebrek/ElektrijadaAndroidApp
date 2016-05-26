@@ -1,7 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference android:title="Bluetooth">
-        <!-- <intent android:action="android.settings.SYNC_SETTINGS" />  TODO stavi intent na bluetooth activity-->
+        <intent android:action="hr.fer.elektrijada.activities.bluetooth.BluetoothChat" />
     </Preference>
 
 

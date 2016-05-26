@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import hr.fer.elektrijada.dal.sql.DbHelper;
+import hr.fer.elektrijada.dal.sql.user.SqlUserRepository;
 import hr.fer.elektrijada.model.news.NewsEntry;
 import hr.fer.elektrijada.model.news.NewsRepository;
 import hr.fer.elektrijada.util.DateParserUtil;
@@ -54,6 +55,28 @@ public class SqlNewsRepository implements NewsRepository {
         }
     }
 
+    public void addNewsBluetooth(NewsFromDb news) {
+        SQLiteDatabase db = null;
+        SqlUserRepository users = new SqlUserRepository(context);
+        users.fixId(news.getAuthor());
+        users.close();
+        try {
+            db = dbHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(NewsContract.NewsEntry.COLUMN_NAME_TITLE, news.getTitle());
+            values.put(NewsContract.NewsEntry.COLUMN_NAME_DESCRIPTION, news.getText());
+            values.put(NewsContract.NewsEntry.COLUMN_NAME_USER_ID, news.getAuthor().getId());
+            values.put(NewsContract.NewsEntry.COLUMN_NAME_TIME, news.getTimeOfCreation());
+
+            db.insert(NewsContract.NewsEntry.TABLE_NAME, null, values);
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
+        }
+    }
+
     public boolean createNewsEntry(NewsEntry news) {
         SQLiteDatabase db = null;
         try {
@@ -90,6 +113,35 @@ public class SqlNewsRepository implements NewsRepository {
                 db.close();
         }
         return count;
+    }
+
+    public List<NewsFromDb> getAllNews() {
+        List<NewsFromDb> listOfNews = new ArrayList<>();
+        SQLiteDatabase db = null;
+        SqlUserRepository users = new SqlUserRepository(context);
+        try {
+            db = dbHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + NewsContract.NewsEntry.TABLE_NAME, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    listOfNews.add(new NewsFromDb(
+                            cursor.getInt(NewsContract.getColumnPos(NewsContract.NewsEntry._ID)),
+                            cursor.getString(NewsContract.getColumnPos(NewsContract.NewsEntry.COLUMN_NAME_TITLE)),
+                            cursor.getString(NewsContract.getColumnPos(NewsContract.NewsEntry.COLUMN_NAME_DESCRIPTION)),
+                            cursor.getString(NewsContract.getColumnPos(NewsContract.NewsEntry.COLUMN_NAME_TIME)),
+                            users.getUser(cursor.getInt(NewsContract.getColumnPos(NewsContract.NewsEntry.COLUMN_NAME_USER_ID)))
+                    ));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception exc) {
+            Logger.LogException(exc);
+        } finally {
+            users.close();
+            if (db != null)
+                db.close();
+        }
+        return listOfNews;
     }
 
     /**
@@ -198,6 +250,24 @@ public class SqlNewsRepository implements NewsRepository {
             values.put(NewsContract.NewsEntry.COLUMN_NAME_DESCRIPTION, news.getText());
             values.put(NewsContract.NewsEntry.COLUMN_NAME_USER_ID, news.getAuthorId());
             values.put(NewsContract.NewsEntry.COLUMN_NAME_TIME, DateParserUtil.dateToString(news.getTimeOfCreation()));
+            db.update(NewsContract.NewsEntry.TABLE_NAME, values, NewsContract.NewsEntry._ID + "=?", new String[]{String.valueOf(news.getId())});
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
+        }
+    }
+
+    public void updateNews(NewsFromDb news) {
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(NewsContract.NewsEntry.COLUMN_NAME_TITLE, news.getTitle());
+            values.put(NewsContract.NewsEntry.COLUMN_NAME_DESCRIPTION, news.getText());
+            values.put(NewsContract.NewsEntry.COLUMN_NAME_USER_ID, news.getAuthor().getId());
+            values.put(NewsContract.NewsEntry.COLUMN_NAME_TIME, news.getTimeOfCreation());
             db.update(NewsContract.NewsEntry.TABLE_NAME, values, NewsContract.NewsEntry._ID + "=?", new String[]{String.valueOf(news.getId())});
         } catch (Exception exc) {
             //TO DO: Call Logger.ShowError;

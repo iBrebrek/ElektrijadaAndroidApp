@@ -1,5 +1,8 @@
 package hr.fer.elektrijada.dal.sql.competitionscore;
 
+import java.io.Serializable;
+
+import hr.fer.elektrijada.activities.bluetooth.IComparable;
 import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competitor.CompetitorFromDb;
 import hr.fer.elektrijada.dal.sql.user.UserFromDb;
@@ -7,7 +10,8 @@ import hr.fer.elektrijada.dal.sql.user.UserFromDb;
 /**
  * Created by Ivica Brebrek
  */
-public class CompetitionScoreFromDb {
+public class CompetitionScoreFromDb implements Serializable, IComparable<CompetitionScoreFromDb> {
+    private static final long serialVersionUID = 1L;
     private int id;
     private double result;
     private String note;
@@ -91,11 +95,18 @@ public class CompetitionScoreFromDb {
         if (this == o) return true;
         if (!(o instanceof CompetitionScoreFromDb)) return false;
 
-        CompetitionScoreFromDb that = (CompetitionScoreFromDb) o;
+        CompetitionScoreFromDb other = (CompetitionScoreFromDb) o;
 
-        if (!competition.equals(that.competition)) return false;
-        if (!user.equals(that.user)) return false;
-        return competitor.equals(that.competitor);
+        if(user == null) {
+            if(other.user != null) return false;
+        } else if(!user.equals(other.user)) return false;
+        if(competitor == null) {
+            if(other.competitor != null) return false;
+        } else if(!competitor.equals(other.competitor)) return false;
+        if(competition == null) {
+            if(other.competition != null) return false;
+        } else if(!competition.equals(other.competition)) return false;
+        return result == other.result;
 
     }
 
@@ -105,5 +116,13 @@ public class CompetitionScoreFromDb {
         result = 31 * result + user.hashCode();
         result = 31 * result + competitor.hashCode();
         return result;
+    }
+
+    @Override
+    public boolean detailsSame(CompetitionScoreFromDb other) {
+        /*if(note == null) {
+            if(other.note != null) return false;
+        } else if(!note.equals(other.note)) return false;*/
+        return isOfficial != other.isOfficial;
     }
 }

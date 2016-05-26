@@ -30,4 +30,8 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_title_show_result" />
 
+    <Preference android:title="Dodaj studenta">
+        <intent android:action="hr.fer.elektrijada.activities.AddStudent" />
+    </Preference>
+
 </PreferenceScreen>

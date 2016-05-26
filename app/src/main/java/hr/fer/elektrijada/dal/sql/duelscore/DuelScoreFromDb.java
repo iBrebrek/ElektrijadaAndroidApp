@@ -1,13 +1,16 @@
 package hr.fer.elektrijada.dal.sql.duelscore;
 
+import java.io.Serializable;
+
+import hr.fer.elektrijada.activities.bluetooth.IComparable;
 import hr.fer.elektrijada.dal.sql.duel.DuelFromDb;
 import hr.fer.elektrijada.dal.sql.user.UserFromDb;
 
 /**
  * Created by Ivica Brebrek
  */
-public class DuelScoreFromDb {
-
+public class DuelScoreFromDb implements Serializable, IComparable<DuelScoreFromDb> {
+    private static final long serialVersionUID = 1L;
     private int id;
     private double firstScore;
     private double secondScore;
@@ -88,5 +91,25 @@ public class DuelScoreFromDb {
 
     public void setOfficial(boolean official) {
         this.official = official;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof DuelScoreFromDb) {
+            DuelScoreFromDb other = (DuelScoreFromDb) o;
+            if(duel == null) {
+                if(other.duel != null) return false;
+            } else if(!duel.equals(other.duel)) return false;
+            if(user == null) {
+                if(other.user != null) return false;
+            } else if(!user.equals(other.user)) return false;
+            return firstScore == other.firstScore && secondScore == other.secondScore && official == other.official;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean detailsSame(DuelScoreFromDb other) {
+        return true;
     }
 }

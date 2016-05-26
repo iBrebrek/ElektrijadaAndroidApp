@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import hr.fer.elektrijada.dal.sql.DbHelper;
 import hr.fer.elektrijada.dal.sql.duel.DuelFromDb;
@@ -38,7 +39,42 @@ public class SqlDuelScoreRepository {
         }
     }
 
-    //dodati ostale metode ako zatrebaju...
+    public List<DuelScoreFromDb> getAllDuelScores() {
+        List<DuelScoreFromDb> list = new ArrayList<>();
+        SQLiteDatabase db = null;
+        SqlUserRepository users = new SqlUserRepository(context);
+        SqlDuelRepository duels = new SqlDuelRepository(context);
+        try {
+            db = dbHelper.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT * FROM " + DuelScoreContract.DuelScoreEntry.TABLE_NAME,
+                    null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    list.add(new DuelScoreFromDb(
+                            cursor.getInt(DuelScoreContract.getColumnPos(DuelScoreContract.DuelScoreEntry._ID)),
+                            cursor.getDouble(DuelScoreContract.getColumnPos(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_1)),
+                            cursor.getDouble(DuelScoreContract.getColumnPos(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_2)),
+                            duels.getDuel(cursor.getInt(DuelScoreContract.getColumnPos(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_DUEL_ID))),
+                            users.getUser(cursor.getInt(DuelScoreContract.getColumnPos(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_USER_ID))),
+                            cursor.getString(DuelScoreContract.getColumnPos(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_NOTE)),
+                            cursor.getInt(DuelScoreContract.getColumnPos(DuelScoreContract.DuelScoreEntry.COLUMN_NAME_IS_OFFICIAL)) > 0
+                    ));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            users.close();
+            duels.close();
+            if (db != null)
+                db.close();
+        }
+        return list;
+    }
 
 
     public DuelScore getScore(int duelId) {
@@ -395,39 +431,5 @@ public class SqlDuelScoreRepository {
         return user;
     }
 
-    /**
-     *
-     * OVO NIJE DOBRO!!!
-     * -vraca prvi rezultat koj ima taj duelId
-     *
-     */
-//    public DuelScore getScoreFromDuel(int duelId) {
-//        DuelScore score = null;
-//        SQLiteDatabase db = null;
-//        try {
-//            db = dbHelper.getReadableDatabase();
-//
-//            Cursor cursor = db.rawQuery(
-//                    "SELECT " + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_1 + ", "
-//                            + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_SCORE_2
-//                            + " FROM " + DuelScoreContract.DuelScoreEntry.TABLE_NAME
-//                            + " WHERE " + DuelScoreContract.DuelScoreEntry.COLUMN_NAME_DUEL_ID +" = " + duelId,
-//                    null);
-//
-//            if (cursor != null) {
-//                cursor.moveToFirst();
-//                score = new DuelScore(
-//                        cursor.getInt(0),
-//                        cursor.getInt(1)
-//                );
-//                cursor.close();
-//            }
-//        } catch (Exception exc) {
-//            //TO DO: Call Logger.ShowError;
-//        } finally {
-//            if (db != null)
-//                db.close();
-//        }
-//        return score;
-//    }
+
 }

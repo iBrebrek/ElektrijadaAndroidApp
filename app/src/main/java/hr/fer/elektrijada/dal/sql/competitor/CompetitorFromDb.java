@@ -1,12 +1,16 @@
 package hr.fer.elektrijada.dal.sql.competitor;
 
+import java.io.Serializable;
+
+import hr.fer.elektrijada.activities.bluetooth.IComparable;
 import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.faculty.FacultyFromDb;
 
 /**
  * Created by Ivica Brebrek
  */
-public class CompetitorFromDb {
+public class CompetitorFromDb implements Serializable, IComparable<CompetitorFromDb> {
+    private static final long serialVersionUID = 1L;
     private int id;
     private String name;
     private String sureName;
@@ -113,12 +117,24 @@ public class CompetitorFromDb {
         if (this == o) return true;
         if (!(o instanceof CompetitorFromDb)) return false;
 
-        CompetitorFromDb that = (CompetitorFromDb) o;
+        CompetitorFromDb other = (CompetitorFromDb) o;
 
-        if (!name.equals(that.name)) return false;
-        if (sureName != null ? !sureName.equals(that.sureName) : that.sureName != null)
-            return false;
-        return faculty.equals(that.faculty);
+        if(name == null) {
+            if(other.name != null) return false;
+        } else if(!name.equals(other.name)) return false;
+        if(sureName == null) {
+            if(other.sureName != null) return false;
+        } else if(!sureName.equals(other.sureName)) return false;
+        if(groupCompetitor == null) {
+            if(other.groupCompetitor != null) return false;
+        } else if(!groupCompetitor.equals(other.groupCompetitor)) return false;
+        if(faculty == null) {
+            if(other.faculty != null) return false;
+        } else if(!faculty.equals(other.faculty)) return false;
+        if(competition == null) {
+            if(other.competition != null) return false;
+        } else if(!competition.equals(other.competition)) return false;
+        return isPerson == other.isPerson;
     }
 
     @Override
@@ -133,5 +149,10 @@ public class CompetitorFromDb {
     public String toString() {
         if(sureName == null) return name;
         else return name + " " + sureName;
+    }
+
+    @Override
+    public boolean detailsSame(CompetitorFromDb other) {
+        return true; //jer se sve gleda u equals
     }
 }
