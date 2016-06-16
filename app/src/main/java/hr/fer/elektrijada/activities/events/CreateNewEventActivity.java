@@ -45,6 +45,9 @@ import hr.fer.elektrijada.util.TimePicker;
  * Created by Ivica Brebrek
  */
 public class CreateNewEventActivity extends SaveBeforeExitActivity {
+    /** zadnji događaj koji je napravljen, ovako će onda inicijalno biti prikazano na njega. */
+    private static int lastInput;
+
     private boolean isDuel = true; //da se zna u koju tablicu spremamo
     //stage i teams su tu jer su oni prikazani samo ako je kategorija duel
     private View teams;
@@ -134,6 +137,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        categorySpinner.setSelection(lastInput);
     }
 
     private void initStageSpinner() {
@@ -218,12 +222,23 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
                 if(rememberPickedDetails.hasEnd.isChecked()) {
                     findViewById(R.id.btnCreateEventEndDate).setVisibility(View.VISIBLE);
                     findViewById(R.id.btnCreateEventEndTime).setVisibility(View.VISIBLE);
+                    int min = rememberPickedDetails.startTime.getMinute() + 30;
+                    int h = rememberPickedDetails.startTime.getHour();
+                    if(min > 60) {
+                        min -= 60;
+                        h++;
+                        if(h == 24) h = 0;
+                    }
+                    rememberPickedDetails.endTime.setTime(h, min);
                 } else {
                     findViewById(R.id.btnCreateEventEndDate).setVisibility(View.INVISIBLE);
                     findViewById(R.id.btnCreateEventEndTime).setVisibility(View.INVISIBLE);
                 }
             }
         });
+        rememberPickedDetails.endTime.setTime(
+                rememberPickedDetails.startTime.getHour(),
+                rememberPickedDetails.startTime.getMinute() + 30);
     }
 
     @Override
@@ -255,6 +270,7 @@ public class CreateNewEventActivity extends SaveBeforeExitActivity {
             Toast.makeText(getApplicationContext(), exc.getMessage(), Toast.LENGTH_LONG).show();
             return false;
         }
+        lastInput = categorySpinner.getSelectedItemPosition();
         return true;
     }
 

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -41,9 +43,15 @@ public class EventsActivity extends BaseMenuActivity{
     private boolean shouldAddDateStamps = true;
     private boolean shouldAddSportNameLabel = false;
 
+    int listPosition;
+
+    //izdvojena opcija jer se to vidi samo kada je filter postavljen na sport
+    private MenuItem sportView;
+
     //kasnije mozda dodat enumeraciju, za sad samo pazi da je string pravilan
     private static String currentType = "Svi događaji"; //pamti filter za vrste, na pocetku svi
     private static String currentDate = "Svi datumi"; //pamti filter za datume, na pocetku svi
+    private static String currentSportView = "Kategorija";
 
     @Override
     protected int getContentLayoutId() {
@@ -67,18 +75,25 @@ public class EventsActivity extends BaseMenuActivity{
             MyInfo.pickUsername(this);
 
             //TODO: maknut ova 3 reda ispod todo:
-//            SqlGetEventsInfo repo = new SqlGetEventsInfo(this);
-//            repo.addData();
-//            repo.close();
+            SqlGetEventsInfo repo = new SqlGetEventsInfo(this);
+            repo.addData();
+            repo.close();
         }
     }
 
     @Override
     protected void onResume() {
-        //npr, kada se doda novi dogadaj zbog ovoga se odma vidi
+        //zapamti lokaciju
+        int index = listView.getFirstVisiblePosition();
+        View v = listView.getChildAt(0);
+        int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
+
         super.onResume();
         filter();
-        setStartingScrollPosition();
+        //setStartingScrollPosition();
+
+        //stavi lokaciju
+        listView.setSelectionFromTop(index, top);
     }
 
     private void setStartingScrollPosition(){
@@ -106,7 +121,7 @@ public class EventsActivity extends BaseMenuActivity{
     }
 
     private void adjustList() {
-        if(shouldAddSportNameLabel) {
+        if(shouldAddSportNameLabel && currentSportView.equals("Kategorija")) {
             Collections.sort(listOfEvents, new Comparator<Event>() {
                 @Override
                 public int compare(Event lhs, Event rhs) {
@@ -280,6 +295,37 @@ public class EventsActivity extends BaseMenuActivity{
         dialog.show();
     }
 
+    private void initSportView() {
+        final List<String> types = new ArrayList<>();
+        types.add("Vrijeme");
+        types.add("Kategorija");
+        AlertDialog.Builder dialogBuilder;
+        dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Sortirano po:");
+        dialogBuilder.setSingleChoiceItems(
+                types.toArray(new String[types.size()]),
+                types.indexOf(currentSportView),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        currentSportView = types.get(which);
+                        removeHelperTypes(listOfEvents);
+                        if(currentSportView.equals("Kategorija")) {
+                            insertSportNames(listOfEvents);
+                            insertDateStampsAfterLabels(listOfEvents);
+                            eventsListAdapter = new SportEventsListAdapter(EventsActivity.this, listOfEvents);
+                        } else{
+                            insertDateStamps(listOfEvents);
+                            eventsListAdapter = new EventsListAdapter(EventsActivity.this, listOfEvents);
+                        }
+                        listView.setAdapter(eventsListAdapter);
+                    }
+                }
+        );
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
     private void filter() {
         removeHelperTypes(listOfEvents);
         filterByType();
@@ -331,6 +377,7 @@ public class EventsActivity extends BaseMenuActivity{
     private final static String ADD_NEW_EVENT = "Dodaj događaj";
     private final static String FILTER_TYPE = "Filtriraj vrste";
     private final static String FILTER_DATE = "Filtriraj datume";
+    private final static String SPORT_VIEW = "Prikaz sporta";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -338,7 +385,14 @@ public class EventsActivity extends BaseMenuActivity{
         menu.add(ADD_NEW_EVENT);
         menu.add(FILTER_TYPE);
         menu.add(FILTER_DATE);
+        sportView = menu.add(SPORT_VIEW);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        sportView.setVisible(currentType.equals("Sport"));
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -356,6 +410,10 @@ public class EventsActivity extends BaseMenuActivity{
 
             case FILTER_DATE:
                 initFilterDate();
+                break;
+
+            case SPORT_VIEW:
+                initSportView();
                 break;
         }
         return super.onOptionsItemSelected(item);

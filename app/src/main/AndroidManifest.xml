@@ -96,6 +96,22 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.AddFaculty"
+            android:label="Ažuriraj fakultet"
+            android:theme="@android:style/Theme.Dialog">
+            <intent-filter>
+                <action android:name="hr.fer.elektrijada.activities.AddFaculty" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.results.ResultsActivity"
+            android:label="Rezultati"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.results.DuelsResultsActivity"
+            android:label="Rezultati dvoboja"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -185,8 +185,6 @@ public class ViewEventActivity extends BaseMenuActivity {
         TextView secondTeam = (TextView) findViewById(R.id.event_view_stub_duel__right_team);
         TextView secondScore = (TextView) findViewById(R.id.event_view_stub_duel_right_score);
 
-        //TODO: Uzmi timove i rezultat (Duel+DuelScore), i stage!
-
         stage.setText(duel.getStage().getName());
         firstTeam.setText(duel.getFirstCompetitor().getName());
         firstScore.setText(duel.getFirstComptetitorScore(this));

@@ -30,20 +30,20 @@
             android:textSize="21sp"
             android:textColor="#000099"
             android:textStyle="bold"
-            android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/stub_vs"
-            android:layout_alignBaseline="@id/stub_vs"
-            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/event_view_stub_duel__right_team"
             android:textSize="21sp"
             android:textColor="#000099"
             android:textStyle="bold"
-            android:layout_centerVertical="true"
             android:layout_toRightOf="@id/stub_vs"
-            android:layout_alignBaseline="@id/stub_vs"
-            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </RelativeLayout>
 

@@ -9,6 +9,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import hr.fer.elektrijada.MenuHandler;
@@ -49,13 +51,15 @@ public class AddTeamActivity extends SaveBeforeExitActivity {
         SqlFacultyRepository repo = new SqlFacultyRepository(this);
         final List<FacultyFromDb> faculties = repo.getFaculties();
         repo.close();
-        ArrayList<String> names = new ArrayList<>();
-        for(FacultyFromDb faculty : faculties) {
-            names.add(faculty.getName());
-        }
+        Collections.sort(faculties, new Comparator<FacultyFromDb>() {
+            @Override
+            public int compare(FacultyFromDb lhs, FacultyFromDb rhs) {
+                return lhs.getName().compareTo(rhs.getName());
+            }
+        });
 
         Spinner dropdown = (Spinner) findViewById(R.id.add_team_spinner_faculties);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, names);
+        ArrayAdapter<FacultyFromDb> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, faculties);
         dropdown.setAdapter(adapter);
 
 
@@ -86,11 +90,7 @@ public class AddTeamActivity extends SaveBeforeExitActivity {
         }
         Double result = Double.parseDouble(resultString);
 
-        SqlFacultyRepository repoFaculty = new SqlFacultyRepository(this);
-        FacultyFromDb faculty = repoFaculty
-                                .getFaculties()
-                                .get((int)((Spinner) findViewById(R.id.add_team_spinner_faculties)).getSelectedItemId());
-        repoFaculty.close();
+        FacultyFromDb faculty = (FacultyFromDb)((Spinner)findViewById(R.id.add_team_spinner_faculties)).getSelectedItem();
         String teamName = faculty.getName() + (((RadioButton)findViewById(R.id.add_team_first_team)).isChecked() ? " (1)" : " (2)");
 
         CompetitorFromDb thisTeam;

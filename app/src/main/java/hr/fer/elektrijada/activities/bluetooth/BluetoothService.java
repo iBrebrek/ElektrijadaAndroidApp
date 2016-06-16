@@ -2,6 +2,7 @@ package hr.fer.elektrijada.activities.bluetooth;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+import hr.fer.elektrijada.R;
 import hr.fer.elektrijada.dal.sql.category.CategoryFromDb;
 import hr.fer.elektrijada.dal.sql.category.SqlCategoryRepository;
 import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;

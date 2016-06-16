@@ -120,7 +120,7 @@ public class DuelScoresActivity extends BaseMenuActivity{
                             duelScoreRepo.close();
                             return;
 
-                        //obrisi
+                            //obrisi
                         } else {
                             if (myScore.isSet()) {
                                 duelScoreRepo.deleteMyScore(duelId);
@@ -144,17 +144,17 @@ public class DuelScoresActivity extends BaseMenuActivity{
                             myScore = new DuelScore(myDuelScore.getFirstScore(), myDuelScore.getSecondScore());
                             listViewAdapter.modiyMyDuelScore(myScore);
 
-                        //dodaj novi
+                            //dodaj novi
                         } else {
                             SqlDuelRepository duelRepo = new SqlDuelRepository(getApplicationContext());
                             DuelFromDb duel = duelRepo.getDuel(duelId);
                             duelRepo.close();
                             DuelScoreFromDb duelScore = new DuelScoreFromDb(
-                                  Double.parseDouble(firstTeam.getText().toString()),
-                                  Double.parseDouble(secondTeam.getText().toString()),
-                                  duel,
-                                  MyInfo.getMyUsername(getApplicationContext()),
-                                  false
+                                    Double.parseDouble(firstTeam.getText().toString()),
+                                    Double.parseDouble(secondTeam.getText().toString()),
+                                    duel,
+                                    MyInfo.getMyUsername(getApplicationContext()),
+                                    false
                             );
                             duelScoreRepo.addDuelScore(duelScore);
                             Toast.makeText(getApplicationContext(),

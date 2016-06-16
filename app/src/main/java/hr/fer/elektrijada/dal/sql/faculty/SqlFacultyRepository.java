@@ -12,8 +12,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import hr.fer.elektrijada.dal.sql.DbHelper;
+import hr.fer.elektrijada.dal.sql.news.NewsContract;
 import hr.fer.elektrijada.dal.sql.user.UserContract;
 import hr.fer.elektrijada.dal.sql.user.UserFromDb;
+import hr.fer.elektrijada.model.news.NewsEntry;
+import hr.fer.elektrijada.util.DateParserUtil;
 import hr.fer.elektrijada.util.Logger;
 
 /**
@@ -129,7 +132,7 @@ public class SqlFacultyRepository {
         return allFaculties;
     }
 
-    public void createFaculty(FacultyFromDb faculty) {
+    public long createFaculty(FacultyFromDb faculty) {
         SQLiteDatabase db = null;
         try {
             db = dbHelper.getWritableDatabase();
@@ -137,7 +140,24 @@ public class SqlFacultyRepository {
             values.put(FacultyContract.FacultyEntry.COLUMN_NAME_NAME, faculty.getName());
             values.put(FacultyContract.FacultyEntry.COLUMN_NAME_NICK, faculty.getNick());
 
-            db.insert(FacultyContract.FacultyEntry.TABLE_NAME, null, values);
+            return db.insert(FacultyContract.FacultyEntry.TABLE_NAME, null, values);
+        } catch (Exception exc) {
+            //TO DO: Call Logger.ShowError;
+        } finally {
+            if (db != null)
+                db.close();
+        }
+        return -1;
+    }
+
+    public void updateFaculty(FacultyFromDb faculty) {
+        SQLiteDatabase db = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(FacultyContract.FacultyEntry.COLUMN_NAME_NAME, faculty.getName());
+            values.put(FacultyContract.FacultyEntry.COLUMN_NAME_NICK, faculty.getNick());
+            db.update(FacultyContract.FacultyEntry.TABLE_NAME, values, FacultyContract.FacultyEntry._ID + "=?", new String[]{String.valueOf(faculty.getId())});
         } catch (Exception exc) {
             //TO DO: Call Logger.ShowError;
         } finally {

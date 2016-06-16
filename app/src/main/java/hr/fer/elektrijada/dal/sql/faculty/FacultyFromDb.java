@@ -47,6 +47,11 @@ public class FacultyFromDb implements Serializable, IComparable<FacultyFromDb> {
     }
 
     @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof FacultyFromDb)) return false;
         FacultyFromDb that = (FacultyFromDb) o;

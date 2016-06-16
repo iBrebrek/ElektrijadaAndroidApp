@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <Spinner
+        android:id="@+id/select_faculty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp">
+
+    </Spinner>
+    <EditText android:id="@+id/add_faculty_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="ime..."
+        android:paddingLeft="5dp"
+        />
+    <Button android:id="@+id/add_faculty_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Spremi"
+        />
+</LinearLayout>

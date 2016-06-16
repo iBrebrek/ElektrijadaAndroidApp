@@ -63,6 +63,11 @@ public class CategoryFromDb implements Serializable, IComparable<CategoryFromDb>
     }
 
     @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
     public boolean detailsSame(CategoryFromDb other) {
         if(nick == null) {
             if(other.nick != null) return false;

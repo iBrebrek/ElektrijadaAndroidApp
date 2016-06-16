@@ -55,7 +55,7 @@ public class IndividualListAdapter extends BaseAdapter {
         holder.rankView.setText((position+1)+".");
         holder.nameView.setText(listData.get(position).getCompetitor().getName()
                 + " " + listData.get(position).getCompetitor().getSureName()
-                + "  (" + listData.get(position).getCompetitor().getGroupCompetitor().getName() + ")");
+                + "  [" + listData.get(position).getCompetitor().getGroupCompetitor().getName() + "]");
         holder.resultsView.setText(String.valueOf(listData.get(position).getResult()));
         return convertView;
     }

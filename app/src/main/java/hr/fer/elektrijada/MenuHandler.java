@@ -6,6 +6,7 @@ import android.support.design.widget.NavigationView;
 
 import hr.fer.elektrijada.activities.events.EventsActivity;
 import hr.fer.elektrijada.activities.news.NewsFeedActivity;
+import hr.fer.elektrijada.activities.results.ResultsActivity;
 import hr.fer.elektrijada.activities.settings.SettingsActivity;
 
 /**
@@ -56,6 +57,8 @@ public class MenuHandler {
             action = SettingsActivity.class;
         } else if (id == R.id.nav_dogadjanja) {
             action = EventsActivity.class;
+        } else if (id == R.id.nav_rezultati) {
+            action = ResultsActivity.class;
         }
 
         if (action != null){

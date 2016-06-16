@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import hr.fer.elektrijada.dal.sql.DbHelper;
+import hr.fer.elektrijada.dal.sql.category.CategoryContract;
 import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
 import hr.fer.elektrijada.dal.sql.faculty.FacultyFromDb;
@@ -321,7 +322,7 @@ public class SqlCompetitorRepository {
     /**
      * na prvu bi izgledalo bolje da je id kljuc, ali ovakva struktura mi bolje pase za spinner
      *
-     * String je Name (+ SureName ako ga ima), Integer je ID
+     * String je name, Integer je ID
      * @return  mapa u kojoj su kljucevi IMENA, a ID vrijednosti
      */
     public HashMap<String, Integer> getMapOfCompetitors() {
@@ -330,15 +331,11 @@ public class SqlCompetitorRepository {
         try {
             db = dbHelper.getReadableDatabase();
             Cursor cursor = db.rawQuery(
-                    "SELECT " + CompetitorContract.CompetitorEntry._ID + ", "
-                            + "CASE "
-                                + "WHEN " + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME + " IS NULL "
-                                + "THEN " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME
-                                + " ELSE " + CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME + " ||  ' ' || "
-                                + CompetitorContract.CompetitorEntry.COLUMN_NAME_SURNAME
-                                + " END " +
-                    "FROM " + CompetitorContract.CompetitorEntry.TABLE_NAME +
-                    " WHERE " + CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_PERSON + " < 1",
+                    "SELECT " + CompetitorContract.CompetitorEntry._ID + ", " +
+                    CompetitorContract.CompetitorEntry.COLUMN_NAME_NAME +
+                    " FROM " + CompetitorContract.CompetitorEntry.TABLE_NAME +
+                    " WHERE " + CompetitorContract.CompetitorEntry.COLUMN_NAME_IS_PERSON + " < 1" +
+                    " AND " + CompetitorContract.CompetitorEntry.COLUMN_NAME_COMPETITION_ID + " IS NULL",
                     null);
             if (cursor.moveToFirst()) {
                 do {

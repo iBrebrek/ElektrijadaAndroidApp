@@ -33,5 +33,8 @@
     <Preference android:title="Dodaj studenta">
         <intent android:action="hr.fer.elektrijada.activities.AddStudent" />
     </Preference>
+    <Preference android:title="Ažuriraj fakultet">
+        <intent android:action="hr.fer.elektrijada.activities.AddFaculty" />
+    </Preference>
 
 </PreferenceScreen>
