@@ -24,6 +24,10 @@ import hr.fer.elektrijada.dal.sql.competition.CompetitionFromDb;
 import hr.fer.elektrijada.dal.sql.competition.SqlCompetitionRepository;
 import hr.fer.elektrijada.dal.sql.duel.DuelFromDb;
 import hr.fer.elektrijada.dal.sql.duel.SqlDuelRepository;
+import hr.fer.elektrijada.dal.sql.duelscore.DuelScoreFromDb;
+import hr.fer.elektrijada.dal.sql.duelscore.SqlDuelScoreRepository;
+import hr.fer.elektrijada.dal.sql.user.SqlUserRepository;
+import hr.fer.elektrijada.dal.sql.user.UserFromDb;
 import hr.fer.elektrijada.util.DateParserUtil;
 import hr.fer.elektrijada.extras.Favorites;
 
